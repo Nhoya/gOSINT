@@ -29,7 +29,7 @@ Currently `gOSINT` is still an early version and few modules are supported
 - [ ] Search for mail address in source (module ready, needs to be integrated)
 - [ ] [https://shodan.io](https://shodan.io) search
 - [ ] Social Media search
-- [ ] Search Engied search
+- [ ] Search Engine search
 
 ## Usage
 
