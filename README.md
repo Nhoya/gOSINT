@@ -38,6 +38,12 @@ Currently `gOSINT` supports the following actions
 Complete git research
 
 `./gOSINT -m git --url=[RepoURL] --gitAPI github|bitbucket (optional)`
+
 it will make a full search starting from the mail in the repo, passing to pgp search and searching for Dumps
 
+`./gOSINT -m pwnd --mail [targetMail]`
+search for breaches where targetMail is preset
+
+`./gOSINT -m pgp --mail [targetMail]`
+search for others mail in PGP keyring
 
