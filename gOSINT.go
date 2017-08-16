@@ -12,6 +12,7 @@ var opts struct {
 	Url        string `long:"url" default:"" description:"Specify target URL"`
 	gitAPIType string `long:"gitAPI" default:"" description:"Specify git website API to use" choice:"github" choice"bitbucket"`
 	Mail       string `long:"mail" default:"" description:"Specify mail target"`
+	Mode       bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
 }
 
 func mailCheck(mailSet mapset.Set) {
@@ -38,13 +39,18 @@ func main() {
 	case "pgp":
 		mailCheck(mailSet)
 		pgpSearch(mailSet)
+		if opts.Full {
+			pwnd(mailSet)
+		}
 	case "git":
 		if opts.Url == "" {
 			fmt.Println("You must specify target URL")
 			os.Exit(1)
 		}
 		mailSet = gitSearch(opts.Url, opts.gitAPIType, mailSet)
-		mailSet = pgpSearch(mailSet)
-		pwnd(mailSet)
+		if opts.Mode {
+			mailSet = pgpSearch(mailSet)
+			pwnd(mailSet)
+		}
 	}
 }
