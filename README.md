@@ -44,7 +44,7 @@ retrive mail from git commits
 
 `./gOSINT -m git --url [RepoURL] --gitAPI [github|bitbucket] (optional) -f`
 
-pass the result to pgp search ad pwnd module
+pass the result to pgp search and pwnd module
 
 `./gOSINT -m pwnd --mail [targetMail]`
 
