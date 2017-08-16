@@ -25,8 +25,8 @@ Currently `gOSINT` is still an early version and few modules are supported
 - [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search
 - [x] Search for mails in PGP keyring
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
-- [ ] WHOIS support (the module is ready but have to be integrated)
-- [ ] Search for mail address in source (module read, need to be integrated)
+- [ ] WHOIS support (the module is ready but has to be integrated)
+- [ ] Search for mail address in source (module ready, needs to be integrated)
 - [ ] [https://shodan.io](https://shodan.io) search
 - [ ] Social Media search
 - [ ] Search Engied search
