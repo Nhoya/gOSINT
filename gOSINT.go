@@ -39,7 +39,7 @@ func main() {
 	case "pgp":
 		mailCheck(mailSet)
 		pgpSearch(mailSet)
-		if opts.Full {
+		if opts.Mode {
 			pwnd(mailSet)
 		}
 	case "git":
