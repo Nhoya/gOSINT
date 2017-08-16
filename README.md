@@ -2,7 +2,7 @@
 OSINT framework in Go
 
 ## Introduction
-gOSINT is a little OSINT in golang, it's actually in development and still not ready for production if you want, feel free to contribute!
+gOSINT is a little OSINT framework in golang, it's actually in development and still not ready for production if you want, feel free to contribute!
 
 
 ## Dependecies
