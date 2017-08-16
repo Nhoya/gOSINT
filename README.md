@@ -35,11 +35,14 @@ Currently `gOSINT` is still an early version and few modules are supported
 
 Currently `gOSINT` supports the following actions
 
-Complete git research
 
-`./gOSINT -m git --url=[RepoURL] --gitAPI github|bitbucket (optional)`
+`./gOSINT -m git --url=[RepoURL] --gitAPI [github|bitbucket] (optional)`
 
-it will make a full search starting from the mail in the repo, passing to pgp search and searching for Dumps
+retrive mail from git commits
+
+`./gOSINT -m git --url [RepoURL] --gitAPI [github|bitbucket] (optional) -f`
+
+pass the result to pgp search ad pwnd module
 
 `./gOSINT -m pwnd --mail [targetMail]`
 
@@ -49,3 +52,6 @@ search for breaches where targetMail is preset
 
 search for others mail in PGP Server
 
+`./gOSINT -m pgp --mail [targetMail] -f`
+
+pass the result to haveibeenpwn module
