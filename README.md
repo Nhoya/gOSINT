@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT)
 # gOSINT
 OSINT framework in Go
 
@@ -12,6 +13,7 @@ Before building `gOSINT` you need to solve the dependencies
 "github.com/deckarep/golang-set"
 "github.com/nhoya/goPwned"
 "github.com/jessevdk/go-flags"
+"gopkg.in/src-d/go-git.v4"
 ```
 
 ## Building
