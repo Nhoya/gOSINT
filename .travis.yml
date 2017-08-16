@@ -1,0 +1,20 @@
+language: go
+
+go:
+  - 1.8.x
+  - master
+
+os:
+  - linux
+
+dist: trusty
+
+before_install:
+  - sudo apt-get -qq update
+  
+install:
+  - go get github.com/deckarep/golang-set
+  - go get github.com/nhoya/goPwned
+  - go get github.com/jessevdk/go-flags
+  - go get gopkg.in/src-d/go-git.v4
+  - go build
