@@ -38,7 +38,7 @@ func main() {
 		pwnd(mailSet)
 	case "pgp":
 		mailCheck(mailSet)
-		pgpSearch(mailSet)
+		mailSet = pgpSearch(mailSet)
 		if opts.Mode {
 			pwnd(mailSet)
 		}
