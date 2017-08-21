@@ -6,7 +6,6 @@ readonly YELLOW="\033[00;33m"
 readonly BOLD="\033[01m"
 readonly END="\033[0m"
 
-nsaway_minimum_go_supported="1.8.0"
 dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4)
 
 
