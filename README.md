@@ -35,6 +35,24 @@ Currently `gOSINT` is still an early version and few modules are supported
 
 ## Usage
 
+```
+Usage:
+  gOSINT [OPTIONS]
+
+Application Options:
+  -m, --module=[pgp|pwnd|git]     Specify module
+      --url=                      Specify target URL
+      --gitAPI=[github|bitbucket] Specify git website API to use (optional)
+      --mail=                     Specify mail target
+  -f, --full                      Make deep search using linked modules
+  -v, --version                   Print version
+
+Help Options:
+  -h, --help                      Show this help message
+```
+
+## Examples
+
 Currently `gOSINT` supports the following actions
 
 
