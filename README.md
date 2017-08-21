@@ -18,7 +18,7 @@ gOSINT is a little OSINT framework in golang, it's actually in development and s
 You can use the building script, just clone the directory and execute it
 
 ```
-git clone https://github.com/Nhoya/gOSINT`
+git clone https://github.com/Nhoya/gOSINT
 ./build.sh
 ```
 
