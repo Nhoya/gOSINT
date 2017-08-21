@@ -5,6 +5,14 @@ OSINT framework in Go
 ## Introduction
 gOSINT is a little OSINT framework in golang, it's actually in development and still not ready for production if you want, feel free to contribute!
 
+What gOSINT can do:
+
+- [x] Find mails from git repository
+- [x] Find Dumps for mail address
+- [x] Search for  mail address linked to domain/mail address in PGP keyring
+- [x] Retrive Info from domain whois (waiting to be implemented)
+- [x] Search for mail address in source code (waiting to be implemented)
+
 
 ## Dependecies
 Before building `gOSINT` you need to solve the dependencies
