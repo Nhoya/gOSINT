@@ -13,18 +13,33 @@ gOSINT is a little OSINT framework in golang, it's actually in development and s
 - [x] Retrive Info from domain whois (waiting to be implemented)
 - [x] Search for mail address in source code (waiting to be implemented)
 
-
-## Dependecies
-Before building `gOSINT` you need to solve the dependencies
-
-```
-"github.com/deckarep/golang-set"
-"github.com/nhoya/goPwned"
-"github.com/jessevdk/go-flags"
-"gopkg.in/src-d/go-git.v4"
-```
-
 ## Building
+
+You can use the building script, just clone the directory and execute it
+
+```
+git clone https://github.com/Nhoya/gOSINT`
+./build.sh
+```
+
+The package will be installed in `/usr/local/bin`
+
+You can then call `gOSINT` from command line
+
+`$ gOSINT --help`
+ 
+
+## Manual Building 
+
+#### Dependecies
+Before building `gOSINT` manually you need to solve the dependencies:
+
+```
+go get "github.com/deckarep/golang-set"
+go get "github.com/nhoya/goPwned"
+go get "github.com/jessevdk/go-flags"
+go get "gopkg.in/src-d/go-git.v4"
+```
 
 `git clone https://github.com/Nhoya/gOSINT && cd gOSINT && go build`
 
@@ -64,22 +79,22 @@ Help Options:
 Currently `gOSINT` supports the following actions
 
 
-`./gOSINT -m git --url=[RepoURL] --gitAPI [github|bitbucket] (optional)`
+`gOSINT -m git --url=[RepoURL] --gitAPI [github|bitbucket] (optional)`
 
 retrive mail from git commits
 
-`./gOSINT -m git --url [RepoURL] --gitAPI [github|bitbucket] (optional) -f`
+`gOSINT -m git --url [RepoURL] --gitAPI [github|bitbucket] (optional) -f`
 
 pass the result to pgp search and pwnd module
 
-`./gOSINT -m pwnd --mail [targetMail]`
+`gOSINT -m pwnd --mail [targetMail]`
 
 search for breaches where targetMail is preset
 
-`./gOSINT -m pgp --mail [targetMail]`
+`gOSINT -m pgp --mail [targetMail]`
 
 search for others mail in PGP Server
 
-`./gOSINT -m pgp --mail [targetMail] -f`
+`gOSINT -m pgp --mail [targetMail] -f`
 
 pass the result to haveibeenpwn module
