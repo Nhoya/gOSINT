@@ -11,7 +11,7 @@ gOSINT is a little OSINT framework in golang, it's actually in development and s
 - [x] Find Dumps for mail address
 - [x] Search for  mail address linked to domain/mail address in PGP keyring
 - [x] Retrive Info from domain whois (waiting to be implemented)
-- [x] Search for mail address in source code (waiting to be implemented)
+- [x] Search for mail address in source code
 
 ## Building
 
@@ -51,7 +51,7 @@ Currently `gOSINT` is still an early version and few modules are supported
 - [x] Search for mails in PGP Server
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
 - [ ] WHOIS support (the module is ready but has to be integrated)
-- [ ] Search for mail address in source (module ready, needs to be integrated)
+- [x] Search for mail address in source
 - [ ] [https://shodan.io](https://shodan.io) search
 - [ ] Social Media search
 - [ ] Search Engine search
@@ -63,15 +63,17 @@ Usage:
   gOSINT [OPTIONS]
 
 Application Options:
-  -m, --module=[pgp|pwnd|git]     Specify module
-      --url=                      Specify target URL
-      --gitAPI=[github|bitbucket] Specify git website API to use (optional)
-      --mail=                     Specify mail target
-  -f, --full                      Make deep search using linked modules
-  -v, --version                   Print version
+  -m, --module=[pgp|pwnd|git|plainSearch] Specify module
+      --url=                              Specify target URL
+      --gitAPI=[github|bitbucket]         Specify git website API to use (for git module,optional)
+      --mail=                             Specify mail target (for pgp and pwnd module)
+  -p, --path=                             Specify target path (for plainSearch module)
+  -f, --full                              Make deep search using linked modules
+      --ask-confirmation                  Ask confirmation before adding mail to set (for plainSearch module)
+  -v, --version                           Print version
 
 Help Options:
-  -h, --help                      Show this help message
+  -h, --help                              Show this help message
 ```
 
 ## Examples
@@ -98,3 +100,15 @@ search for others mail in PGP Server
 `gOSINT -m pgp --mail [targetMail] -f`
 
 pass the result to haveibeenpwn module
+
+`gOSINT -m sourceSerch --path [targetDirectory]`
+
+search for mails in source code (recursively)
+
+`gOSINT -m sourceSearh --path [targetDirectory] --ask-confirmation`
+
+ask confirmation before adding  mail to search results
+
+`gOSINT -m sourceSearch --path [targetDirectory] -f`
+
+pass the result to pgp search and haveibeenpwnd modules
