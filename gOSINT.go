@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const ver = "v0.3"
+const ver = "v0.3b"
 
 var opts struct {
 	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd"  choice:"git" choice:"plainSearch"`
@@ -16,6 +16,7 @@ var opts struct {
 	Mail       string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
 	Path       string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
 	Mode       bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
+	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
 	Confirm    bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
 	Version    bool   `short:"v" long:"version" description:"Print version"`
 }
@@ -62,14 +63,23 @@ func main() {
 			pwnd(mailSet)
 		}
 	case "plainSearch":
-		if opts.Path == "" {
-			fmt.Println("You must specify target Path")
-			os.Exit(1)
+		if opts.Clone {
+			if opts.Url == "" {
+				fmt.Println("You must specify target URL")
+				os.Exit(1)
+			}
+			mailSet = cloneAndSearch(opts.Url, mailSet, opts.Confirm)
+		} else {
+			if opts.Path == "" {
+				fmt.Println("You must specify Path")
+				os.Exit(1)
+			}
+			mailSet = plainMailSearch(opts.Path, mailSet, opts.Confirm)
 		}
-		mailSet = plainMailSearch(opts.Path, mailSet, opts.Confirm)
 		if opts.Mode {
 			mailSet = pgpSearch(mailSet)
 			pwnd(mailSet)
 		}
+
 	}
 }

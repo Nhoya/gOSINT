@@ -69,6 +69,7 @@ Application Options:
       --mail=                             Specify mail target (for pgp and pwnd module)
   -p, --path=                             Specify target path (for plainSearch module)
   -f, --full                              Make deep search using linked modules
+  -c, --clone                             Enable clone function for plainSearch module (need to specify repo URL)
       --ask-confirmation                  Ask confirmation before adding mail to set (for plainSearch module)
   -v, --version                           Print version
 
@@ -112,3 +113,15 @@ ask confirmation before adding  mail to search results
 `gOSINT -m sourceSearch --path [targetDirectory] -f`
 
 pass the result to pgp search and haveibeenpwnd modules
+
+`gOSINT -m sourceSearch --clone --url [targetRepository]`
+
+clone and search mail in repository source
+
+`gOSINT -m sourceSearch --clone --url [targetRepository] -f`
+
+pass the resoult to pgp search and haveibeenpwnd modules
+
+`gOSINT -m sourceSearch --clone --url [targetRepository] --ask-confirmation`
+
+ask confirmation before adding mail to search results
