@@ -14,7 +14,7 @@ func pgpSearch(mailSet mapset.Set) mapset.Set {
 		fmt.Println("[+] pgp search for " + mail.(string))
 		domain := "http://pgp.mit.edu/pks/lookup?search=" + mail.(string)
 		body := retriveRequestBody(domain)
-		pgpSet = findMailInText(body, pgpSet)
+		findMailInText(body, pgpSet)
 		if pgpSet != nil {
 			pgpIterator := pgpSet.Iterator()
 			for email := range pgpIterator.C {
