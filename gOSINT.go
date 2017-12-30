@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const ver = "v0.3b"
+const ver = "v0.3c"
 
 var opts struct {
 	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd"  choice:"git" choice:"plainSearch"`

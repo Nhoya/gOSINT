@@ -6,12 +6,15 @@ import (
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/storage/memory"
+	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set {
+	// TODO: add worker for pagination
 	domain := ""
 	targetSplit := strings.Split(target, "/")
 	commits := ""
@@ -23,19 +26,34 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 		fmt.Println("[+] Using github API")
 		domain = targetSplit[0] + "//api." + targetSplit[2] + "/repos/" + targetSplit[3] + "/" + targetSplit[4] + "/commits?per_page=100"
 		//GitHub Pagination
-		lastPage := retriveLastPage(domain)
+		lastPage := retriveLastGHPage(domain)
 		fmt.Println("[+] Looping through pages.This MAY take a while...")
-		for i := 1; i < lastPage+1; i++ {
-			commits = retriveRequestBody(domain + "&page=" + strconv.Itoa(i))
+		for page := 1; page < lastPage+1; page++ {
+			fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
+			commits = retriveRequestBody(domain + "&page=" + strconv.Itoa(page))
 			findMailInText(commits, mailSet)
 		}
 	} else if strings.Contains(target, "https://bitbucket.org") || WebsiteAPI == "bitbucket" {
 		// If using BitBucket API
 		fmt.Println("[+] Using bitbucket API")
-		domain = targetSplit[0] + "//api." + targetSplit[2] + "/2.0/repositories/" + targetSplit[3] + "/" + targetSplit[4] + "/commits?per_page=5000"
-		//TODO: add BitBucket Pagination: https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
-		commits = retriveRequestBody(domain)
-		findMailInText(commits, mailSet)
+		domain = targetSplit[0] + "//api." + targetSplit[2] + "/2.0/repositories/" + targetSplit[3] + "/" + targetSplit[4] + "/commits?pagelen=100"
+		//BitBucket Pagination
+		page := 1
+		fmt.Println("[+] Looping through pages.This MAY take a while...")
+		for page != 0 {
+			fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
+			pageDom := domain + "&page=" + strconv.Itoa(page)
+			//This is needed because we can't unluckily retrive max_page from one single request
+			pageContent := retriveRequestBody(pageDom)
+			nextPage := "\"next\": \"" + domain + "&page="
+
+			findMailInText(pageContent, mailSet)
+			if strings.Contains(pageContent, nextPage) {
+				page++
+			} else {
+				page = 0
+			}
+		}
 	} else {
 		commits = cloneAndSearchCommit(target)
 		findMailInText(commits, mailSet)
@@ -49,6 +67,21 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 	fmt.Println("[+] Mails Found")
 	readFromSet(mailSet)
 	return mailSet
+}
+
+func retriveLastGHPage(domain string) int {
+	req, err := http.Get(domain)
+	if err != nil {
+		panic(err)
+	}
+	pagInfo := req.Header.Get("Link")
+	if pagInfo != "" {
+		re := regexp.MustCompile(`page=(\d+)>;\srel="last"`)
+		match := re.FindStringSubmatch(pagInfo)
+		lastPage, _ := strconv.Atoi(match[1])
+		return lastPage
+	}
+	return 1
 }
 
 func cloneAndSearchCommit(Url string) string {

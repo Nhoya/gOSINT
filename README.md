@@ -3,7 +3,7 @@
 OSINT framework in Go
 
 ## Introduction
-gOSINT is a little OSINT framework in golang, it's actually in development and still not ready for production if you want, feel free to contribute!
+gOSINT is a small OSINT framework in Golang, it's actually in development and still not ready for production if you want, feel free to contribute!
 
 ## What gOSINT can do
 
@@ -47,7 +47,7 @@ go get "gopkg.in/src-d/go-git.v4"
 
 Currently `gOSINT` is still an early version and few modules are supported
 
-- [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search)
+- [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search) *Now with Pagination*!
 - [x] Search for mails in PGP Server
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
 - [ ] WHOIS support (the module is ready but has to be integrated)
