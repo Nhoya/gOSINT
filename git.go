@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set {
@@ -26,13 +27,20 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 		fmt.Println("[+] Using github API")
 		domain = targetSplit[0] + "//api." + targetSplit[2] + "/repos/" + targetSplit[3] + "/" + targetSplit[4] + "/commits?per_page=100"
 		//GitHub Pagination
+		var wg sync.WaitGroup
 		lastPage := retriveLastGHPage(domain)
+		wg.Add(lastPage)
 		fmt.Println("[+] Looping through pages.This MAY take a while...")
 		for page := 1; page < lastPage+1; page++ {
-			fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
-			commits = retriveRequestBody(domain + "&page=" + strconv.Itoa(page))
-			findMailInText(commits, mailSet)
+			go func(page int, domain string, mailSet mapset.Set) {
+				fmt.Println(domain + "&page=" + strconv.Itoa(page))
+				//fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
+				commits = retriveRequestBody(domain + "&page=" + strconv.Itoa(page))
+				findMailInText(commits, mailSet)
+				wg.Done()
+			}(page, domain, mailSet)
 		}
+		wg.Wait()
 	} else if strings.Contains(target, "https://bitbucket.org") || WebsiteAPI == "bitbucket" {
 		// If using BitBucket API
 		fmt.Println("[+] Using bitbucket API")
