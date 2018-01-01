@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/deckarep/golang-set"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
+
+	"github.com/deckarep/golang-set"
 )
 
 func retriveRequestBody(domain string) string {
@@ -41,5 +43,13 @@ func readFromSet(mailSet mapset.Set) {
 		for addr := range mailIterator.C {
 			fmt.Println(addr)
 		}
+	}
+}
+
+func isUrl(url string) {
+	validUrl, _ := regexp.MatchString(`(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s!()\[\]{};:'".,<>?«»“”‘’]))`, url)
+	if !validUrl {
+		fmt.Println("[-] " + url + " is not a valid URL")
+		os.Exit(1)
 	}
 }

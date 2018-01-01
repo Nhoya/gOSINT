@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/deckarep/golang-set"
-	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/plumbing/object"
-	"gopkg.in/src-d/go-git.v4/storage/memory"
 	"net/http"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/deckarep/golang-set"
+	"gopkg.in/src-d/go-git.v4"
+	"gopkg.in/src-d/go-git.v4/plumbing/object"
+	"gopkg.in/src-d/go-git.v4/storage/memory"
 )
 
 func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set {

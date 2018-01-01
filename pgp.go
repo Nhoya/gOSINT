@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/deckarep/golang-set"
-	//"regexp"
 )
 
 func pgpSearch(mailSet mapset.Set) mapset.Set {

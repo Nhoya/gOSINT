@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/deckarep/golang-set"
 	"github.com/jessevdk/go-flags"
-	"os"
 )
 
-const ver = "v0.3c"
+const ver = "v0.3d"
 
 var opts struct {
 	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd"  choice:"git" choice:"plainSearch"`
@@ -40,6 +41,9 @@ func main() {
 	if opts.Version {
 		fmt.Println("gOSINT " + ver)
 		os.Exit(0)
+	}
+	if opts.Url != "" {
+		isUrl(opts.Url)
 	}
 
 	switch mod := opts.Module; mod {

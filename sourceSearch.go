@@ -3,11 +3,12 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/deckarep/golang-set"
-	"gopkg.in/src-d/go-git.v4"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/deckarep/golang-set"
+	"gopkg.in/src-d/go-git.v4"
 )
 
 func checkFile(mailSet mapset.Set) filepath.WalkFunc {
