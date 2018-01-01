@@ -1,9 +1,14 @@
-[![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
-# gOSINT
+#gOSINT [![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg?style=for-the-badge)](httpss://github.com/Nhoya/gOSINT/stargazers) [![GitHub issues](https://img.shields.io/github/issues/Nhoya/gOSINT.svg?style=for-the-badge)](https://github.com/Nhoya/gOSINT/issues) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT)
 OSINT framework in Go
 
+**current version**: 0.2
+
+**develop version**: 0.3d
+
+you probably want to take a look at the develop branch for more updates.
+
 ## Introduction
-gOSINT is a little OSINT framework in golang, it's actually in development and still not ready for production if you want, feel free to contribute!
+gOSINT is a small OSINT framework in golang, it's actually in development and still not ready for production if you want, feel free to contribute!
 
 ## What gOSINT can do
 
