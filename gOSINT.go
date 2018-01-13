@@ -8,14 +8,16 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-const ver = "v0.3d"
+const ver = "v0.4"
 
 var opts struct {
-	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd"  choice:"git" choice:"plainSearch"`
+	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
 	Url        string `long:"url" default:"" description:"Specify target URL"`
+	Target     string `short:"t" long:"target" default:"" description:"Specify target"`
 	GitAPIType string `long:"gitAPI" default:"" description:"Specify git website API to use (for git module,optional)" choice:"github" choice:"bitbucket"`
 	Mail       string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
 	Path       string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
+	TgGrace    int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
 	Mode       bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
 	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
 	Confirm    bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
@@ -84,6 +86,11 @@ func main() {
 			mailSet = pgpSearch(mailSet)
 			pwnd(mailSet)
 		}
-
+	case "telegram":
+		if opts.Target == "" {
+			fmt.Println("You must specify target")
+			os.Exit(1)
+		}
+		getTelegramGroupHistory(opts.Target, opts.TgGrace)
 	}
 }

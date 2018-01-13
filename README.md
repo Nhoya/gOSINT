@@ -12,6 +12,7 @@ gOSINT is a small OSINT framework in Golang, it's actually in development and st
 - [x] Search for  mail address linked to domain/mail address in PGP keyring
 - [x] Retrive Info from domain whois (waiting to be implemented)
 - [x] Search for mail address in source code
+- [x] Retrive Telegram Public Groups History
 
 ## Building
 
@@ -50,6 +51,7 @@ Currently `gOSINT` is still an early version and few modules are supported
 - [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search) *Now with Pagination*!
 - [x] Search for mails in PGP Server
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
+- [x] Retrive Telegram Public Group Messages
 - [ ] WHOIS support (the module is ready but has to be integrated)
 - [x] Search for mail address in source
 - [ ] [https://shodan.io](https://shodan.io) search
@@ -125,3 +127,7 @@ pass the resoult to pgp search and haveibeenpwnd modules
 `gOSINT -m sourceSearch --clone --url [targetRepository] --ask-confirmation`
 
 ask confirmation before adding mail to search results
+
+`gOSINT -m telegram --target [PublicGroupName]`
+
+retrive message history for telegram public group
