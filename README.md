@@ -3,7 +3,7 @@ OSINT framework in Go
 
 **current version**: 0.4
 
-**develop version**: 0.4
+**develop version**: 0.4a
 
 you probably want to take a look at the develop branch for more updates.
 
