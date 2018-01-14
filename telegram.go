@@ -104,7 +104,7 @@ func getTelegramVideo(body string) string {
 }
 
 func getTelegramUsername(body string) (string, string) {
-	re := regexp.MustCompile(`class=\"tgme_widget_message_author_name\" (?:href="https://t\.me/(\w+)")? dir=\"auto\">(.*)</a>&nbsp;in&nbsp;<a`)
+	re := regexp.MustCompile(`class=\"tgme_widget_message_author_name\"\s?(?:href="https://t\.me/(\w+)")? dir=\"auto\">(.*)<\/(?:span>)?(?:a>)?&nbsp;in&nbsp;<a`)
 	match := re.FindStringSubmatch(body)
 	return match[1], match[2]
 }

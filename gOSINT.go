@@ -18,7 +18,7 @@ var opts struct {
 	Mail       string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
 	Path       string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
 	TgGrace    int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
-	DumpFile   bool   `long:"dumpfile" description:"Create and resume messages from dumpfile (Only for telegram module)"`
+	DumpFile   bool   `long:"dumpfile" description:"Create and resume messages from dumpfile"`
 	Mode       bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
 	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
 	Confirm    bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
