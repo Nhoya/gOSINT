@@ -5,7 +5,8 @@ you probably want to take a look at the develop branch for more updates.
 
 ## Introduction
 
-gOSINT is a small OSINT framework in Golang, it's currently in development and still not ready for production if you want, feel free to contribute!
+
+gOSINT is a small OSINT framework in Golang, if you want, feel free to contribute!
 
 
 ## What gOSINT can do
