@@ -40,6 +40,7 @@ go get "github.com/deckarep/golang-set"
 go get "github.com/nhoya/goPwned"
 go get "github.com/jessevdk/go-flags"
 go get "gopkg.in/src-d/go-git.v4"
+go get "github.com/jaytaylor/html2text"
 ```
 
 `git clone https://github.com/Nhoya/gOSINT && cd gOSINT && go build`

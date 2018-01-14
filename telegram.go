@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/jaytaylor/html2text"
 	"regexp"
 	"strconv"
 	"time"
@@ -19,11 +20,12 @@ func getTelegramGroupHistory(group string, grace int) {
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
 			if username == "" {
-				ret = "[" + date + " " + time + "]" + nickname + ": " + message
+				ret = "[" + date + " " + time + "] " + nickname + ": " + message
 			} else {
-				ret = "[" + date + " " + time + "]" + nickname + "(" + username + "): " + message
+				ret = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
 			}
-			fmt.Println(ret)
+			msg, _ := html2text.FromString(ret)
+			fmt.Println(msg)
 		} else {
 			graceCounter++
 			if graceCounter == grace {
@@ -37,17 +39,11 @@ func getTelegramGroupHistory(group string, grace int) {
 
 func getTelegramMessage(body string) string {
 	re := regexp.MustCompile(`class=\"tgme_widget_message_text\" dir=\"auto\">(.*)<\/div>\n`)
-	//match := re.FindStringSubmatch(body)
-	//if len(match) == 2 {
-	//	return match[1]
-	//} else {
-	//	return ""
-	//}
 	match := re.FindAllStringSubmatch(body, -1)
 	if len(match) == 1 {
 		return match[0][1]
 	} else if len(match) == 2 {
-		return ">" + match[0][1] + "\n" + match[1][1]
+		return "{" + match[0][1] + "}" + match[1][1]
 	}
 	return ""
 

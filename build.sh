@@ -6,7 +6,7 @@ readonly YELLOW="\033[00;33m"
 readonly BOLD="\033[01m"
 readonly END="\033[0m"
 
-dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4)
+dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4 github.com/jaytaylor/html2text)
 
 
 echo -e "${GREEN}[+] Installing dependencies${END}"
