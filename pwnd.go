@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/deckarep/golang-set"
 	"github.com/nhoya/goPwned"
-	"time"
 )
 
 func pwnd(mailSet mapset.Set) {
