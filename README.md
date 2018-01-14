@@ -1,10 +1,6 @@
 # gOSINT [![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/network) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social&style=plastic)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT)
 OSINT framework in Go
 
-**current version**: 0.4
-
-**develop version**: 0.4a
-
 you probably want to take a look at the develop branch for more updates.
 
 ## Introduction
@@ -139,3 +135,7 @@ ask confirmation before adding mail to search results
 `gOSINT -m telegram --target [PublicGroupName]`
 
 retrive message history for telegram public group
+
+`gOSINT -m telegram --target [PublicGroupName] --dumpfile`
+
+the output will be stored in a file, if the file is already populated it will resume from the last ID
