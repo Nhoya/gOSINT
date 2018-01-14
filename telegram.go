@@ -40,13 +40,47 @@ func getTelegramGroupHistory(group string, grace int) {
 func getTelegramMessage(body string) string {
 	re := regexp.MustCompile(`class=\"tgme_widget_message_text\" dir=\"auto\">(.*)<\/div>\n`)
 	match := re.FindAllStringSubmatch(body, -1)
+	messageBody := ""
 	if len(match) == 1 {
-		return match[0][1]
+		messageBody = match[0][1]
 	} else if len(match) == 2 {
-		return "{" + match[0][1] + "}" + match[1][1]
+		messageBody = "{" + match[0][1] + "}" + match[1][1]
+	}
+	messageBody = messageBody + getTelegramMedia(body)
+	return messageBody
+
+}
+
+func getTelegramMedia(body string) string {
+	messageBody := getTelegramVideo(body) + getTelegramPhoto(body) + getTelegramVoice(body)
+	return messageBody
+}
+
+func getTelegramPhoto(body string) string {
+	re := regexp.MustCompile(`image:url\('https:\/\/([\w+.\/-]+)'`)
+	match := re.FindStringSubmatch(body)
+	if len(match) == 2 {
+		return "Photo: " + match[1]
 	}
 	return ""
+}
 
+func getTelegramVoice(body string) string {
+	re := regexp.MustCompile(`voice"\ssrc="(https:\/\/[\w.\/-]+)"`)
+	match := re.FindStringSubmatch(body)
+	if len(match) == 2 {
+		return "Voice: " + match[1]
+	}
+	return ""
+}
+
+func getTelegramVideo(body string) string {
+	re := regexp.MustCompile(`video\ssrc="(https:\/\/[\w.\/-]+)"`)
+	match := re.FindStringSubmatch(body)
+	if len(match) == 2 {
+		return "Video: " + match[1]
+	}
+	return ""
 }
 
 func getTelegramUsername(body string) (string, string) {
