@@ -17,6 +17,10 @@ func getTelegramGroupHistory(group string, grace int) {
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
 		if message != "" {
+			for j := 0; j < graceCounter; j++ {
+				fmt.Println("[MESSAGE REMOVED]")
+			}
+			graceCounter = 0
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
 			if username == "" {

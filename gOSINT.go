@@ -8,7 +8,7 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-const ver = "v0.4"
+const ver = "v0.4a"
 
 var opts struct {
 	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
