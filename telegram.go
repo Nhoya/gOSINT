@@ -1,34 +1,50 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"github.com/jaytaylor/html2text"
+	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
+
+	"github.com/jaytaylor/html2text"
 )
 
-func getTelegramGroupHistory(group string, grace int) {
-	i := 1
+func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 	graceCounter := 0
-	ret := ""
-	for i != 0 {
-		messageid := strconv.Itoa(i)
+	dumpfile := group + ".dump"
+	msgtxt := ""
+
+	fmt.Println("==== Dumping messages for " + group + " ====")
+	messageCounter := readFromTelegramDump(dumpfile, dumpFlag)
+	messageCounter++
+	for messageCounter != 0 {
+		messageid := strconv.Itoa(messageCounter)
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
+
 		if message != "" {
 			for j := 0; j < graceCounter; j++ {
-				fmt.Println("[MESSAGE REMOVED]")
+				msg := "[MESSAGE REMOVED]"
+				writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter-graceCounter+j)+"] "+msg+"\n")
+				fmt.Println(msg)
 			}
+
 			graceCounter = 0
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
+
 			if username == "" {
-				ret = "[" + date + " " + time + "] " + nickname + ": " + message
+				msgtxt = "[" + date + " " + time + "] " + nickname + ": " + message
 			} else {
-				ret = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
+				msgtxt = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
 			}
-			msg, _ := html2text.FromString(ret)
+
+			msg, _ := html2text.FromString(msgtxt)
+
+			writeOnFile(dumpfile, "["+messageid+"] "+msg+"\n")
 			fmt.Println(msg)
 		} else {
 			graceCounter++
@@ -36,7 +52,7 @@ func getTelegramGroupHistory(group string, grace int) {
 				break
 			}
 		}
-		i++
+		messageCounter++
 		time.Sleep(time.Millisecond * 500)
 	}
 }
@@ -88,7 +104,7 @@ func getTelegramVideo(body string) string {
 }
 
 func getTelegramUsername(body string) (string, string) {
-	re := regexp.MustCompile(`class=\"tgme_widget_message_author_name\" (?:href="https://t\.me/(\w+)")? dir=\"auto\">(.*)</a>&nbsp;in&nbsp;<a`)
+	re := regexp.MustCompile(`class=\"tgme_widget_message_author_name\"\s?(?:href="https://t\.me/(\w+)")? dir=\"auto\">(.*)<\/(?:span>)?(?:a>)?&nbsp;in&nbsp;<a`)
 	match := re.FindStringSubmatch(body)
 	return match[1], match[2]
 }
@@ -97,4 +113,21 @@ func getTelegramMessageDateTime(body string) (string, string) {
 	re := regexp.MustCompile(`<time datetime="(\d+-\d+-\d+)T(\d+:\d+:\d+)\+\d+:\d+\">`)
 	match := re.FindStringSubmatch(body)
 	return match[1], match[2]
+}
+
+func readFromTelegramDump(dumpfile string, dumpFlag bool) int {
+	messageCounter := 0
+	if dumpFlag {
+		fmt.Println("The dump will be saved in " + dumpfile)
+		if fileExists(dumpfile) {
+			file, _ := os.Open(dumpfile)
+			scan := bufio.NewScanner(file)
+			for scan.Scan() {
+				messageSlice := strings.Split(scan.Text(), " ")
+				fmt.Println(strings.Join(messageSlice[1:], " "))
+				messageCounter, _ = strconv.Atoi(strings.Trim(messageSlice[0], "[]"))
+			}
+		}
+	}
+	return messageCounter
 }

@@ -53,3 +53,22 @@ func isUrl(url string) {
 		os.Exit(1)
 	}
 }
+
+func writeOnFile(filename string, text string) {
+	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		fmt.Println("Unabale to open file")
+		os.Exit(1)
+	}
+	_, err = f.WriteString(text)
+	if err != nil {
+		fmt.Println("Unable to wite on file")
+	}
+}
+
+func fileExists(file string) bool {
+	if _, err := os.Stat(file); err == nil {
+		return true
+	}
+	return false
+}

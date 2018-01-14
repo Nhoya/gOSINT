@@ -8,7 +8,7 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-const ver = "v0.4a"
+const ver = "v0.4b"
 
 var opts struct {
 	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
@@ -18,6 +18,7 @@ var opts struct {
 	Mail       string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
 	Path       string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
 	TgGrace    int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
+	DumpFile   bool   `long:"dumpfile" description:"Create and resume messages from dumpfile"`
 	Mode       bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
 	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
 	Confirm    bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
@@ -91,6 +92,6 @@ func main() {
 			fmt.Println("You must specify target")
 			os.Exit(1)
 		}
-		getTelegramGroupHistory(opts.Target, opts.TgGrace)
+		getTelegramGroupHistory(opts.Target, opts.TgGrace, opts.DumpFile)
 	}
 }
