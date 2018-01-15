@@ -61,7 +61,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 		messageCounter++
 		time.Sleep(time.Millisecond * 100)
 	}
-	fmt.Println("==== [" + time.Now().String() + "(elapsed:" + time.Since(startTime).String() + ")] End of history ==== ")
+	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history ==== ")
 	fmt.Println("[=] If you think there are more messages try to increase the grace perio (--grace [INT])")
 
 }
