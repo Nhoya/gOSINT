@@ -53,8 +53,9 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 			}
 		}
 		messageCounter++
-		time.Sleep(time.Millisecond * 500)
+		time.Sleep(time.Millisecond * 100)
 	}
+	fmt.Println("End of history, if you think there are more messages try to increase the grace perio (--grace [INT])")
 }
 
 func getTelegramMessage(body string) string {
@@ -68,7 +69,6 @@ func getTelegramMessage(body string) string {
 	}
 	messageBody = messageBody + getTelegramMedia(body)
 	return messageBody
-
 }
 
 func getTelegramMedia(body string) string {
@@ -77,10 +77,10 @@ func getTelegramMedia(body string) string {
 }
 
 func getTelegramPhoto(body string) string {
-	re := regexp.MustCompile(`image:url\('https:\/\/([\w+.\/-]+)'`)
+	re := regexp.MustCompile(`image:url\('(https:\/\/[\w+.\/-]+)'`)
 	match := re.FindStringSubmatch(body)
 	if len(match) == 2 {
-		return "Photo: " + match[1]
+		return "Image: " + match[1]
 	}
 	return ""
 }
