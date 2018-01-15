@@ -17,9 +17,10 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 	dumpfile := group + ".dump"
 	msgtxt := ""
 
-	fmt.Println("==== Dumping messages for " + group + " ====")
 	messageCounter := readFromTelegramDump(dumpfile, dumpFlag)
 	messageCounter++
+	startTime := time.Now()
+	fmt.Println("==== [" + startTime.Format(time.RFC3339) + "] Dumping messages for " + group + " ====")
 	for messageCounter != 0 {
 		messageid := strconv.Itoa(messageCounter)
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
@@ -44,7 +45,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 
 			msg, _ := html2text.FromString(msgtxt)
 
-			writeOnFile(dumpfile, "["+messageid+"] "+msg+"\n")
+			writeOnFile(dumpfile, "["+messageid+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
 			fmt.Println(msg)
 		} else {
 			graceCounter++
@@ -55,7 +56,8 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 		messageCounter++
 		time.Sleep(time.Millisecond * 100)
 	}
-	fmt.Println("End of history, if you think there are more messages try to increase the grace perio (--grace [INT])")
+	fmt.Println("==== [" + time.Now().String() + "(elapsed:" + time.Since(startTime).String() + ")] End of history ==== ")
+	fmt.Println("If you think there are more messages try to increase the grace perio (--grace [INT])")
 }
 
 func getTelegramMessage(body string) string {
@@ -65,7 +67,8 @@ func getTelegramMessage(body string) string {
 	if len(match) == 1 {
 		messageBody = match[0][1]
 	} else if len(match) == 2 {
-		messageBody = "{" + match[0][1] + "}" + match[1][1]
+		quotedUser := getMessageRepliedAuthor(body)
+		messageBody = "{ " + quotedUser + match[0][1] + " } " + match[1][1]
 	}
 	messageBody = messageBody + getTelegramMedia(body)
 	return messageBody
@@ -110,6 +113,16 @@ func getTelegramServiceMessage(body string) string {
 	}
 	return ""
 }
+
+func getMessageRepliedAuthor(body string) string {
+	re := regexp.MustCompile(`reply"\shref="https:\/\/t.me\/[\w/]+">[\n\s]+<div\sclass="tgme_widget_message_author">[\n\s]+<span\sclass="tgme_widget_message_author_name"\s?dir="auto">(.*)</span>`)
+	match := re.FindStringSubmatch(body)
+	if len(match) == 2 {
+		return " " + match[1] + ": "
+	}
+	return ""
+}
+
 func getTelegramUsername(body string) (string, string) {
 	re := regexp.MustCompile(`class=\"tgme_widget_message_author_name\"\s?(?:href="https://t\.me/(\w+)")? dir=\"auto\">(.*)<\/(?:span>)?(?:a>)?&nbsp;in&nbsp;<a`)
 	match := re.FindStringSubmatch(body)
@@ -125,13 +138,22 @@ func getTelegramMessageDateTime(body string) (string, string) {
 func readFromTelegramDump(dumpfile string, dumpFlag bool) int {
 	messageCounter := 0
 	if dumpFlag {
-		fmt.Println("The dump will be saved in " + dumpfile)
 		if fileExists(dumpfile) {
+			fmt.Println("The dump will be saved in " + dumpfile)
+			fmt.Println("Print the existing dumb before resuming it? [Y/N]")
+			var resp string
+			_, err := fmt.Scanln(&resp)
+			if err != nil {
+				fmt.Println("Unable to read answer")
+				os.Exit(1)
+			}
 			file, _ := os.Open(dumpfile)
 			scan := bufio.NewScanner(file)
 			for scan.Scan() {
 				messageSlice := strings.Split(scan.Text(), " ")
-				fmt.Println(strings.Join(messageSlice[1:], " "))
+				if resp == "y" || resp == "Y" {
+					fmt.Println(strings.Join(messageSlice[1:], " "))
+				}
 				messageCounter, _ = strconv.Atoi(strings.Trim(messageSlice[0], "[]"))
 			}
 		}
