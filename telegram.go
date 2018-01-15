@@ -29,10 +29,11 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 		if message != "" {
 			for j := 0; j < graceCounter; j++ {
 				msg := "[MESSAGE REMOVED]"
-				writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter-graceCounter+j)+"] "+msg+"\n")
+				if dumpFlag {
+					writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter-graceCounter+j)+"] "+msg+"\n")
+				}
 				fmt.Println(msg)
 			}
-
 			graceCounter = 0
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
@@ -49,8 +50,9 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 			}
 
 			msg, _ := html2text.FromString(msgtxt)
-
-			writeOnFile(dumpfile, "["+messageid+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
+			if dumpFlag {
+				writeOnFile(dumpfile, "["+messageid+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
+			}
 			fmt.Println(msg)
 		} else {
 			graceCounter++
