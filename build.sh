@@ -6,6 +6,22 @@ readonly YELLOW="\033[00;33m"
 readonly BOLD="\033[01m"
 readonly END="\033[0m"
 
+version=$(go version 2> /dev/null)
+if [[ "$?" != 0 ]]; then
+        echo "Unable to find go, you need go >= 1.8 to build gOSINT"
+        exit 1
+fi
+go_version_regex="([0-9]).([0-9]).[0-9]"
+if [[ "$version" =~ $go_version_regex ]]; then
+        if [[ ${BASH_REMATCH[1]} -le 1 ]]; then
+                if [[ ${BASH_REMATCH[2]} -lt 8 ]]; then
+                        echo "This version of go is not supported, you need go >= 1.8"
+                        echo "Current: "$version""
+                        exit 1
+                fi
+        fi
+fi
+
 dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4 github.com/jaytaylor/html2text)
 
 
