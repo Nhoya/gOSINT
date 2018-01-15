@@ -140,3 +140,6 @@ retrive message history for telegram public group
 `gOSINT -m telegram --target [PublicGroupName] --dumpfile`
 
 the output will be stored in a file, if the file is already populated it will resume from the last ID
+
+## Telegram Crawler Demo
+[![asciicast](https://asciinema.org/a/h1DVStNEwlPiqX7pLlNXuRanC.png)](https://asciinema.org/a/h1DVStNEwlPiqX7pLlNXuRanC)
