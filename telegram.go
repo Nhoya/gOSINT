@@ -72,7 +72,7 @@ func getTelegramMessage(body string) string {
 }
 
 func getTelegramMedia(body string) string {
-	messageBody := getTelegramVideo(body) + getTelegramPhoto(body) + getTelegramVoice(body)
+	messageBody := getTelegramVideo(body) + getTelegramPhoto(body) + getTelegramVoice(body) + getTelegramServiceMessage(body)
 	return messageBody
 }
 
@@ -103,6 +103,13 @@ func getTelegramVideo(body string) string {
 	return ""
 }
 
+func getTelegramServiceMessage(body string) string {
+	re := regexp.MustCompile(`<div\sclass="message_media_not_supported_label">Service\smessage<\/div>`)
+	if re.MatchString(body) {
+		return "[SERVICE MESSAGE]"
+	}
+	return ""
+}
 func getTelegramUsername(body string) (string, string) {
 	re := regexp.MustCompile(`class=\"tgme_widget_message_author_name\"\s?(?:href="https://t\.me/(\w+)")? dir=\"auto\">(.*)<\/(?:span>)?(?:a>)?&nbsp;in&nbsp;<a`)
 	match := re.FindStringSubmatch(body)
