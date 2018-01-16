@@ -12,30 +12,43 @@ import (
 	"github.com/jaytaylor/html2text"
 )
 
-func getTelegramGroupHistory(group string, grace int, dumpFlag bool, messageCounter int) {
+func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessage int, endMessage int) {
 	checkGroupName(group)
+	if endMessage != 0 {
+		if endMessage <= startMessage {
+			fmt.Println("[-] The final message number (-e)  must be >= than start message number (-s)")
+			os.Exit(1)
+		}
+	}
+
 	graceCounter := 0
+	if endMessage != 0 {
+		fmt.Println("[?] End  message set, grace time will be ignored")
+	}
 	dumpfile := group + ".dump"
 	msgtxt := ""
 
+	messageCounter := startMessage
 	readFromTelegramDump(dumpfile, dumpFlag, &messageCounter)
 	messageCounter++
+
 	startTime := time.Now()
 	fmt.Println("==== [" + startTime.Format(time.RFC3339) + "] Dumping messages for " + group + " ====")
 	for {
 		messageid := strconv.Itoa(messageCounter)
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
-
 		if message != "" {
-			for j := 0; j < graceCounter; j++ {
-				msg := "[MESSAGE REMOVED]"
-				if dumpFlag {
-					writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter-graceCounter+j)+"] "+msg+"\n")
+			if endMessage == 0 {
+				for j := 0; j < graceCounter; j++ {
+					msg := "[MESSAGE REMOVED]"
+					if dumpFlag {
+						writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+msg+"\n")
+					}
+					fmt.Println(msg)
 				}
-				fmt.Println(msg)
+				graceCounter = 0
 			}
-			graceCounter = 0
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
 
@@ -56,18 +69,32 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, messageCoun
 			}
 			fmt.Println(msg)
 		} else {
-			graceCounter++
-			if graceCounter == grace {
-				messageCounter = messageCounter - graceCounter
+			if endMessage == 0 {
+				graceCounter++
+				if graceCounter == grace {
+					messageCounter = messageCounter - graceCounter
+					break
+				}
+			} else {
+				msg := "[DELETED MESSAGE]"
+				if dumpFlag {
+					writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+msg+"\n")
+				}
+				fmt.Println(msg)
+			}
+		}
+		if endMessage != 0 {
+			if messageCounter == endMessage {
 				break
 			}
 		}
 		messageCounter++
 		time.Sleep(time.Millisecond * 100)
 	}
-	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history - " + strconv.Itoa(messageCounter) + " messages scraped  ==== ")
-	fmt.Println("[=] If you think there are more messages try to increase the grace period (--grace [INT])")
-
+	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history - " + strconv.Itoa(messageCounter-startMessage) + " messages scraped  ==== ")
+	if endMessage == 0 {
+		fmt.Println("[=] If you think there are more messages try to increase the grace period (--grace [INT])")
+	}
 }
 
 func getTelegramMessage(body string) string {
@@ -188,7 +215,7 @@ func readFromTelegramDump(dumpfile string, dumpFlag bool, messageCounter *int) {
 				}
 				*messageCounter, _ = strconv.Atoi(strings.Trim(messageSlice[0], "[]"))
 			}
-			fmt.Println("[=] Starting from message n.", messageCounter)
+			fmt.Println("[=] Starting from message n.", *messageCounter)
 		}
 	}
 }

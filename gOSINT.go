@@ -22,7 +22,8 @@ var opts struct {
 	// telegram module
 	TgGrace  int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
 	TgGroup  string `short:"g" long:"target" default:"" description:"Specify Telegram group/channel name"`
-	TgStart  int    `short:"s" long:"tgstart" default:"1" description:"Specify first message to scrape"`
+	TgStart  int    `short:"s" long:"tgstart" default:"1" default-mask:"-" description:"Specify first message to scrape"`
+	TgEnd    int    `short:"e" long:"tgend" description:"Specify last message to scrape"`
 	DumpFile bool   `long:"dumpfile" description:"Create and resume messages from dumpfile"`
 	// plainSearch module
 	Confirm bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
@@ -98,6 +99,6 @@ func main() {
 			fmt.Println("You must specify target")
 			os.Exit(1)
 		}
-		getTelegramGroupHistory(opts.TgGroup, opts.TgGrace, opts.DumpFile, opts.TgStart)
+		getTelegramGroupHistory(opts.TgGroup, opts.TgGrace, opts.DumpFile, (opts.TgStart - 1), opts.TgEnd)
 	}
 }
