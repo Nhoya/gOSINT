@@ -12,13 +12,13 @@ import (
 	"github.com/jaytaylor/html2text"
 )
 
-func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
+func getTelegramGroupHistory(group string, grace int, dumpFlag bool, messageCounter int) {
 	checkGroupName(group)
 	graceCounter := 0
 	dumpfile := group + ".dump"
 	msgtxt := ""
 
-	messageCounter := readFromTelegramDump(dumpfile, dumpFlag)
+	readFromTelegramDump(dumpfile, dumpFlag, &messageCounter)
 	messageCounter++
 	startTime := time.Now()
 	fmt.Println("==== [" + startTime.Format(time.RFC3339) + "] Dumping messages for " + group + " ====")
@@ -166,9 +166,9 @@ func checkGroupName(group string) {
 	}
 }
 
-func readFromTelegramDump(dumpfile string, dumpFlag bool) int {
-	messageCounter := 1
+func readFromTelegramDump(dumpfile string, dumpFlag bool, messageCounter *int) {
 	if dumpFlag {
+		fmt.Println("[=] --dumpfile used, ignoring --startpoint")
 		if fileExists(dumpfile) {
 			fmt.Println("[=] The dump will be saved in " + dumpfile)
 			fmt.Println("[?] Print the existing dumb before resuming it? [Y/N]")
@@ -186,10 +186,9 @@ func readFromTelegramDump(dumpfile string, dumpFlag bool) int {
 				if resp == "y" || resp == "Y" {
 					fmt.Println(strings.Join(messageSlice[1:], " "))
 				}
-				messageCounter, _ = strconv.Atoi(strings.Trim(messageSlice[0], "[]"))
+				*messageCounter, _ = strconv.Atoi(strings.Trim(messageSlice[0], "[]"))
 			}
 			fmt.Println("[=] Starting from message n.", messageCounter)
 		}
 	}
-	return messageCounter
 }

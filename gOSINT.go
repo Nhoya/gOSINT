@@ -11,18 +11,24 @@ import (
 const ver = "v0.4c"
 
 var opts struct {
-	Module     string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
+	Module  string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
+	Version bool   `short:"v" long:"version" description:"Print version"`
+	// git module
 	Url        string `long:"url" default:"" description:"Specify target URL"`
-	Target     string `short:"t" long:"target" default:"" description:"Specify target"`
 	GitAPIType string `long:"gitAPI" default:"" description:"Specify git website API to use (for git module,optional)" choice:"github" choice:"bitbucket"`
-	Mail       string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
-	Path       string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
-	TgGrace    int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
-	DumpFile   bool   `long:"dumpfile" description:"Create and resume messages from dumpfile"`
-	Mode       bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
 	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
-	Confirm    bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
-	Version    bool   `short:"v" long:"version" description:"Print version"`
+	// pwn and pgp module
+	Mail string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
+	// telegram module
+	TgGrace  int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
+	TgGroup  string `short:"g" long:"target" default:"" description:"Specify Telegram group/channel name"`
+	TgStart  int    `short:"s" long:"tgstart" default:"1" description:"Specify first message to scrape"`
+	DumpFile bool   `long:"dumpfile" description:"Create and resume messages from dumpfile"`
+	// plainSearch module
+	Confirm bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
+	Path    string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
+	// generic
+	Mode bool `short:"f" long:"full" description:"Make deep search using linked modules"`
 }
 
 func mailCheck(mailSet mapset.Set) {
@@ -88,10 +94,10 @@ func main() {
 			pwnd(mailSet)
 		}
 	case "telegram":
-		if opts.Target == "" {
+		if opts.TgGroup == "" {
 			fmt.Println("You must specify target")
 			os.Exit(1)
 		}
-		getTelegramGroupHistory(opts.Target, opts.TgGrace, opts.DumpFile)
+		getTelegramGroupHistory(opts.TgGroup, opts.TgGrace, opts.DumpFile, opts.TgStart)
 	}
 }
