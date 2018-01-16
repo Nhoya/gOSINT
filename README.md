@@ -70,18 +70,23 @@ Usage:
   gOSINT [OPTIONS]
 
 Application Options:
-  -m, --module=[pgp|pwnd|git|plainSearch] Specify module
-      --url=                              Specify target URL
-      --gitAPI=[github|bitbucket]         Specify git website API to use (for git module,optional)
-      --mail=                             Specify mail target (for pgp and pwnd module)
-  -p, --path=                             Specify target path (for plainSearch module)
-  -f, --full                              Make deep search using linked modules
-  -c, --clone                             Enable clone function for plainSearch module (need to specify repo URL)
-      --ask-confirmation                  Ask confirmation before adding mail to set (for plainSearch module)
-  -v, --version                           Print version
+  -m, --module=[pgp|pwnd|git|plainSearch|telegram] Specify module
+  -v, --version                                    Print version
+      --url=                                       Specify target URL
+      --gitAPI=[github|bitbucket]                  Specify git website API to use (for git module,optional)
+  -c, --clone                                      Enable clone function for plainSearch module (need to specify repo URL)
+      --mail=                                      Specify mail target (for pgp and pwnd module)
+      --grace=                                     Specify telegram messages grace period (default: 15)
+  -g, --tgroup=                                    Specify Telegram group/channel name
+  -s, --tgstart=                                   Specify first message to scrape
+  -e, --tgend=                                     Specify last message to scrape
+      --dumpfile                                   Create and resume messages from dumpfile
+      --ask-confirmation                           Ask confirmation before adding mail to set (for plainSearch module)
+  -p, --path=                                      Specify target path (for plainSearch module)
+  -f, --full                                       Make deep search using linked modules
 
 Help Options:
-  -h, --help                              Show this help message
+  -h, --help                                       Show this help message
 ```
 
 ## Examples
@@ -133,13 +138,16 @@ pass the resoult to pgp search and haveibeenpwnd modules
 
 ask confirmation before adding mail to search results
 
-`gOSINT -m telegram --target [PublicGroupName]`
+`gOSINT -m telegram --tgroup | -g  [PublicGroupName]`
 
 retrive message history for telegram public group
 
-`gOSINT -m telegram --target [PublicGroupName] --dumpfile`
+`gOSINT -m telegram --tgroup | -g [PublicGroupName] --dumpfile`
 
 the output will be stored in a file, if the file is already populated it will resume from the last ID
 
+`gOSINT -m telegram --tgroup | -g [PublicGroupName] --dumpfile -s [masageID] -e [messageID]`
+
+Set start and end messages for scraping
 ## Telegram Crawler Demo
 [![asciicast](https://asciinema.org/a/h1DVStNEwlPiqX7pLlNXuRanC.png)](https://asciinema.org/a/h1DVStNEwlPiqX7pLlNXuRanC)
