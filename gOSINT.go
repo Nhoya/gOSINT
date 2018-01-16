@@ -21,7 +21,7 @@ var opts struct {
 	Mail string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
 	// telegram module
 	TgGrace  int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
-	TgGroup  string `short:"g" long:"target" default:"" description:"Specify Telegram group/channel name"`
+	TgGroup  string `short:"g" long:"tgroup" default:"" description:"Specify Telegram group/channel name"`
 	TgStart  int    `short:"s" long:"tgstart" default:"1" default-mask:"-" description:"Specify first message to scrape"`
 	TgEnd    int    `short:"e" long:"tgend" description:"Specify last message to scrape"`
 	DumpFile bool   `long:"dumpfile" description:"Create and resume messages from dumpfile"`
