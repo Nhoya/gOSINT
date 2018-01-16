@@ -13,6 +13,7 @@ import (
 )
 
 func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
+	checkGroupName(group)
 	graceCounter := 0
 	dumpfile := group + ".dump"
 	msgtxt := ""
@@ -21,7 +22,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 	messageCounter++
 	startTime := time.Now()
 	fmt.Println("==== [" + startTime.Format(time.RFC3339) + "] Dumping messages for " + group + " ====")
-	for messageCounter != 0 {
+	for {
 		messageid := strconv.Itoa(messageCounter)
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
@@ -57,13 +58,14 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool) {
 		} else {
 			graceCounter++
 			if graceCounter == grace {
+				messageCounter = messageCounter - graceCounter
 				break
 			}
 		}
 		messageCounter++
 		time.Sleep(time.Millisecond * 100)
 	}
-	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history ==== ")
+	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history - " + strconv.Itoa(messageCounter) + " messages scraped  ==== ")
 	fmt.Println("[=] If you think there are more messages try to increase the grace period (--grace [INT])")
 
 }
@@ -156,8 +158,16 @@ func getTelegramMessageDateTime(body string) (string, string) {
 	return match[1], match[2]
 }
 
+func checkGroupName(group string) {
+	re := regexp.MustCompile(`^[[:alpha:]](?:\-?[[:alnum:]]){3,31}$`)
+	if !re.MatchString(group) {
+		fmt.Println("Invalid Group name, valid chars alphanum, -")
+		os.Exit(1)
+	}
+}
+
 func readFromTelegramDump(dumpfile string, dumpFlag bool) int {
-	messageCounter := 0
+	messageCounter := 1
 	if dumpFlag {
 		if fileExists(dumpfile) {
 			fmt.Println("[=] The dump will be saved in " + dumpfile)

@@ -22,8 +22,6 @@ func retriveRequestBody(domain string) string {
 }
 
 func findMailInText(body string, mailSet mapset.Set) {
-
-	//re := regexp.MustCompile(`[\w\-\.]+\@[\w \.\-]+\.[\w]+`)
 	re := regexp.MustCompile(`(?:![\n|\s])*(?:[\w\d\.\w\d]|(?:[\w\d]+[\-]+[\w\d]+))+[\@]+[\w]+[\.]+[\w]+`)
 	mails := re.FindAllString(body, -1)
 	if len(mails) == 0 {
