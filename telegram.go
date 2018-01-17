@@ -12,6 +12,14 @@ import (
 	"github.com/jaytaylor/html2text"
 )
 
+func initTelegram() {
+	if opts.TgGroup == "" {
+		fmt.Println("You must specify target")
+		os.Exit(1)
+	}
+	getTelegramGroupHistory(opts.TgGroup, opts.TgGrace, opts.DumpFile, (opts.TgStart - 1), opts.TgEnd)
+}
+
 func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessage int, endMessage int) {
 	checkGroupName(group)
 	// check if -e option is set
@@ -34,14 +42,17 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	readFromTelegramDump(dumpfile, dumpFlag, &messageCounter)
 	//this is needed because if a file is availabe it will start the next to the last found
 	messageCounter++
-
+	if dumpFlag && ((endMessage != 0 && messageCounter >= endMessage) || (startMessage != 0 && messageCounter >= startMessage)) {
+		fmt.Println("[-] You already have this messages")
+		os.Exit(1)
+	}
 	startTime := time.Now()
 	fmt.Println("==== [" + startTime.Format(time.RFC3339) + "] Dumping messages for " + group + " ====")
 
 	//we don't know how many first how many messages the group has
 	for {
 		messageid := strconv.Itoa(messageCounter)
-		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
+		body := retrieveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
 
 		if message != "" && dmCounter > 0 {
@@ -202,22 +213,17 @@ func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile s
 
 func readFromTelegramDump(dumpfile string, dumpFlag bool, messageCounter *int) {
 	if dumpFlag {
+		createDirectory("tgdumps")
 		fmt.Println("[=] --dumpfile used, ignoring --startpoint")
 		if fileExists(dumpfile) {
 			fmt.Println("[=] The dump will be saved in " + dumpfile)
-			fmt.Println("[?] Print the existing dumb before resuming it? [Y/N]")
-			var resp string
-			_, err := fmt.Scanln(&resp)
-			if err != nil {
-				fmt.Println("[-] Unable to read answer")
-				os.Exit(1)
-			}
+			resp := simpleQuestion("Print the existing dump before resuming it?")
 			fmt.Println("[+] Calculating the last message")
 			file, _ := os.Open(dumpfile)
 			scan := bufio.NewScanner(file)
 			for scan.Scan() {
 				messageSlice := strings.Split(scan.Text(), " ")
-				if resp == "y" || resp == "Y" {
+				if resp {
 					fmt.Println(strings.Join(messageSlice[1:], " "))
 				}
 				*messageCounter, _ = strconv.Atoi(strings.Trim(messageSlice[0], "[]"))

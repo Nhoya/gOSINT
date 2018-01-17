@@ -11,13 +11,13 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
-func retriveRequestBody(domain string) string {
-	req, err := http.Get(domain)
+func retrieveRequestBody(domain string) string {
+	resp, err := http.Get(domain)
 	if err != nil {
 		panic(err)
 	}
-	defer req.Body.Close()
-	body, _ := ioutil.ReadAll(req.Body)
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
 	return string(body)
 }
 
@@ -32,7 +32,6 @@ func findMailInText(body string, mailSet mapset.Set) {
 			mailSet.Add(mail)
 		}
 	}
-
 }
 
 func readFromSet(mailSet mapset.Set) {
@@ -66,6 +65,27 @@ func writeOnFile(filename string, text string) {
 
 func fileExists(file string) bool {
 	if _, err := os.Stat(file); err == nil {
+		return true
+	}
+	return false
+}
+func createDirectory(dirname string) {
+	fmt.Println("test")
+	if !fileExists("tgdumps") {
+		fmt.Println("[+] Creating directory " + dirname)
+		os.Mkdir(dirname, os.ModePerm)
+	}
+}
+
+func simpleQuestion(question string) bool {
+	fmt.Println("[?] " + question + " [Y/N]")
+	var resp string
+	_, err := fmt.Scanln(&resp)
+	if err != nil {
+		fmt.Println("[-] Unable to read answer")
+		os.Exit(1)
+	}
+	if resp == "y" || resp == "Y" {
 		return true
 	}
 	return false
