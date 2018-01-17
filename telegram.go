@@ -38,17 +38,16 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 		messageid := strconv.Itoa(messageCounter)
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
-		if message != "" {
-			if endMessage == 0 {
-				for j := 0; j < graceCounter; j++ {
-					msg := "[MESSAGE REMOVED]"
-					if dumpFlag {
-						writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+msg+"\n")
-					}
-					fmt.Println(msg)
+		if message != "" && graceCounter > 0 {
+			for j := 0; j < graceCounter; j++ {
+				msg := "[MESSAGE REMOVED]"
+				if dumpFlag {
+					writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+msg+"\n")
 				}
-				graceCounter = 0
+				fmt.Println(msg)
 			}
+			graceCounter = 0
+		} else if message != "" {
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
 
@@ -69,6 +68,10 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 			}
 			fmt.Println(msg)
 		} else {
+			if messageCounter == 1 {
+				fmt.Println("[!!] Invalid group")
+				break
+			}
 			if endMessage == 0 {
 				graceCounter++
 				if graceCounter == grace {
@@ -85,6 +88,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 		}
 		if endMessage != 0 {
 			if messageCounter == endMessage {
+				messageCounter--
 				break
 			}
 		}
@@ -92,7 +96,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 		time.Sleep(time.Millisecond * 100)
 	}
 	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history - " + strconv.Itoa(messageCounter-startMessage) + " messages scraped  ==== ")
-	if endMessage == 0 {
+	if endMessage == 0 && messageCounter > 0 {
 		fmt.Println("[=] If you think there are more messages try to increase the grace period (--grace [INT])")
 	}
 }
