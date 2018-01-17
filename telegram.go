@@ -56,13 +56,11 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
 			var msgtxt string
-			if username == "" {
-				//channels have only messages
-				if nickname == "" {
-					msgtxt = "[" + date + " " + time + "] " + message
-				} else {
-					msgtxt = "[" + date + " " + time + "] " + nickname + ": " + message
-				}
+			//channels don't have username and nickname
+			if username == "" && nickname == "" {
+				msgtxt = "[" + date + " " + time + "] " + message
+			} else if username == "" {
+				msgtxt = "[" + date + " " + time + "] " + nickname + ": " + message
 			} else {
 				msgtxt = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
 			}
@@ -70,29 +68,24 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 			//html format the message before printing it
 			msg, _ := html2text.FromString(msgtxt)
 			writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
-		} else {
+		} else if messageCounter == 1 {
 			//the first message is always a service message, if doesn't exist the groups is not valid
-			if messageCounter == 1 {
-				fmt.Println("[!!] Invalid group")
-				break
-			}
-			//if is the last message end -e is not set
-			if endMessage == 0 && dmCounter == grace {
-				dmCounter++
-				messageCounter = messageCounter - dmCounter
-				break
-			} else if endMessage == 0 {
-				//if -e is not set and is not the last message increase the counter
-				dmCounter++
-			} else {
-				//if -e is set and the message is empty dmCounter is 0 and grace is 0 so print the message
-				msg := "[DELETED MESSAGE]"
-				writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
-			}
+			fmt.Println("[!!] Invalid group")
+			break
+		} else if endMessage == 0 && dmCounter == grace {
+			dmCounter++
+			messageCounter = messageCounter - dmCounter
+			break
+		} else if endMessage == 0 {
+			//if -e is not set and is not the last message increase the counter
+			dmCounter++
+		} else {
+			//if -e is set and the message is empty dmCounter is 0 and grace is 0 so print the message
+			msg := "[DELETED MESSAGE]"
+			writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
 		}
-		// if this is the last message quit
+		// if this is the last message (defined  with -e) quit
 		if endMessage != 0 && messageCounter == endMessage {
-			messageCounter--
 			break
 		}
 		messageCounter++

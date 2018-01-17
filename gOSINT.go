@@ -58,47 +58,14 @@ func main() {
 
 	switch mod := opts.Module; mod {
 	case "pwnd":
-		mailCheck(mailSet)
-		pwnd(mailSet)
+		initPwnd(mailSet)
 	case "pgp":
-		mailCheck(mailSet)
-		mailSet = pgpSearch(mailSet)
-		if opts.Mode {
-			pwnd(mailSet)
-		}
+		initPGP(mailSet)
 	case "git":
-		if opts.Url == "" {
-			fmt.Println("You must specify target URL")
-			os.Exit(1)
-		}
-		mailSet = gitSearch(opts.Url, opts.GitAPIType, mailSet)
-		if opts.Mode {
-			mailSet = pgpSearch(mailSet)
-			pwnd(mailSet)
-		}
+		initGit(mailSet)
 	case "plainSearch":
-		if opts.Clone {
-			if opts.Url == "" {
-				fmt.Println("You must specify target URL")
-				os.Exit(1)
-			}
-			mailSet = cloneAndSearch(opts.Url, mailSet, opts.Confirm)
-		} else {
-			if opts.Path == "" {
-				fmt.Println("You must specify Path")
-				os.Exit(1)
-			}
-			mailSet = plainMailSearch(opts.Path, mailSet, opts.Confirm)
-		}
-		if opts.Mode {
-			mailSet = pgpSearch(mailSet)
-			pwnd(mailSet)
-		}
+		initPlainSearch(mailSet)
 	case "telegram":
-		if opts.TgGroup == "" {
-			fmt.Println("You must specify target")
-			os.Exit(1)
-		}
-		getTelegramGroupHistory(opts.TgGroup, opts.TgGrace, opts.DumpFile, (opts.TgStart - 1), opts.TgEnd)
+		initTelegram()
 	}
 }

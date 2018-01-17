@@ -1,5 +1,5 @@
 # gOSINT [![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/network) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social&style=plastic)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT)
-OSINT framework in Go
+OSINT framework in Go - Donate BTC: 346dDn4BjTodMkGkb5iTyoJ5Z2wi9g9QiM
 
 you probably want to take a look at the develop branch for more updates.
 
@@ -14,9 +14,9 @@ gOSINT is a small OSINT framework in Golang, if you want, feel free to contribut
 - [x] Find mails from git repository
 - [x] Find Dumps for mail address
 - [x] Search for  mail address linked to domain/mail address in PGP keyring
-- [x] Retrive Info from domain whois (waiting to be implemented)
+- [x] Retrieve Info from domain whois (waiting to be implemented)
 - [x] Search for mail address in source code
-- [x] Retrive Telegram Public Groups History
+- [x] Retrieve Telegram Public Groups History
 
 ## Building
 
@@ -96,7 +96,7 @@ Currently `gOSINT` supports the following actions
 
 `gOSINT -m git --url=[RepoURL] --gitAPI [github|bitbucket] (optional)`
 
-retrive mail from git commits
+retrieve mail from git commits
 
 `gOSINT -m git --url [RepoURL] --gitAPI [github|bitbucket] (optional) -f`
 
@@ -140,7 +140,7 @@ ask confirmation before adding mail to search results
 
 `gOSINT -m telegram --tgroup | -g  [PublicGroupName]`
 
-retrive message history for telegram public group
+retrieve message history for telegram public group
 
 `gOSINT -m telegram --tgroup | -g [PublicGroupName] --dumpfile`
 
