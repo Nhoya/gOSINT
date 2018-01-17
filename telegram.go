@@ -14,45 +14,50 @@ import (
 
 func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessage int, endMessage int) {
 	checkGroupName(group)
+	// check if -e option is set
 	if endMessage != 0 {
+		// end can't be less than start
 		if endMessage <= startMessage {
 			fmt.Println("[-] The final message number (-e)  must be >= than start message number (-s)")
 			os.Exit(1)
 		}
-	}
 
-	graceCounter := 0
-	if endMessage != 0 {
 		fmt.Println("[?] End  message set, grace time will be ignored")
 	}
-	dumpfile := group + ".dump"
-	msgtxt := ""
 
+	//path for dumps
+	dumpfile := "tgdumps/" + group + ".dump"
+	//counter for deleted messages
+	dmCounter := 0
+	//set messageCounter as startMessage, is -e is not used the default value of startMessage is 0 (Note: the first message on group is id:1)
 	messageCounter := startMessage
 	readFromTelegramDump(dumpfile, dumpFlag, &messageCounter)
+	//this is needed because if a file is availabe it will start the next to the last found
 	messageCounter++
 
 	startTime := time.Now()
 	fmt.Println("==== [" + startTime.Format(time.RFC3339) + "] Dumping messages for " + group + " ====")
+
+	//we don't know how many first how many messages the group has
 	for {
 		messageid := strconv.Itoa(messageCounter)
 		body := retriveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
-		if message != "" && graceCounter > 0 {
-			for j := 0; j < graceCounter; j++ {
+
+		if message != "" && dmCounter > 0 {
+			//this is to avoid to write on file the last n empty messages
+			for j := 0; j < dmCounter; j++ {
 				msg := "[MESSAGE REMOVED]"
-				if dumpFlag {
-					writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+msg+"\n")
-				}
-				fmt.Println(msg)
+				writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
 			}
-			graceCounter = 0
+			dmCounter = 0
 		} else if message != "" {
+			// message infos
 			username, nickname := getTelegramUsername(body)
 			date, time := getTelegramMessageDateTime(body)
-
+			var msgtxt string
 			if username == "" {
-				//for channels
+				//channels have only messages
 				if nickname == "" {
 					msgtxt = "[" + date + " " + time + "] " + message
 				} else {
@@ -62,35 +67,33 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 				msgtxt = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
 			}
 
+			//html format the message before printing it
 			msg, _ := html2text.FromString(msgtxt)
-			if dumpFlag {
-				writeOnFile(dumpfile, "["+messageid+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
-			}
-			fmt.Println(msg)
+			writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
 		} else {
+			//the first message is always a service message, if doesn't exist the groups is not valid
 			if messageCounter == 1 {
 				fmt.Println("[!!] Invalid group")
 				break
 			}
-			if endMessage == 0 {
-				graceCounter++
-				if graceCounter == grace {
-					messageCounter = messageCounter - graceCounter
-					break
-				}
+			//if is the last message end -e is not set
+			if endMessage == 0 && dmCounter == grace {
+				dmCounter++
+				messageCounter = messageCounter - dmCounter
+				break
+			} else if endMessage == 0 {
+				//if -e is not set and is not the last message increase the counter
+				dmCounter++
 			} else {
+				//if -e is set and the message is empty dmCounter is 0 and grace is 0 so print the message
 				msg := "[DELETED MESSAGE]"
-				if dumpFlag {
-					writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+msg+"\n")
-				}
-				fmt.Println(msg)
+				writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
 			}
 		}
-		if endMessage != 0 {
-			if messageCounter == endMessage {
-				messageCounter--
-				break
-			}
+		// if this is the last message quit
+		if endMessage != 0 && messageCounter == endMessage {
+			messageCounter--
+			break
 		}
 		messageCounter++
 		time.Sleep(time.Millisecond * 100)
@@ -195,6 +198,13 @@ func checkGroupName(group string) {
 		fmt.Println("Invalid Group name, valid chars alphanum, -")
 		os.Exit(1)
 	}
+}
+
+func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile string) {
+	if dumpFlag {
+		writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
+	}
+	fmt.Println(msg)
 }
 
 func readFromTelegramDump(dumpfile string, dumpFlag bool, messageCounter *int) {
