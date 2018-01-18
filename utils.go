@@ -70,7 +70,6 @@ func fileExists(file string) bool {
 	return false
 }
 func createDirectory(dirname string) {
-	fmt.Println("test")
 	if !fileExists("tgdumps") {
 		fmt.Println("[+] Creating directory " + dirname)
 		os.Mkdir(dirname, os.ModePerm)

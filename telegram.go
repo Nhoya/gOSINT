@@ -39,7 +39,9 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	dmCounter := 0
 	//set messageCounter as startMessage, is -e is not used the default value of startMessage is 0 (Note: the first message on group is id:1)
 	messageCounter := startMessage
-	readFromTelegramDump(dumpfile, dumpFlag, &messageCounter)
+	readFromTelegramDump(&startMessage, dumpfile, dumpFlag, &messageCounter)
+	//add a counter to remember the first message
+	firstMessageCounter := messageCounter
 	//this is needed because if a file is availabe it will start from the next to the last found
 	messageCounter++
 	//if -e or - s is set but on the dumpfile the message is already scraped
@@ -73,7 +75,9 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 			break
 		} else if endMessage == 0 && dmCounter == grace {
 			dmCounter++
+			fmt.Println(messageCounter)
 			messageCounter = messageCounter - dmCounter
+			fmt.Println(messageCounter)
 			break
 		} else if endMessage == 0 {
 			//if -e is not set and is not the last message increase the counter
@@ -90,7 +94,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 		messageCounter++
 		time.Sleep(time.Millisecond * 100)
 	}
-	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history - " + strconv.Itoa(messageCounter-startMessage) + " messages scraped  ==== ")
+	fmt.Println("==== [" + time.Now().Format(time.RFC3339) + " (elapsed:" + time.Since(startTime).String() + ")] End of history | " + strconv.Itoa(messageCounter-startMessage-firstMessageCounter) + " messages scraped  ==== ")
 	if endMessage == 0 && messageCounter > 0 {
 		fmt.Println("[=] If you think there are more messages try to increase the grace period (--grace [INT])")
 	}
@@ -215,10 +219,11 @@ func createMessage(body string, message string) string {
 	return msg
 }
 
-func readFromTelegramDump(dumpfile string, dumpFlag bool, messageCounter *int) {
+func readFromTelegramDump(startMessage *int, dumpfile string, dumpFlag bool, messageCounter *int) {
 	if dumpFlag {
 		createDirectory("tgdumps")
 		fmt.Println("[=] --dumpfile used, ignoring --startpoint")
+		*startMessage = 0
 		if fileExists(dumpfile) {
 			fmt.Println("[=] The dump will be saved in " + dumpfile)
 			resp := simpleQuestion("Print the existing dump before resuming it?")
