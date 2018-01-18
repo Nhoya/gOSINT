@@ -12,11 +12,11 @@ import (
 
 func initPlainSearch(mailSet mapset.Set) {
 	if opts.Clone {
-		if opts.Url == "" {
+		if opts.URL == "" {
 			fmt.Println("You must specify target URL")
 			os.Exit(1)
 		}
-		mailSet = cloneAndSearch(opts.Url, mailSet, opts.Confirm)
+		mailSet = cloneAndSearch(opts.URL, mailSet, opts.Confirm)
 	} else {
 		if opts.Path == "" {
 			fmt.Println("You must specify Path")

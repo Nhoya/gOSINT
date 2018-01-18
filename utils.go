@@ -43,10 +43,10 @@ func readFromSet(mailSet mapset.Set) {
 	}
 }
 
-func isUrl(url string) {
-	validUrl, _ := regexp.MatchString(`(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s!()\[\]{};:'".,<>?«»“”‘’]))`, url)
-	if !validUrl {
-		fmt.Println("[-] " + url + " is not a valid URL")
+func isURL(URL string) {
+	validURL, _ := regexp.MatchString(`(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s!()\[\]{};:'".,<>?«»“”‘’]))`, URL)
+	if !validURL {
+		fmt.Println("[-] " + URL + " is not a valid URL")
 		os.Exit(1)
 	}
 }

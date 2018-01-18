@@ -15,11 +15,11 @@ import (
 )
 
 func initGit(mailSet mapset.Set) {
-	if opts.Url == "" {
+	if opts.URL == "" {
 		fmt.Println("You must specify target URL")
 		os.Exit(1)
 	}
-	mailSet = gitSearch(opts.Url, opts.GitAPIType, mailSet)
+	mailSet = gitSearch(opts.URL, opts.GitAPIType, mailSet)
 	if opts.Mode {
 		mailSet = pgpSearch(mailSet)
 		pwnd(mailSet)
@@ -97,10 +97,10 @@ func retrieveLastGHPage(domain string) int {
 	return 1
 }
 
-func cloneAndSearchCommit(Url string) string {
+func cloneAndSearchCommit(URL string) string {
 	fmt.Println("[+] Cloning Repo")
 	r, _ := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
-		URL: Url,
+		URL: URL,
 	})
 	ref, _ := r.Head()
 	cIter, _ := r.Log(&git.LogOptions{From: ref.Hash()})

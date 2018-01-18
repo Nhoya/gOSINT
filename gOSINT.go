@@ -14,7 +14,7 @@ var opts struct {
 	Module  string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
 	Version bool   `short:"v" long:"version" description:"Print version"`
 	// git module
-	Url        string `long:"url" default:"" description:"Specify target URL"`
+	URL        string `long:"url" default:"" description:"Specify target URL"`
 	GitAPIType string `long:"gitAPI" default:"" description:"Specify git website API to use (for git module,optional)" choice:"github" choice:"bitbucket"`
 	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
 	// pwn and pgp module
@@ -52,8 +52,8 @@ func main() {
 		fmt.Println("gOSINT " + ver)
 		os.Exit(0)
 	}
-	if opts.Url != "" {
-		isUrl(opts.Url)
+	if opts.URL != "" {
+		isURL(opts.URL)
 	}
 
 	switch mod := opts.Module; mod {

@@ -16,7 +16,7 @@ if [[ "$version" =~ $go_version_regex ]]; then
         if [[ ${BASH_REMATCH[1]} -le 1 ]]; then
                 if [[ ${BASH_REMATCH[2]} -lt 8 ]]; then
                         echo "This version of go is not supported, you need go >= 1.8"
-                        echo "Current: "$version""
+                        echo "Current: $version"
                         exit 1
                 fi
         fi
@@ -40,4 +40,4 @@ done
 echo -e "${GREEN}[+] Building gOSINT${END}"
 go build
 echo -e "${GREEN}[+] Installing gOSINT${END}"
-sudo mv gOSINT /usr/local/bin
+'sudo mv gOSINT /usr/local/bin

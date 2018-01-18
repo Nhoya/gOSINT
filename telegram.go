@@ -173,9 +173,8 @@ func getTelegramUsername(body string) (string, string) {
 	match := re.FindStringSubmatch(body)
 	if len(match) == 3 {
 		return match[1], match[2]
-	} else {
-		return "", ""
 	}
+	return "", ""
 }
 
 func getTelegramMessageDateTime(body string) (string, string) {
