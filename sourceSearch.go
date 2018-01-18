@@ -72,6 +72,11 @@ func cloneRepo(repo string) string {
 		URL:      repo,
 		Progress: os.Stdout,
 	})
+
+	if err != nil {
+		fmt.Println("[-] Unable to clone clone the repo")
+		os.Exit(1)
+	}
 	return tmpdir
 }
 

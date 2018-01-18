@@ -72,7 +72,7 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 		findMailInText(commits, mailSet)
 	}
 
-	//Check if the mailset has been populated (this avoids problems with mispelled repositories too)
+	//Check if the mailset has been populated (this avoids problems with misspelled repositories too)
 	if mailSet == nil {
 		fmt.Println("[-] Nothing Found")
 		os.Exit(1)
