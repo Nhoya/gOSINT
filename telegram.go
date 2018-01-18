@@ -40,8 +40,9 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	//set messageCounter as startMessage, is -e is not used the default value of startMessage is 0 (Note: the first message on group is id:1)
 	messageCounter := startMessage
 	readFromTelegramDump(dumpfile, dumpFlag, &messageCounter)
-	//this is needed because if a file is availabe it will start the next to the last found
+	//this is needed because if a file is availabe it will start from the next to the last found
 	messageCounter++
+	//if -e or - s is set but on the dumpfile the message is already scraped
 	if dumpFlag && ((endMessage != 0 && messageCounter >= endMessage) || (startMessage != 0 && messageCounter >= startMessage)) {
 		fmt.Println("[-] You already have this messages")
 		os.Exit(1)
@@ -63,21 +64,8 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 			}
 			dmCounter = 0
 		} else if message != "" {
-			// message infos
-			username, nickname := getTelegramUsername(body)
-			date, time := getTelegramMessageDateTime(body)
-			var msgtxt string
-			//channels don't have username and nickname
-			if username == "" && nickname == "" {
-				msgtxt = "[" + date + " " + time + "] " + message
-			} else if username == "" {
-				msgtxt = "[" + date + " " + time + "] " + nickname + ": " + message
-			} else {
-				msgtxt = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
-			}
-
-			//html format the message before printing it
-			msg, _ := html2text.FromString(msgtxt)
+			//retrive the message the message message
+			msg := createMessage(body, message)
 			writeTelegramLogs(messageCounter, msg, dumpFlag, dumpfile)
 		} else if messageCounter == 1 {
 			//the first message is always a service message, if doesn't exist the groups is not valid
@@ -209,6 +197,23 @@ func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile s
 		writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
 	}
 	fmt.Println(msg)
+}
+
+func createMessage(body string, message string) string {
+	username, nickname := getTelegramUsername(body)
+	date, time := getTelegramMessageDateTime(body)
+	var msgtxt string
+	//channels don't have username and nickname
+	if username == "" && nickname == "" {
+		msgtxt = "[" + date + " " + time + "] " + message
+	} else if username == "" {
+		msgtxt = "[" + date + " " + time + "] " + nickname + ": " + message
+	} else {
+		msgtxt = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
+	}
+	//html format the message before printing it
+	msg, _ := html2text.FromString(msgtxt)
+	return msg
 }
 
 func readFromTelegramDump(dumpfile string, dumpFlag bool, messageCounter *int) {
