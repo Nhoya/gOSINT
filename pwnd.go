@@ -8,6 +8,11 @@ import (
 	"github.com/nhoya/goPwned"
 )
 
+func initPwnd(mailSet mapset.Set) {
+	mailCheck(mailSet)
+	pwnd(mailSet)
+}
+
 func pwnd(mailSet mapset.Set) {
 	fmt.Println("==== HAVEIBEENPWND SEARCH ====")
 	mailIterator := mailSet.Iterator()

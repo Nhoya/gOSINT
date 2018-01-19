@@ -6,6 +6,14 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
+func initPGP(mailSet mapset.Set) {
+	mailCheck(mailSet)
+	mailSet = pgpSearch(mailSet)
+	if opts.Mode {
+		pwnd(mailSet)
+	}
+}
+
 func pgpSearch(mailSet mapset.Set) mapset.Set {
 	fmt.Println("==== PGP SEARCH ====")
 	mailIterator := mailSet.Iterator()
@@ -13,7 +21,7 @@ func pgpSearch(mailSet mapset.Set) mapset.Set {
 		pgpSet := mapset.NewSet()
 		fmt.Println("[+] pgp search for " + mail.(string))
 		domain := "http://pgp.mit.edu/pks/lookup?search=" + mail.(string)
-		body := retriveRequestBody(domain)
+		body := retrieveRequestBody(domain)
 		findMailInText(body, pgpSet)
 		if pgpSet != nil {
 			pgpIterator := pgpSet.Iterator()

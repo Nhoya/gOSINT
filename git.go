@@ -14,6 +14,18 @@ import (
 	"gopkg.in/src-d/go-git.v4/storage/memory"
 )
 
+func initGit(mailSet mapset.Set) {
+	if opts.URL == "" {
+		fmt.Println("You must specify target URL")
+		os.Exit(1)
+	}
+	mailSet = gitSearch(opts.URL, opts.GitAPIType, mailSet)
+	if opts.Mode {
+		mailSet = pgpSearch(mailSet)
+		pwnd(mailSet)
+	}
+}
+
 func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set {
 	// TODO: add worker for pagination
 	domain := ""
@@ -27,11 +39,11 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 		fmt.Println("[+] Using github API")
 		domain = targetSplit[0] + "//api." + targetSplit[2] + "/repos/" + targetSplit[3] + "/" + targetSplit[4] + "/commits?per_page=100"
 		//GitHub Pagination
-		lastPage := retriveLastGHPage(domain)
+		lastPage := retrieveLastGHPage(domain)
 		fmt.Println("[+] Looping through pages.This MAY take a while...")
 		for page := 1; page < lastPage+1; page++ {
 			fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
-			commits = retriveRequestBody(domain + "&page=" + strconv.Itoa(page))
+			commits = retrieveRequestBody(domain + "&page=" + strconv.Itoa(page))
 			findMailInText(commits, mailSet)
 		}
 	} else if strings.Contains(target, "https://bitbucket.org") || WebsiteAPI == "bitbucket" {
@@ -44,8 +56,8 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 		for page != 0 {
 			fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
 			pageDom := domain + "&page=" + strconv.Itoa(page)
-			//This is needed because we can't unluckily retrive max_page from one single request
-			pageContent := retriveRequestBody(pageDom)
+			//This is needed because we can't unluckily retrieve max_page from one single request
+			pageContent := retrieveRequestBody(pageDom)
 			nextPage := "\"next\": \"" + domain + "&page="
 
 			findMailInText(pageContent, mailSet)
@@ -60,7 +72,7 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 		findMailInText(commits, mailSet)
 	}
 
-	//Check if the mailset has been populated (this avoids problems with mispelled repositories too)
+	//Check if the mailset has been populated (this avoids problems with misspelled repositories too)
 	if mailSet == nil {
 		fmt.Println("[-] Nothing Found")
 		os.Exit(1)
@@ -70,7 +82,7 @@ func gitSearch(target string, WebsiteAPI string, mailSet mapset.Set) mapset.Set 
 	return mailSet
 }
 
-func retriveLastGHPage(domain string) int {
+func retrieveLastGHPage(domain string) int {
 	req, err := http.Get(domain)
 	if err != nil {
 		panic(err)
@@ -85,10 +97,10 @@ func retriveLastGHPage(domain string) int {
 	return 1
 }
 
-func cloneAndSearchCommit(Url string) string {
+func cloneAndSearchCommit(URL string) string {
 	fmt.Println("[+] Cloning Repo")
 	r, _ := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
-		URL: Url,
+		URL: URL,
 	})
 	ref, _ := r.Head()
 	cIter, _ := r.Log(&git.LogOptions{From: ref.Hash()})

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -11,6 +10,25 @@ import (
 	"gopkg.in/src-d/go-git.v4"
 )
 
+func initPlainSearch(mailSet mapset.Set) {
+	if opts.Clone {
+		if opts.URL == "" {
+			fmt.Println("You must specify target URL")
+			os.Exit(1)
+		}
+		mailSet = cloneAndSearch(opts.URL, mailSet, opts.Confirm)
+	} else {
+		if opts.Path == "" {
+			fmt.Println("You must specify Path")
+			os.Exit(1)
+		}
+		mailSet = plainMailSearch(opts.Path, mailSet, opts.Confirm)
+	}
+	if opts.Mode {
+		mailSet = pgpSearch(mailSet)
+		pwnd(mailSet)
+	}
+}
 func checkFile(mailSet mapset.Set) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
@@ -30,12 +48,9 @@ func plainMailSearch(path string, mailSet mapset.Set, confirm bool) mapset.Set {
 	if confirm {
 		fmt.Println("confirm?")
 		tmpIt := tmpSet.Iterator()
-		scanner := bufio.NewScanner(os.Stdin)
 		for tmpMail := range tmpIt.C {
-			fmt.Println("[?] Found " + tmpMail.(string) + " remove it?[Y/n]")
-			scanner.Scan()
-			text := scanner.Text()
-			if text == "y" || text == "Y" {
+			resp := simpleQuestion("Found " + tmpMail.(string) + " remove it?")
+			if resp {
 				diffSet.Add(tmpMail)
 			}
 		}
@@ -57,6 +72,11 @@ func cloneRepo(repo string) string {
 		URL:      repo,
 		Progress: os.Stdout,
 	})
+
+	if err != nil {
+		fmt.Println("[-] Unable to clone clone the repo")
+		os.Exit(1)
+	}
 	return tmpdir
 }
 
