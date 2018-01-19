@@ -40,4 +40,4 @@ done
 echo -e "${GREEN}[+] Building gOSINT${END}"
 go build
 echo -e "${GREEN}[+] Installing gOSINT${END}"
-'sudo mv gOSINT /usr/local/bin
+sudo mv gOSINT /usr/local/bin
