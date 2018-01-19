@@ -1,13 +1,16 @@
 # gOSINT [![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/network) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social&style=plastic)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT) [![Go Report Card](https://goreportcard.com/badge/github.com/Nhoya/gOSINT)](https://goreportcard.com/report/github.com/Nhoya/gOSINT) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76673062a30e48bd99d499d32c0c6af0)](https://www.codacy.com/app/Nhoya/gOSINT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nhoya/gOSINT&amp;utm_campaign=Badge_Grade)
-OSINT framework in Go - Donate BTC: 346dDn4BjTodMkGkb5iTyoJ5Z2wi9g9QiM
+OSINT framework in Go
 
-you probably want to take a look at the develop branch for more updates.
+Take a look at the [develop branch](https://github.com/Nhoya/gOSINT/tree/develop) for more updates.
 
 ## Introduction
 
+gOSINT is a small OSINT framework in Golang. If you want, feel free to contribute and/or leave a feedback!
 
-gOSINT is a small OSINT framework in Golang, if you want, feel free to contribute!
+## Like my project? Consider donation
 
+[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya)
+Donate BTC: 346dDn4BjTodMkGkb5iTyoJ5Z2wi9g9QiM [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM)
 
 ## What gOSINT can do
 
@@ -53,7 +56,7 @@ go get "github.com/jaytaylor/html2text"
 
 Currently `gOSINT` is still an early version and few modules are supported
 
-- [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search) *Now with Pagination*!
+- [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search)
 - [x] Search for mails in PGP Server
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
 - [x] Retrive Telegram Public Group Messages
