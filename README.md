@@ -9,8 +9,7 @@ gOSINT is a small OSINT framework in Golang. If you want, feel free to contribut
 
 ## Like my project? Consider donation
 
-[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya)
-Donate BTC: 346dDn4BjTodMkGkb5iTyoJ5Z2wi9g9QiM [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM)
+[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya) [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM)
 
 ## What gOSINT can do
 
