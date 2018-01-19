@@ -7,9 +7,9 @@ Take a look at the [develop branch](https://github.com/Nhoya/gOSINT/tree/develop
 
 gOSINT is a small OSINT framework in Golang. If you want, feel free to contribute and/or leave a feedback!
 
-## Like my project? Consider donation
+## Like my project? Consider donation :)
 
-[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya) [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM)
+[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya) [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM) [![Monero Badge](https://img.shields.io/badge/Donate-XMR-yellow.svg)](https://pastebin.com/raw/dNUFqwuC)
 
 ## What gOSINT can do
 
@@ -151,5 +151,12 @@ the output will be stored in a file, if the file is already populated it will re
 `gOSINT -m telegram --tgroup | -g [PublicGroupName] --dumpfile -s [masageID] -e [messageID]`
 
 Set start and end messages for scraping
+
+## PGP module Demo
+[![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)
+
+## Pwnd module Demo
+[![asciicast](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF.png)](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF)
+
 ## Telegram Crawler Demo
-[![asciicast](https://asciinema.org/a/h1DVStNEwlPiqX7pLlNXuRanC.png)](https://asciinema.org/a/h1DVStNEwlPiqX7pLlNXuRanC)
+[![asciicast](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z.png)](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z)
