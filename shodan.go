@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"gopkg.in/ns3777k/go-shodan.v2/shodan"
 	"os"
 	"strconv"
+
+	"gopkg.in/ns3777k/go-shodan.v2/shodan"
 )
 
 func initShodan() {
-	if opts.ShodanTarget == "" {
+	if len(opts.ShodanTarget) < 1 {
 		fmt.Println("[-] You need to specify the target")
 		os.Exit(1)
 	}
@@ -17,18 +18,26 @@ func initShodan() {
 		fmt.Println("[-] Unable to retrive Shodan API Key from config file")
 		os.Exit(1)
 	}
-	getShodanHostInfo(opts.ShodanTarget, APIKey)
+	fmt.Println("[+] APIKey Found")
+	client := shodan.NewClient(nil, APIKey)
+	fmt.Println("[=] Checking API Key validity")
+	checkAPIKey(client)
+	if opts.ShodanScan {
+		newShodanScan(client, opts.ShodanTarget)
+	}
+	for _, host := range opts.ShodanTarget {
+		getShodanHostInfo(host, APIKey, client)
+	}
 }
 
-func getShodanHostInfo(target string, APIKey string) {
-	client := shodan.NewClient(nil, APIKey)
+func getShodanHostInfo(target string, APIKey string, client *shodan.Client) {
+	fmt.Println("==== REPORT FOR " + target + " ====")
 	report, err := client.GetServicesForHost(target, &shodan.HostServicesOptions{false, false})
 	if err != nil {
 		fmt.Println("[-] Unable to get Report")
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println("==== REPORT FOR " + target + " ====")
 	fmt.Println("ISP: " + report.ISP)
 	fmt.Println("Organization: " + report.Organization)
 	if report.OS != "" {
@@ -57,5 +66,36 @@ func getShodanServicesData(services []*shodan.HostData) {
 		if service.OS != "" {
 			fmt.Println("\tOS " + service.OS)
 		}
+	}
+}
+
+func newShodanScan(client *shodan.Client, hosts []string) {
+	info, _ := client.GetAPIInfo()
+	if info.ScanCredits < len(hosts) {
+		fmt.Println("[-] Insufficient credits")
+		os.Exit(1)
+	}
+	fmt.Println("[+] Current Scan credits:", info.ScanCredits)
+	fmt.Println("[+] Requesting new scan")
+	scan, err := client.Scan(hosts)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Printf("[+] Scan request ID: %s | %d credits left\n", scan.ID, scan.CreditsLeft)
+	for {
+		status, _ := client.GetScanStatus(scan.ID)
+		if status.Status == "DONE" {
+			fmt.Println("[+] Scan completed")
+			break
+		}
+	}
+}
+
+func checkAPIKey(client *shodan.Client) {
+	profile, _ := client.GetAccountProfile()
+	if !profile.Member {
+		fmt.Println("[-] Invalid API Key")
+		os.Exit(1)
 	}
 }
