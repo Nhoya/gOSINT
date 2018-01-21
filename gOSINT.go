@@ -29,7 +29,8 @@ var opts struct {
 	Confirm bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
 	Path    string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
 	// shodan module
-	ShodanTarget string `short:"t" long:"target" description:"Specify shodan target host"`
+	ShodanTarget []string `short:"t" long:"target" description:"Specify shodan target host"`
+	ShodanScan   bool     `long:"newscan" description:"Ask shodan for a new scan (-1 Scan credit)"`
 	// generic
 	Mode bool `short:"f" long:"full" description:"Make deep search using linked modules"`
 }
