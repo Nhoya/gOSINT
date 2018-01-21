@@ -12,7 +12,8 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
-//Handle configuration file
+//Configuration struct will contain the configuration parameters
+//the config file is available in $HOME/.config/gOSINT.conf
 type Configuration struct {
 	ShodanAPIKey string
 }
