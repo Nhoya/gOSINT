@@ -12,6 +12,7 @@ import (
 	"github.com/deckarep/golang-set"
 )
 
+//Handle configuration file
 type Configuration struct {
 	ShodanAPIKey string
 }

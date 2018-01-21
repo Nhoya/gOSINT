@@ -91,9 +91,15 @@ Help Options:
   -h, --help                                              Show this help message
 ```
 
+## Configuration file
+
+The configuration file is in `$HOME/.config/gOSINT.conf`
+
+If some API Key is missing insert it there
+
 ## Examples
 
-Currently `gOSINT` supports the following actions
+Currently `gOSINT` supports the following actions:
 
 
 `gOSINT -m git --url=[RepoURL] --gitAPI [github|bitbucket] (optional)`
@@ -154,7 +160,7 @@ Set start and end messages for scraping
 
 `gOSINT -m shodan -t [HOST IP]`
 
-Start Scan for Host
+Start Shodan Scan for Host
 
 ## PGP module Demo
 [![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)
