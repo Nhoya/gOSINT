@@ -17,5 +17,5 @@ install:
   - go get github.com/jessevdk/go-flags
   - go get gopkg.in/src-d/go-git.v4
   - go get github.com/jaytaylor/html2text
-  - go get gopkg.in/ns3777k/go-shodan.v2
+  - go get -v gopkg.in/ns3777k/go-shodan.v2
   - go build
