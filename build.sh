@@ -22,7 +22,7 @@ if [[ "$version" =~ $go_version_regex ]]; then
         fi
 fi
 
-dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4 github.com/jaytaylor/html2text gopkg.in/ns3777k/go-shodan.v2 )
+dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4 github.com/jaytaylor/html2text gopkg.in/ns3777k/go-shodan.v2/shodan )
 
 
 echo -e "${GREEN}[+] Installing dependencies${END}"
