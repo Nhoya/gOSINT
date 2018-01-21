@@ -47,7 +47,7 @@ go get "github.com/nhoya/goPwned"
 go get "github.com/jessevdk/go-flags"
 go get "gopkg.in/src-d/go-git.v4"
 go get "github.com/jaytaylor/html2text"
-go get "gopkg.in/ns3777k/go-shodan.v2/shodan"
+go get "gopkg.in/ns3777k/go-shodan.v2"
 ```
 
 `git clone https://github.com/Nhoya/gOSINT && cd gOSINT && go build`
