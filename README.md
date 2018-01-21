@@ -47,6 +47,7 @@ go get "github.com/nhoya/goPwned"
 go get "github.com/jessevdk/go-flags"
 go get "gopkg.in/src-d/go-git.v4"
 go get "github.com/jaytaylor/html2text"
+go get "gopkg.in/ns3777k/go-shodan.v2/shodan"
 ```
 
 `git clone https://github.com/Nhoya/gOSINT && cd gOSINT && go build`
@@ -59,36 +60,35 @@ Currently `gOSINT` is still an early version and few modules are supported
 - [x] Search for mails in PGP Server
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
 - [x] Retrive Telegram Public Group Messages
-- [ ] WHOIS support (the module is ready but has to be integrated)
 - [x] Search for mail address in source
-- [ ] [https://shodan.io](https://shodan.io) search
+- [x] [https://shodan.io](https://shodan.io) search
 - [ ] Social Media search
 - [ ] Search Engine search
 
 ## Usage
 
 ```
-Usage:
-  gOSINT [OPTIONS]
+gOSINT [OPTIONS]
 
 Application Options:
-  -m, --module=[pgp|pwnd|git|plainSearch|telegram] Specify module
-  -v, --version                                    Print version
-      --url=                                       Specify target URL
-      --gitAPI=[github|bitbucket]                  Specify git website API to use (for git module,optional)
-  -c, --clone                                      Enable clone function for plainSearch module (need to specify repo URL)
-      --mail=                                      Specify mail target (for pgp and pwnd module)
-      --grace=                                     Specify telegram messages grace period (default: 15)
-  -g, --tgroup=                                    Specify Telegram group/channel name
-  -s, --tgstart=                                   Specify first message to scrape
-  -e, --tgend=                                     Specify last message to scrape
-      --dumpfile                                   Create and resume messages from dumpfile
-      --ask-confirmation                           Ask confirmation before adding mail to set (for plainSearch module)
-  -p, --path=                                      Specify target path (for plainSearch module)
-  -f, --full                                       Make deep search using linked modules
+  -m, --module=[pgp|pwnd|git|plainSearch|telegram|shodan] Specify module
+  -v, --version                                           Print version
+      --url=                                              Specify target URL
+      --gitAPI=[github|bitbucket]                         Specify git website API to use (for git module,optional)
+  -c, --clone                                             Enable clone function for plainSearch module (need to specify repo URL)
+      --mail=                                             Specify mail target (for pgp and pwnd module)
+      --grace=                                            Specify telegram messages grace period (default: 15)
+  -g, --tgroup=                                           Specify Telegram group/channel name
+  -s, --tgstart=                                          Specify first message to scrape
+  -e, --tgend=                                            Specify last message to scrape
+      --dumpfile                                          Create and resume messages from dumpfile
+      --ask-confirmation                                  Ask confirmation before adding mail to set (for plainSearch module)
+  -p, --path=                                             Specify target path (for plainSearch module)
+  -t, --target=                                           Specify shodan target host
+  -f, --full                                              Make deep search using linked modules
 
 Help Options:
-  -h, --help                                       Show this help message
+  -h, --help                                              Show this help message
 ```
 
 ## Examples
@@ -151,6 +151,10 @@ the output will be stored in a file, if the file is already populated it will re
 `gOSINT -m telegram --tgroup | -g [PublicGroupName] --dumpfile -s [masageID] -e [messageID]`
 
 Set start and end messages for scraping
+
+`gOSINT -m shodan -t [HOST IP]`
+
+Start Scan for Host
 
 ## PGP module Demo
 [![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)

@@ -8,10 +8,10 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-const ver = "v0.4c"
+const ver = "v0.5"
 
 var opts struct {
-	Module  string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram"`
+	Module  string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram" choice:"shodan"`
 	Version bool   `short:"v" long:"version" description:"Print version"`
 	// git module
 	URL        string `long:"url" default:"" description:"Specify target URL"`
@@ -28,6 +28,8 @@ var opts struct {
 	// plainSearch module
 	Confirm bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
 	Path    string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
+	// shodan module
+	ShodanTarget string `short:"t" long:"target" description:"Specify shodan target host"`
 	// generic
 	Mode bool `short:"f" long:"full" description:"Make deep search using linked modules"`
 }
@@ -67,5 +69,7 @@ func main() {
 		initPlainSearch(mailSet)
 	case "telegram":
 		initTelegram()
+	case "shodan":
+		initShodan()
 	}
 }

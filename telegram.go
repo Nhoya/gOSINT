@@ -42,7 +42,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	readFromTelegramDump(&startMessage, dumpfile, dumpFlag, &messageCounter)
 	//add a counter to remember the first message
 	firstMessageCounter := messageCounter - startMessage
-	//this is needed because if a file is availabe it will start from the next to the last found
+	//this is needed because if a file is available it will start from the next to the last found
 	messageCounter++
 	//if -e or - s is set but on the dumpfile the message is already scraped
 	if dumpFlag && ((endMessage != 0 && messageCounter >= endMessage) || (startMessage != 0 && messageCounter >= startMessage)) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -10,6 +11,10 @@ import (
 
 	"github.com/deckarep/golang-set"
 )
+
+type Configuration struct {
+	ShodanAPIKey string
+}
 
 func retrieveRequestBody(domain string) string {
 	resp, err := http.Get(domain)
@@ -88,4 +93,20 @@ func simpleQuestion(question string) bool {
 		return true
 	}
 	return false
+}
+
+func getConfigFile() Configuration {
+	file, err := os.Open(os.Getenv("HOME") + "/.config/gOSINT.conf")
+	if err != nil {
+		fmt.Println("[-] Unable to open config file, be sure it exists")
+		os.Exit(1)
+	}
+	decoder := json.NewDecoder(file)
+	config := Configuration{}
+	err = decoder.Decode(&config)
+	if err != nil {
+		fmt.Println("[-] Unable to read config file")
+		os.Exit(1)
+	}
+	return config
 }
