@@ -85,7 +85,7 @@ func newShodanScan(client *shodan.Client, hosts []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Printf("[+] Scan request ID: %s (1 credit will be deducted)", scan.ID, scan.CreditsLeft)
+	fmt.Printf("[+] Scan request ID: %s (1 credit will be deducted)\n", scan.ID)
 	for {
 		status, _ := client.GetScanStatus(scan.ID)
 		if status.Status == shodan.ScanStatusDone {
