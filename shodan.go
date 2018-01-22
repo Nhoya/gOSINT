@@ -26,13 +26,13 @@ func initShodan() {
 		newShodanScan(client, opts.ShodanTarget)
 	}
 	for _, host := range opts.ShodanTarget {
-		getShodanHostInfo(host, APIKey, client)
+		getShodanHostInfo(host, client, opts.ShodanHoneyPotFlag)
 	}
 }
 
-func getShodanHostInfo(target string, APIKey string, client *shodan.Client) {
-	fmt.Println("==== REPORT FOR " + target + " ====")
-	report, err := client.GetServicesForHost(target, &shodan.HostServicesOptions{false, false})
+func getShodanHostInfo(host string, client *shodan.Client, honeypotFlag bool) {
+	fmt.Println("==== REPORT FOR " + host + " ====")
+	report, err := client.GetServicesForHost(host, &shodan.HostServicesOptions{false, false})
 	if err != nil {
 		fmt.Println("[-] Unable to get Report")
 		fmt.Println(err)
@@ -52,6 +52,9 @@ func getShodanHostInfo(target string, APIKey string, client *shodan.Client) {
 	fmt.Println("City:", report.HostLocation.City)
 	fmt.Println("Last Update: " + report.LastUpdate)
 	getShodanServicesData(report.Data)
+	if honeypotFlag {
+		checkHoneyPotProbability(client, host)
+	}
 }
 
 func getShodanServicesData(services []*shodan.HostData) {
@@ -82,20 +85,33 @@ func newShodanScan(client *shodan.Client, hosts []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Printf("[+] Scan request ID: %s | %d credits left\n", scan.ID, scan.CreditsLeft)
+	fmt.Printf("[+] Scan request ID: %s (1 credit will be deducted)", scan.ID, scan.CreditsLeft)
 	for {
 		status, _ := client.GetScanStatus(scan.ID)
-		if status.Status == "DONE" {
-			fmt.Println("[+] Scan completed")
+		if status.Status == shodan.ScanStatusDone {
+			fmt.Println("[+] Scan started, the new result will be available in ~30 minutes")
 			break
 		}
 	}
 }
 
 func checkAPIKey(client *shodan.Client) {
-	profile, _ := client.GetAccountProfile()
+	profile, err := client.GetAccountProfile()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	if !profile.Member {
 		fmt.Println("[-] Invalid API Key")
 		os.Exit(1)
 	}
+}
+
+func checkHoneyPotProbability(client *shodan.Client, host string) {
+	honeyscore, err := client.CalcHoneyScore(host)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("Honeypot Score (0-1):", honeyscore)
 }

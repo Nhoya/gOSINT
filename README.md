@@ -95,7 +95,7 @@ Help Options:
 
 The configuration file is in `$HOME/.config/gOSINT.conf`
 
-If some API Key is missing insert it there
+If some API Keys are missing insert it there
 
 ## Examples
 
