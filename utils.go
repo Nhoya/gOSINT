@@ -62,6 +62,7 @@ func writeOnFile(filename string, text string) {
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		fmt.Println("Unabale to open file")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 	_, err = f.WriteString(text)
@@ -77,9 +78,9 @@ func fileExists(file string) bool {
 	return false
 }
 func createDirectory(dirname string) {
-	if !fileExists("tgdumps") {
+	if !fileExists(dirname) {
 		fmt.Println("[+] Creating directory " + dirname)
-		os.Mkdir(dirname, os.ModePerm)
+		os.MkdirAll(dirname, os.ModePerm)
 	}
 }
 
