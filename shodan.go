@@ -20,8 +20,6 @@ func initShodan() {
 	}
 	fmt.Println("[+] APIKey Found")
 	client := shodan.NewClient(nil, APIKey)
-	fmt.Println("[=] Checking API Key validity")
-	checkAPIKey(client)
 	if opts.ShodanScan {
 		newShodanScan(client, opts.ShodanTarget)
 	}
@@ -92,18 +90,6 @@ func newShodanScan(client *shodan.Client, hosts []string) {
 			fmt.Println("[+] Scan started, the new result will be available in ~30 minutes")
 			break
 		}
-	}
-}
-
-func checkAPIKey(client *shodan.Client) {
-	profile, err := client.GetAccountProfile()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	if !profile.Member {
-		fmt.Println("[-] Invalid API Key")
-		os.Exit(1)
 	}
 }
 
