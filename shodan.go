@@ -22,13 +22,14 @@ func initShodan() {
 	client := shodan.NewClient(nil, APIKey)
 	if opts.ShodanScan {
 		newShodanScan(client, opts.ShodanTarget)
-	}
-	for _, host := range opts.ShodanTarget {
-		getShodanHostInfo(host, client, opts.ShodanHoneyPotFlag)
+	} else {
+		for _, host := range opts.ShodanTarget {
+			getShodanHostInfo(host, client)
+		}
 	}
 }
 
-func getShodanHostInfo(host string, client *shodan.Client, honeypotFlag bool) {
+func getShodanHostInfo(host string, client *shodan.Client) {
 	fmt.Println("==== REPORT FOR " + host + " ====")
 	report, err := client.GetServicesForHost(host, &shodan.HostServicesOptions{false, false})
 	if err != nil {
@@ -50,7 +51,8 @@ func getShodanHostInfo(host string, client *shodan.Client, honeypotFlag bool) {
 	fmt.Println("City:", report.HostLocation.City)
 	fmt.Println("Last Update: " + report.LastUpdate)
 	getShodanServicesData(report.Data)
-	if honeypotFlag {
+
+	if opts.ShodanHoneyPotFlag {
 		checkHoneyPotProbability(client, host)
 	}
 }
