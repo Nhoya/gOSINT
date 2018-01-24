@@ -30,7 +30,7 @@ for i in "${dependencies[@]}"
 do
         depname=$(echo $i |awk -F / '{print$3}') 
         echo -e "${BLUE}[+] Installing $depname${END}"
-        go get -v "$i"
+        go get -u -v "$i"
         if [ $? != 0 ]; then
             echo -e "${RED}[-]$i raised error during installation${END}"
             exit 2
