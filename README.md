@@ -9,8 +9,7 @@ gOSINT is a small OSINT framework in Golang. If you want, feel free to contribut
 
 ## Like my project? Consider donation :)
 
-[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya) [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM) [![Monero Badge](https://img.shields.io/badge/Donate-XMR-yellow.svg)](https://pastebin.com/raw/dNUFqwuC)
-
+[![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya) [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM) [![Monero Badge](https://img.shields.io/badge/Donate-XMR-yellow.svg)](https://pastebin.com/raw/dNUFqwuC) [![Ethereum Badge](https://img.shields.io/badge/Donate-Ethereum-yellow.svg)](https://pastebin.com/raw/S6XMmSiv)
 ## What gOSINT can do
 
 - [x] Find mails from git repository
