@@ -22,7 +22,7 @@ if [[ "$version" =~ $go_version_regex ]]; then
         fi
 fi
 
-dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4 github.com/jaytaylor/html2text)
+dependencies=( github.com/deckarep/golang-set github.com/nhoya/goPwned github.com/jessevdk/go-flags gopkg.in/src-d/go-git.v4 github.com/jaytaylor/html2text gopkg.in/ns3777k/go-shodan.v2/shodan )
 
 
 echo -e "${GREEN}[+] Installing dependencies${END}"
@@ -30,7 +30,7 @@ for i in "${dependencies[@]}"
 do
         depname=$(echo $i |awk -F / '{print$3}') 
         echo -e "${BLUE}[+] Installing $depname${END}"
-        go get -v "$i"
+        go get -u -v "$i"
         if [ $? != 0 ]; then
             echo -e "${RED}[-]$i raised error during installation${END}"
             exit 2
@@ -41,3 +41,4 @@ echo -e "${GREEN}[+] Building gOSINT${END}"
 go build
 echo -e "${GREEN}[+] Installing gOSINT${END}"
 sudo mv gOSINT /usr/local/bin
+mv config/config.json $HOME/.config/gOSINT.conf

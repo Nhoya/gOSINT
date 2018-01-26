@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -10,6 +11,12 @@ import (
 
 	"github.com/deckarep/golang-set"
 )
+
+//Configuration struct will contain the configuration parameters
+//the config file is available in $HOME/.config/gOSINT.conf
+type Configuration struct {
+	ShodanAPIKey string
+}
 
 func retrieveRequestBody(domain string) string {
 	resp, err := http.Get(domain)
@@ -55,6 +62,7 @@ func writeOnFile(filename string, text string) {
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		fmt.Println("Unabale to open file")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 	_, err = f.WriteString(text)
@@ -70,9 +78,9 @@ func fileExists(file string) bool {
 	return false
 }
 func createDirectory(dirname string) {
-	if !fileExists("tgdumps") {
+	if !fileExists(dirname) {
 		fmt.Println("[+] Creating directory " + dirname)
-		os.Mkdir(dirname, os.ModePerm)
+		os.MkdirAll(dirname, os.ModePerm)
 	}
 }
 
@@ -88,4 +96,20 @@ func simpleQuestion(question string) bool {
 		return true
 	}
 	return false
+}
+
+func getConfigFile() Configuration {
+	file, err := os.Open(os.Getenv("HOME") + "/.config/gOSINT.conf")
+	if err != nil {
+		fmt.Println("[-] Unable to open config file, be sure it exists")
+		os.Exit(1)
+	}
+	decoder := json.NewDecoder(file)
+	config := Configuration{}
+	err = decoder.Decode(&config)
+	if err != nil {
+		fmt.Println("[-] Unable to read config file")
+		os.Exit(1)
+	}
+	return config
 }

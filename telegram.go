@@ -33,8 +33,8 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 		fmt.Println("[?] End  message set, grace time will be ignored")
 	}
 
-	//path for dumps
-	dumpfile := "tgdumps/" + group + ".dump"
+	//dump file
+	dumpfile := os.Getenv("HOME") + "/.local/share/gOSINT/tgdumps/" + group + ".dump"
 	//counter for deleted messages
 	dmCounter := 0
 	//set messageCounter as startMessage, is -e is not used the default value of startMessage is 0 (Note: the first message on group is id:1)
@@ -42,7 +42,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	readFromTelegramDump(&startMessage, dumpfile, dumpFlag, &messageCounter)
 	//add a counter to remember the first message
 	firstMessageCounter := messageCounter - startMessage
-	//this is needed because if a file is availabe it will start from the next to the last found
+	//this is needed because if a file is available it will start from the next to the last found
 	messageCounter++
 	//if -e or - s is set but on the dumpfile the message is already scraped
 	if dumpFlag && ((endMessage != 0 && messageCounter >= endMessage) || (startMessage != 0 && messageCounter >= startMessage)) {
@@ -219,7 +219,7 @@ func createMessage(body string, message string) string {
 
 func readFromTelegramDump(startMessage *int, dumpfile string, dumpFlag bool, messageCounter *int) {
 	if dumpFlag {
-		createDirectory("tgdumps")
+		createDirectory(os.Getenv("HOME") + "/.local/share/gOSINT/tgdumps/")
 		fmt.Println("[=] --dumpfile used, ignoring --startpoint")
 		*startMessage = 0
 		if fileExists(dumpfile) {
