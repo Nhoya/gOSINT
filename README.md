@@ -1,26 +1,26 @@
-# gOSINT [![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![Build status](https://ci.appveyor.com/api/projects/status/9qn2y2f8t5up8ww2?svg=true)](https://ci.appveyor.com/project/Nhoya/gosint) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/network) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social&style=plastic)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT) [![Go Report Card](https://goreportcard.com/badge/github.com/Nhoya/gOSINT)](https://goreportcard.com/report/github.com/Nhoya/gOSINT) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76673062a30e48bd99d499d32c0c6af0)](https://www.codacy.com/app/Nhoya/gOSINT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nhoya/gOSINT&amp;utm_campaign=Badge_Grade)
+# gOSINT
+[![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![Build status](https://ci.appveyor.com/api/projects/status/9qn2y2f8t5up8ww2?svg=true)](https://ci.appveyor.com/project/Nhoya/gosint) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/network) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social&style=plastic)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT) [![Go Report Card](https://goreportcard.com/badge/github.com/Nhoya/gOSINT)](https://goreportcard.com/report/github.com/Nhoya/gOSINT) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76673062a30e48bd99d499d32c0c6af0)](https://www.codacy.com/app/Nhoya/gOSINT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nhoya/gOSINT&amp;utm_campaign=Badge_Grade)
 OSINT framework in Go
 
 Take a look at the [develop branch](https://github.com/Nhoya/gOSINT/tree/develop) for more updates.
 
 ## Introduction
+gOSINT is a multiplatform OSINT Swiss army knife in Golang. If you want, feel free to contribute and/or leave a feedback!
 
-gOSINT is a small OSINT framework in Golang. If you want, feel free to contribute and/or leave a feedback!
-
-## Like my project? Consider donation :)
+## Like my project? Please consider donation :)
 
 [![Paypal Badge](https://img.shields.io/badge/Donate-PayPal-yellow.svg)](https://www.paypal.me/Nhoya) [![BTC Badge](https://img.shields.io/badge/Donate-BTC-yellow.svg)](https://pastebin.com/raw/nyDDPwaM) [![Monero Badge](https://img.shields.io/badge/Donate-XMR-yellow.svg)](https://pastebin.com/raw/dNUFqwuC) [![Ethereum Badge](https://img.shields.io/badge/Donate-Ethereum-yellow.svg)](https://pastebin.com/raw/S6XMmSiv)
+
 ## What gOSINT can do
 
 - [x] Find mails from git repository
 - [x] Find Dumps for mail address
 - [x] Search for  mail address linked to domain/mail address in PGP keyring
-- [x] Retrieve Info from domain whois (waiting to be implemented)
 - [x] Search for mail address in source code
 - [x] Retrieve Telegram Public Groups History
+- [x] Retrieve info about hosts via shodan scan
 
-## Building
-
+## Building on Linux
 You can use the building script, just clone the directory and execute it
 
 ```
@@ -35,7 +35,7 @@ You can then call `gOSINT` from command line
 `$ gOSINT --help`
  
 
-## Manual Building 
+## Manual Building on Linux
 
 #### Dependecies
 Before building `gOSINT` manually you need to solve the dependencies:
@@ -51,14 +51,17 @@ go get "gopkg.in/ns3777k/go-shodan.v2/shodan"
 
 `git clone https://github.com/Nhoya/gOSINT && cd gOSINT && go build`
 
+## Binaries for Windows
+Check the AppVeyor Build page for builds
+
 ## Modules
 
-Currently `gOSINT` is still an early version and few modules are supported
+Currently `gOSINT` has different modules:
 
 - [x] git support for mail retriving (using github API, bitbucket API or RAW clone and search)
 - [x] Search for mails in PGP Server
 - [x] [https://haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
-- [x] Retrive Telegram Public Group Messages
+- [x] Retrieve Telegram Public Group Messages
 - [x] Search for mail address in source
 - [x] [https://shodan.io](https://shodan.io) search
 - [ ] Social Media search
@@ -95,6 +98,19 @@ Help Options:
 The configuration file is in `$HOME/.config/gOSINT.conf`
 
 If some API Keys are missing insert it there
+
+## PGP module Demo
+[![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)
+
+## Pwnd module Demo
+[![asciicast](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF.png)](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF)
+
+## Telegram Crawler Demo
+[![asciicast](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z.png)](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z)
+
+## Shodan module Demo
+[![asciicast](https://asciinema.org/a/9lfzAZ65n9MJCkrUrxoHZQYwP.png)](https://asciinema.org/a/9lfzAZ65n9MJCkrUrxoHZQYwP)
+
 
 ## Examples
 
@@ -159,13 +175,12 @@ Set start and end messages for scraping
 
 `gOSINT -m shodan -t [HOST IP]`
 
-Start Shodan Scan for Host
+Get Shodan services report for Host
 
-## PGP module Demo
-[![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)
+`gOSINT -m shodan -t [HOST IP] --honeypot`
 
-## Pwnd module Demo
-[![asciicast](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF.png)](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF)
+Start Shodan service report for host and honeypot probability
 
-## Telegram Crawler Demo
-[![asciicast](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z.png)](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z)
+`gOSINT -m shodan -t [HOST IP] --newscan`
+
+Send request for new shodan scan (1 scan credit will be removed)
