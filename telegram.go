@@ -34,7 +34,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	}
 
 	//dump file
-	dumpfile := os.Getenv("HOME") + "/.local/share/gOSINT/tgdumps/" + group + ".dump"
+	dumpfile := TelegramDumpPath + group + ".dump"
 	//counter for deleted messages
 	dmCounter := 0
 	//set messageCounter as startMessage, is -e is not used the default value of startMessage is 0 (Note: the first message on group is id:1)
@@ -219,7 +219,7 @@ func createMessage(body string, message string) string {
 
 func readFromTelegramDump(startMessage *int, dumpfile string, dumpFlag bool, messageCounter *int) {
 	if dumpFlag {
-		createDirectory(os.Getenv("HOME") + "/.local/share/gOSINT/tgdumps/")
+		createDirectory(TelegramDumpPath)
 		fmt.Println("[=] --dumpfile used, ignoring --startpoint")
 		*startMessage = 0
 		if fileExists(dumpfile) {

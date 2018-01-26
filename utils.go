@@ -99,7 +99,7 @@ func simpleQuestion(question string) bool {
 }
 
 func getConfigFile() Configuration {
-	file, err := os.Open(os.Getenv("HOME") + "/.config/gOSINT.conf")
+	file, err := os.Open(ConfigFilePath)
 	if err != nil {
 		fmt.Println("[-] Unable to open config file, be sure it exists")
 		os.Exit(1)
