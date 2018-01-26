@@ -38,7 +38,7 @@ do
 done
 
 echo -e "${GREEN}[+] Building gOSINT${END}"
-go build
+go build ..
 echo -e "${GREEN}[+] Installing gOSINT${END}"
 sudo mv gOSINT /usr/local/bin
 mv config/config.json $HOME/.config/gOSINT.conf
