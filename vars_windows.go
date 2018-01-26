@@ -1,6 +1,6 @@
 package main
 
-var (
-	TelegramDumpPath = "."
+const (
+	TelegramDumpPath = "tgdumps/"
 	ConfigFilePath   = "/config/gOSINT.conf"
 )
