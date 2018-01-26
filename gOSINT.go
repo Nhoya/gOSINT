@@ -52,6 +52,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	if opts.Module == "" {
+		fmt.Println("You need to specify the module you want to use, -h for more info")
+		os.Exit(1)
+	}
+
 	if opts.Version {
 		fmt.Println("gOSINT " + ver)
 		os.Exit(0)
