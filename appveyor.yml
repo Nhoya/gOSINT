@@ -1,4 +1,10 @@
-version: '{build}'
+version: '{branch} - {build}'
+
+branches:
+  only:
+    - master
+    - develop
+
 
 environment:
   GOPATH: c:\gopath
