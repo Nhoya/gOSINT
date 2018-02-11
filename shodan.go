@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 
 	"gopkg.in/ns3777k/go-shodan.v2/shodan"
@@ -69,6 +70,9 @@ func getShodanServicesData(services []*shodan.HostData) {
 		if service.OS != "" {
 			fmt.Println("\tOS " + service.OS)
 		}
+		if service.Data != "" {
+			getServiceFingerprint(service.Data)
+		}
 	}
 }
 
@@ -102,4 +106,12 @@ func checkHoneyPotProbability(client *shodan.Client, host string) {
 		os.Exit(1)
 	}
 	fmt.Println("Honeypot Score (0-1):", honeyscore)
+}
+
+func getServiceFingerprint(serviceData string) {
+	re := regexp.MustCompile(`Fingerprint\:\s(.*)`)
+	match := re.FindStringSubmatch(serviceData)
+	if len(match) == 2 {
+		fmt.Println("\tFingerprint: " + match[1])
+	}
 }
