@@ -30,6 +30,7 @@ var opts struct {
 	Path    string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
 	// shodan module
 	ShodanTarget       []string `short:"t" long:"target" description:"Specify shodan target host"`
+	ShodanQuery        string   `short:"q" long:"query"  description:"Specify shodan query"`
 	ShodanScan         bool     `long:"newscan" description:"Ask shodan for a new scan (-1 Scan credit)"`
 	ShodanHoneyPotFlag bool     `long:"honeypot" description:"Check Honeypot probability"`
 	// generic

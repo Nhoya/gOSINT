@@ -10,17 +10,23 @@ import (
 )
 
 func initShodan() {
+	if opts.ShodanTarget != nil {
+		initShodanHost()
+	} else if opts.ShodanQuery != "" {
+		initShodanQuery()
+	} else {
+		fmt.Println("[-] Invalid action only --query and --target are available")
+	}
+}
+
+func initShodanHost() {
 	if len(opts.ShodanTarget) < 1 {
 		fmt.Println("[-] You need to specify the target")
 		os.Exit(1)
 	}
-	APIKey := getConfigFile().ShodanAPIKey
-	if APIKey == "" {
-		fmt.Println("[-] Unable to retrive Shodan API Key from config file")
-		os.Exit(1)
-	}
-	fmt.Println("[+] APIKey Found")
+	APIKey := getShodanAPIKey()
 	client := shodan.NewClient(nil, APIKey)
+
 	if opts.ShodanScan {
 		newShodanScan(client, opts.ShodanTarget)
 	} else {
@@ -28,6 +34,47 @@ func initShodan() {
 			getShodanHostInfo(host, client)
 		}
 	}
+}
+
+func initShodanQuery() {
+	if len(opts.ShodanQuery) < 1 {
+		fmt.Println("[-] You need to specify the target")
+		os.Exit(1)
+	}
+	APIKey := getShodanAPIKey()
+	client := shodan.NewClient(nil, APIKey)
+	getQueryInfo(client, opts.ShodanQuery)
+}
+
+func getQueryInfo(client *shodan.Client, queryTarget string) {
+	options := shodan.HostQueryOptions{}
+	options.Query = queryTarget
+	query, err := client.GetHostsForQuery(&options)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if query.Total != 0 {
+		fmt.Println("==== Query result for \"" + queryTarget + "\" ====")
+		for _, host := range query.Matches {
+			fmt.Println("Host:", host.IP, host.Hostnames)
+			if host.OS != "" {
+				fmt.Println("\tOS: ", host.OS)
+			}
+			fmt.Println("\tLocation: " + host.Location.Country + ", " + host.Location.City)
+		}
+	} else {
+		fmt.Println("[-] No results found")
+	}
+}
+
+func getShodanAPIKey() string {
+	APIKey := getConfigFile().ShodanAPIKey
+	if APIKey == "" {
+		fmt.Println("[-] Unable to retrive Shodan API Key from config file")
+		os.Exit(1)
+	}
+	fmt.Println("[+] APIKey Found")
+	return APIKey
 }
 
 func getShodanHostInfo(host string, client *shodan.Client) {
