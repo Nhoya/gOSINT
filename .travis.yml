@@ -18,4 +18,4 @@ install:
   - go get gopkg.in/src-d/go-git.v4
   - go get github.com/jaytaylor/html2text
   - go get gopkg.in/ns3777k/go-shodan.v2/shodan
-  - go build
+  - cd src && go build
