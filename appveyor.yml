@@ -21,6 +21,7 @@ install:
   - go get -v gopkg.in/ns3777k/go-shodan.v2/shodan
 
 build_script:
+  - cd src
   - go build
 
 artifacts:
