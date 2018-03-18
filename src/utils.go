@@ -15,8 +15,8 @@ import (
 //Configuration struct will contain the configuration parameters
 //the config file is available in $HOME/.config/gOSINT.conf
 type Configuration struct {
-	ShodanAPIKey string `json:ShodanAPIKey`
-	GHToken      string `json:GHToken`
+	ShodanAPIKey string `json:"ShodanAPIKey"`
+	GHToken      string `json:"GHToken"`
 }
 
 func retrieveRequestBody(domain string) string {

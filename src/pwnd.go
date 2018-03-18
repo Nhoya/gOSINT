@@ -13,8 +13,8 @@ type HIBPReport struct {
 	Pwnd []PwnedEntity
 }
 type PwnedEntity struct {
-	Email    string   `json:email`
-	Breaches []string `json:breaches`
+	Email    string   `json:"email"`
+	Breaches []string `json:"breaches"`
 }
 
 func initPwnd(mailSet mapset.Set) {
