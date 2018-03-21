@@ -100,18 +100,18 @@ func simpleQuestion(question string) bool {
 }
 
 func getConfigFile() Configuration {
-	file, err := os.Open(ConfigFilePath)
+	file, err := os.OpenFile(ConfigFilePath, os.O_RDONLY|os.O_CREATE, 0600)
 	if err != nil {
-		fmt.Println("[-] Unable to open config file, be sure it exists")
+		fmt.Println("[-] Error opening configuration file")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 	decoder := json.NewDecoder(file)
 	config := Configuration{}
 	err = decoder.Decode(&config)
 	if err != nil {
-		fmt.Println(err)
-		fmt.Println("[-] Unable to read config file")
-		os.Exit(1)
+		//fmt.Println(err)
+		fmt.Println("[!] Unable get Keys from  config file, RTFM to see how the configuration file should be populated")
 	}
 	return config
 }
