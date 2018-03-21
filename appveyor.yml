@@ -24,7 +24,7 @@ install:
 
 build_script:
   - cd src
-  - go build -o gOSINT.exe
+  - go build -o gosint.exe
 
 artifacts:
   - path: gosint.exe
