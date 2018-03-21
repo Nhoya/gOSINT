@@ -19,6 +19,8 @@ install:
   - go get -v gopkg.in/src-d/go-git.v4
   - go get -v github.com/jaytaylor/html2text
   - go get -v gopkg.in/ns3777k/go-shodan.v2/shodan
+  - go get -v github.com/google/go-github/github
+  - go get -v golang.org/x/oauth2
 
 build_script:
   - cd src
