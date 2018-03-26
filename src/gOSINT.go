@@ -12,14 +12,14 @@ import (
 const ver = "v0.5dev"
 
 var opts struct {
-	Module  string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram" choice:"shodan"`
+	Module  string `short:"m" long:"module" description:"Specify module"  choice:"pgp" choice:"pwnd" choice:"git" choice:"plainSearch" choice:"telegram" choice:"shodan" choice:"axfr"`
 	Version bool   `short:"v" long:"version" description:"Print version"`
 	// git module
 	URL        string `long:"url" default:"" description:"Specify target URL"`
 	GitAPIType string `long:"gitAPI" default:"" description:"Specify git website API to use (for git module,optional)" choice:"github" choice:"bitbucket" choice:"clone"`
 	Clone      bool   `short:"c" long:"clone" description:"Enable clone function for plainSearch module (need to specify repo URL)"`
 	// pwn and pgp module
-	Mail string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
+	Mail []string `long:"mail" default:"" description:"Specify mail target (for pgp and pwnd module)"`
 	// telegram module
 	TgGrace  int    `long:"grace" default:"15" description:"Specify telegram messages grace period"`
 	TgGroup  string `short:"g" long:"tgroup" default:"" description:"Specify Telegram group/channel name"`
@@ -30,21 +30,21 @@ var opts struct {
 	Confirm bool   `long:"ask-confirmation" description:"Ask confirmation before adding mail to set (for plainSearch module)"`
 	Path    string `short:"p" long:"path" description:"Specify target path (for plainSearch module)"`
 	// shodan module
-	ShodanTarget       []string `short:"t" long:"target" description:"Specify shodan target host"`
+	ShodanTarget       []string `short:"t" description:"Specify shodan target host"`
 	ShodanQuery        string   `short:"q" long:"query"  description:"Specify shodan query"`
 	ShodanScan         bool     `long:"newscan" description:"Ask shodan for a new scan (-1 Scan credit)"`
 	ShodanHoneyPotFlag bool     `long:"honeypot" description:"Check Honeypot probability"`
 	// generic
-	Mode bool `short:"f" long:"full" description:"Make deep search using linked modules"`
-	JSON bool `long:"json" description:"Print JSON formatted output"`
+	Mode   bool   `short:"f" long:"full" description:"Make deep search using linked modules"`
+	JSON   bool   `long:"json" description:"Print JSON formatted output"`
+	Target string `long:"target"` //generic target, will be removed before stable release
 }
 
-func mailCheck(mailSet mapset.Set) {
-	if opts.Mail == "" {
+func mailCheck() {
+	if opts.Mail == nil {
 		fmt.Println("You must specify target mail")
 		os.Exit(1)
 	}
-	mailSet.Add(opts.Mail)
 }
 
 func main() {
@@ -74,16 +74,18 @@ func main() {
 
 	switch mod := opts.Module; mod {
 	case "pwnd":
-		initPwnd(mailSet)
+		initPwnd()
 	case "pgp":
-		initPGP(mailSet)
+		initPGP()
 	case "git":
-		initGit(mailSet)
+		initGit()
 	case "plainSearch":
 		initPlainSearch(mailSet)
 	case "telegram":
 		initTelegram()
 	case "shodan":
 		initShodan()
+	case "axfr":
+		initAXFR()
 	}
 }

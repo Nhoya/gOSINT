@@ -24,7 +24,7 @@ type GitUserData struct {
 	Aliases mapset.Set `json:"aliases,omitempty"`
 }
 
-func initGit(mailSet mapset.Set) {
+func initGit() {
 	if opts.URL == "" {
 		fmt.Println("You must specify target URL")
 		os.Exit(1)
@@ -42,28 +42,6 @@ func gitSearch() {
 	if (domain.Host == "github.com" && opts.GitAPIType != "clone") || opts.GitAPIType == "github" {
 		fmt.Println("[+] Using github API")
 		extractedValues = getUsersFromGitHub(user, repository)
-		/*} else if strings.HasPrefix(opts.URL, "https://bitbucket.org") && WebsiteAPI != "clone" || WebsiteAPI == "bitbucket" {
-		//this snippet should really be replaced. Unfortunatley no valid libraries are available at the moment..
-		// If using BitBucket API
-		fmt.Println("[+] Using bitbucket API")
-		domain := targetSplit[0] + "//api." + targetSplit[2] + "/2.0/repositories/" + targetSplit[3] + "/" + targetSplit[4] + "/commits?pagelen=100"
-		//BitBucket Pagination
-		page := 1
-		fmt.Println("[+] Looping through pages.This MAY take a while...")
-		for page != 0 {
-			fmt.Println("[+] Analyzing commits page: " + strconv.Itoa(page))
-			pageDom := domain + "&page=" + strconv.Itoa(page)
-			//This is needed because we can't unluckily retrieve max_page from one single request
-			pageContent := retrieveRequestBody(pageDom)
-			nextPage := "\"next\": \"" + domain + "&page="
-
-			findMailInText(pageContent, mailSet)
-			if strings.Contains(pageContent, nextPage) {
-				page++
-			} else {
-				page = 0
-			}
-		}*/
 	} else {
 		extractedValues = cloneAndSearchCommit(opts.URL)
 	}

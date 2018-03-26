@@ -1,40 +1,54 @@
 package main
 
 import (
-	//	"encoding/json"
+	"encoding/json"
+	//	"github.com/deckarep/golang-set"
 	"fmt"
 	"time"
 
-	"github.com/deckarep/golang-set"
 	"github.com/nhoya/goPwned"
 )
 
 type HIBPReport struct {
-	Pwnd []PwnedEntity
+	Pwnd []*PwnedEntity
 }
 type PwnedEntity struct {
 	Email    string   `json:"email"`
 	Breaches []string `json:"breaches"`
 }
 
-func initPwnd(mailSet mapset.Set) {
-	mailCheck(mailSet)
-	pwnd(mailSet)
+func initPwnd() {
+	mailCheck()
+	report := new(HIBPReport)
+	for n, mail := range opts.Mail {
+		report.getBreachesForMail(mail)
+		if n != 0 {
+			time.Sleep(time.Second * 2)
+		}
+	}
+	report.printHIBPReport()
 }
 
-func pwnd(mailSet mapset.Set) {
-	mailIterator := mailSet.Iterator()
-	for mail := range mailIterator.C {
-		fmt.Println("[+] Dump for " + mail.(string))
-		stuff, err := gopwned.GetAllBreachesForAccount(mail.(string), "", "true")
+func (report *HIBPReport) getBreachesForMail(mail string) {
+	fmt.Println("[+] Dump for " + mail)
+	stuff, err := gopwned.GetAllBreachesForAccount(mail, "", "true")
+	if err == nil {
 		pwnd := new(PwnedEntity)
-		pwnd.Email = mail.(string)
-		if err == nil {
-			for _, data := range stuff {
-				pwnd.Breaches = append(pwnd.Breaches, data.Name)
-			}
-			fmt.Println(pwnd)
+		pwnd.Email = mail
+		for _, data := range stuff {
+			pwnd.Breaches = append(pwnd.Breaches, data.Name)
 		}
-		time.Sleep(time.Second * 2)
+		report.Pwnd = append(report.Pwnd, pwnd)
+	}
+}
+
+func (report *HIBPReport) printHIBPReport() {
+	if opts.JSON {
+		jsonreport, _ := json.MarshalIndent(&report, "", " ")
+		fmt.Println(string(jsonreport))
+	} else {
+		for _, k := range report.Pwnd {
+			fmt.Println(k)
+		}
 	}
 }

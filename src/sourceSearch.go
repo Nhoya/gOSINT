@@ -24,10 +24,10 @@ func initPlainSearch(mailSet mapset.Set) {
 		}
 		mailSet = plainMailSearch(opts.Path, mailSet, opts.Confirm)
 	}
-	if opts.Mode {
+	/*if opts.Mode {
 		mailSet = pgpSearch(mailSet)
 		pwnd(mailSet)
-	}
+	}*/
 }
 func checkFile(mailSet mapset.Set) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
