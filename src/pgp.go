@@ -17,21 +17,21 @@ func initPGP() {
 
 //PGPReport
 type PGPReport struct {
-	Target   string       `json:'Target'`
-	Entities []*PGPEntity `json:'Entities`
+	Target   string       `json:"Target"`
+	Entities []*PGPEntity `json:"Entities"`
 }
 
 //PGPEntity identifies a PGP address on pgp.mit.edu
 type PGPEntity struct {
-	Person  PGPAlias   `json:'Person'`
-	KeyID   string     `json:'KeyID'`
-	Aliases []PGPAlias `json:'Aliases'`
+	Person  PGPAlias   `json:"Person"`
+	KeyID   string     `json:"KeyID"`
+	Aliases []PGPAlias `json:"Aliases"`
 }
 
 //PGPAlias identiies a user with Name and email
 type PGPAlias struct {
-	Name  string `json:'Name'`
-	Email string `json:'Email'`
+	Name  string `json:"Name"`
+	Email string `json:"Email"`
 }
 
 //NewAlias adds a new alias to a PGP identity
