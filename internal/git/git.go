@@ -37,9 +37,9 @@ type userData struct {
 //StartGit is the int module for the git Module
 func (opts *Options) StartGit() {
 	domainSplit := strings.Split(opts.Repo.Path, "/")
-	user := domainSplit[1]
-	host := opts.Repo.Host
 	if len(domainSplit) == 2 {
+		user := domainSplit[1]
+		host := opts.Repo.Host
 		if host == "github.com" {
 			fmt.Println("[+]Starting recursive git search")
 			repos := getGHUserRepositories(user)
@@ -52,6 +52,8 @@ func (opts *Options) StartGit() {
 			os.Exit(1)
 		}
 	} else if len(domainSplit) == 3 {
+		user := domainSplit[1]
+		host := opts.Repo.Host
 		repository := domainSplit[2]
 		gitSearch(host, user, repository, opts)
 	} else {
