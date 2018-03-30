@@ -1,0 +1,32 @@
+language: go
+
+go:
+  - master
+
+os:
+  - linux
+
+dist: trusty
+sudo: required
+
+env:
+  - DEP_VERSION="0.4.1"
+
+
+before_install:
+  - sudo apt-get -qq update
+  #installing dep
+  - curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o $GOPATH/bin/dep
+  - chmod +x $GOPATH/bin/dep
+
+  
+install:
+  #installing dependencies
+  - dep ensure
+
+  #coverage
+  - go test github.com/Nhoya/gOSINT/internal/axfr
+  - go test github.com/Nhoya/gOSINT/internal/pgp 
+
+  #build binary
+  - go build cmd/..
