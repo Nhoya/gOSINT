@@ -18,3 +18,9 @@ gOSINT
 
 #Telegram dump
 *.dump
+
+#visual studio stuff
+.vscode
+
+#vendor package
+vendor
