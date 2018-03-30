@@ -25,4 +25,4 @@ install:
   - dep ensure
 
   #build binary
-  - go build cmd/...
+  - go build cmd/gosint.go
