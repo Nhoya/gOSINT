@@ -22,16 +22,20 @@ Currently `gOSINT` has different modules:
 - [x] [shodan.io](https://shodan.io) search
 - [x] Subdomain enumeration using [crt.sh](https://crt.sh)
 
-A complete features list and roadmap is available under [Project Tab](https://github.com/Nhoya/gOSINT/projects)
+A complete features list and roadmap is available under [Projects Tab](https://github.com/Nhoya/gOSINT/projects)
 
-## Installing on Linux
- TODO
+## Installation
 
-## ManualBuilding on Linux
-Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make`  
+### On Linux
+TODO
 
-## Binaries for Windows
+### On Windows
 Check the AppVeyor Build page for builds
+
+## Manual Building 
+
+### On Linux
+Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make`  
 
 ## Usage
 
