@@ -1,0 +1,24 @@
+#TO FIX
+
+version: '{branch} - {build}'
+
+branches:
+  only:
+    - master
+    - develop
+
+
+environment:
+  GOPATH: c:\gopath
+  GOVERSION: 1.10
+
+install:
+  - dep ensure
+
+
+build_script:
+  - cd src
+  - go build -o gosint
+
+artifacts:
+  - path: gosint

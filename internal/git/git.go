@@ -1,4 +1,4 @@
-package main
+package git
 
 import (
 	"encoding/json"
@@ -13,53 +13,79 @@ import (
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 )
 
-type GitReport struct {
-	Repository   string         `json:"repository"`
-	Data         []*GitUserData `json:"data,omitempty"`
-	InvalidUSers mapset.Set     `json:"invalidUsers,omitempty"`
+//Options contains the options needed for the git module
+type Options struct {
+	Repo      *url.URL
+	Method    string
+	Recursive bool
+	JSONFlag  bool
 }
 
-type GitUserData struct {
+// GitReport contains the struct of the git Report
+type report struct {
+	Repository   string      `json:"repository"`
+	Data         []*userData `json:"data,omitempty"`
+	InvalidUSers mapset.Set  `json:"invalidUsers,omitempty"`
+}
+
+//userData contains the user data like email address and aliases
+type userData struct {
 	Mails   mapset.Set `json:"mails,omitempty"`
 	Aliases mapset.Set `json:"aliases,omitempty"`
 }
 
-func initGit() {
-	if opts.URL == "" {
-		fmt.Println("You must specify target URL")
+//StartGit is the int module for the git Module
+func (opts *Options) StartGit() {
+	domainSplit := strings.Split(opts.Repo.Path, "/")
+	user := domainSplit[1]
+	host := opts.Repo.Host
+	if len(domainSplit) == 2 {
+		if host == "github.com" {
+			fmt.Println("[+]Starting recursive git search")
+			repos := getGHUserRepositories(user)
+			opts.Method = "clone"
+			for _, r := range repos {
+				gitSearch(host, user, *r.Name, opts)
+			}
+		} else {
+			fmt.Println("[-] Recursive search is only available on github.com repositories")
+			os.Exit(1)
+		}
+	} else if len(domainSplit) == 3 {
+		repository := domainSplit[2]
+		gitSearch(host, user, repository, opts)
+	} else {
+		fmt.Println("[-] Invalid URL")
 		os.Exit(1)
 	}
-	gitSearch()
 }
 
-func gitSearch() {
-	domain, _ := url.Parse(opts.URL)
-	targetSplit := strings.Split(domain.Path, "/")
-	user := targetSplit[1]
-	repository := targetSplit[2]
+func gitSearch(host string, user string, repository string, opts *Options) {
 	var extractedValues [][]string
+	URL := "https://" + host + "/" + user + "/" + repository
 	//If using GitHub API
-	if (domain.Host == "github.com" && opts.GitAPIType != "clone") || opts.GitAPIType == "github" {
+	if (host == "github.com" && opts.Method != "clone") || opts.Method == "gh" {
 		fmt.Println("[+] Using github API")
 		extractedValues = getUsersFromGitHub(user, repository)
 	} else {
-		extractedValues = cloneAndSearchCommit(opts.URL)
+		extractedValues = cloneAndSearchCommit(URL)
 	}
 
 	rawUserMap, invalidUsers := parseGitEntities(extractedValues)
 	refinedUserMap := removeGitDuplicates(rawUserMap)
-	report := generateGitReport(refinedUserMap, invalidUsers)
-	report.printGitReport()
+	report := generateGitReport(URL, refinedUserMap, invalidUsers)
+	report.printReport(opts.JSONFlag)
 }
 
 func cloneAndSearchCommit(URL string) [][]string {
+	fmt.Println(URL)
 	//create temporary file
 	tmpdir, err := ioutil.TempDir(".", ".gOSINT")
-	defer os.Remove(tmpdir)
 	if err != nil {
 		fmt.Println("Unable create temporary directory")
 		os.Exit(1)
 	}
+	defer os.RemoveAll(tmpdir)
 
 	fmt.Println("[+] Cloning Repo")
 	r, _ := git.PlainClone(tmpdir, false, &git.CloneOptions{
@@ -88,8 +114,8 @@ func cloneAndSearchCommit(URL string) [][]string {
 	return extractedValues
 }
 
-func parseGitEntities(extractedValues [][]string) (map[string]*GitUserData, mapset.Set) {
-	rawUserMap := make(map[string]*GitUserData)
+func parseGitEntities(extractedValues [][]string) (map[string]*userData, mapset.Set) {
+	rawUserMap := make(map[string]*userData)
 	invalidUsers := mapset.NewSet()
 	for _, commit := range extractedValues {
 		name, mail := commit[0], commit[1]
@@ -117,8 +143,8 @@ func parseGitEntities(extractedValues [][]string) (map[string]*GitUserData, maps
 	return rawUserMap, invalidUsers.Difference(diffSet)
 }
 
-func removeGitDuplicates(rawUserMap map[string]*GitUserData) mapset.Set {
-	refinedUserMap := make(map[string]*GitUserData)
+func removeGitDuplicates(rawUserMap map[string]*userData) mapset.Set {
+	refinedUserMap := make(map[string]*userData)
 	for _, user := range rawUserMap {
 		it1 := user.Mails.Iterator()
 		for mail := range it1.C {
@@ -150,19 +176,20 @@ func removeGitDuplicates(rawUserMap map[string]*GitUserData) mapset.Set {
 
 }
 
-func generateGitReport(gitEntitiesSet mapset.Set, invalidUsers mapset.Set) *GitReport {
+func generateGitReport(URL string, gitEntitiesSet mapset.Set, invalidUsers mapset.Set) *report {
 	it := gitEntitiesSet.Iterator()
-	gitReport := new(GitReport)
-	gitReport.Repository = opts.URL
+	gitReport := new(report)
+	gitReport.Repository = URL
 	gitReport.InvalidUSers = invalidUsers
 	for gitStruct := range it.C {
-		gitReport.Data = append(gitReport.Data, gitStruct.(*GitUserData))
+		gitReport.Data = append(gitReport.Data, gitStruct.(*userData))
 	}
+
 	return gitReport
 }
 
-func (report *GitReport) printGitReport() {
-	if opts.JSON {
+func (report *report) printReport(jsonFlag bool) {
+	if jsonFlag {
 		jsonreport, _ := json.MarshalIndent(&report, "", " ")
 		fmt.Println(string(jsonreport))
 	} else {
@@ -177,8 +204,8 @@ func (report *GitReport) printGitReport() {
 	}
 }
 
-func buildNewGitEntity() *GitUserData {
-	m := new(GitUserData)
+func buildNewGitEntity() *userData {
+	m := new(userData)
 	a := mapset.NewSet()
 	b := mapset.NewSet()
 	m.Mails = a

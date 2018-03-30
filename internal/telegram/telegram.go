@@ -1,4 +1,4 @@
-package main
+package telegram
 
 import (
 	"bufio"
@@ -9,15 +9,23 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Nhoya/gOSINT/internal/utils"
+
 	"github.com/jaytaylor/html2text"
 )
 
-func initTelegram() {
-	if opts.TgGroup == "" {
-		fmt.Println("You must specify target")
-		os.Exit(1)
-	}
-	getTelegramGroupHistory(opts.TgGroup, opts.TgGrace, opts.DumpFile, (opts.TgStart - 1), opts.TgEnd)
+//Options contains the options for the telegram module
+type Options struct {
+	Group       string
+	Start       int
+	End         int
+	GracePeriod int
+	DumpFlag    bool
+}
+
+//StartTelegram is the init function for the Telegram module
+func (opts *Options) StartTelegram() {
+	getTelegramGroupHistory(opts.Group, opts.GracePeriod, opts.DumpFlag, (opts.Start - 1), opts.End)
 }
 
 func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessage int, endMessage int) {
@@ -55,7 +63,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	//we don't know how many first how many messages the group has
 	for {
 		messageid := strconv.Itoa(messageCounter)
-		body := retrieveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
+		body := utils.RetrieveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
 		message := getTelegramMessage(body)
 
 		if message != "" && dmCounter > 0 {
@@ -188,14 +196,14 @@ func getTelegramMessageDateTime(body string) (string, string) {
 func checkGroupName(group string) {
 	re := regexp.MustCompile(`^[[:alpha:]](?:\-?[[:alnum:]]){3,31}$`)
 	if !re.MatchString(group) {
-		fmt.Println("Invalid Group name, valid chars alphanum, -")
+		fmt.Println("Invalid Group name, valid chars alphanum and -")
 		os.Exit(1)
 	}
 }
 
 func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile string) {
 	if dumpFlag {
-		writeOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
+		utils.WriteOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
 	}
 	fmt.Println(msg)
 }
@@ -219,12 +227,12 @@ func createMessage(body string, message string) string {
 
 func readFromTelegramDump(startMessage *int, dumpfile string, dumpFlag bool, messageCounter *int) {
 	if dumpFlag {
-		createDirectory(TelegramDumpPath)
+		utils.CreateDirectory(TelegramDumpPath)
 		fmt.Println("[=] --dumpfile used, ignoring --startpoint")
 		*startMessage = 0
-		if fileExists(dumpfile) {
+		if utils.FileExists(dumpfile) {
 			fmt.Println("[=] The dump will be saved in " + dumpfile)
-			resp := simpleQuestion("Print the existing dump before resuming it?")
+			resp := utils.SimpleQuestion("Print the existing dump before resuming it?")
 			fmt.Println("[+] Calculating the last message")
 			file, _ := os.Open(dumpfile)
 			scan := bufio.NewScanner(file)

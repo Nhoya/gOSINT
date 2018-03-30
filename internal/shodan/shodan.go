@@ -1,4 +1,4 @@
-package main
+package shodan
 
 import (
 	"fmt"
@@ -6,44 +6,45 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/Nhoya/gOSINT/internal/utils"
 	"gopkg.in/ns3777k/go-shodan.v2/shodan"
 )
 
-func initShodan() {
-	if opts.ShodanTarget != nil {
-		initShodanHost()
-	} else if opts.ShodanQuery != "" {
-		initShodanQuery()
-	} else {
-		fmt.Println("[-] Invalid action only --query and --target are available")
-	}
+//Options contains the options for the shodan scan module
+type Options struct {
+	Hosts        []string
+	NewScan      bool
+	HoneyPotFlag bool
 }
 
-func initShodanHost() {
-	if len(opts.ShodanTarget) < 1 {
-		fmt.Println("[-] You need to specify the target")
-		os.Exit(1)
-	}
+//QueryOptions contains the options for the shodan query module
+type QueryOptions struct {
+	Query string
+}
+
+//StartShodanScan is the init function of the shodan scan module
+func (opts *Options) StartShodanScan() {
 	APIKey := getShodanAPIKey()
 	client := shodan.NewClient(nil, APIKey)
 
-	if opts.ShodanScan {
-		newShodanScan(client, opts.ShodanTarget)
+	if opts.NewScan {
+		newShodanScan(client, opts.Hosts)
 	} else {
-		for _, host := range opts.ShodanTarget {
-			getShodanHostInfo(host, client)
+		for _, host := range opts.Hosts {
+			getShodanHostInfo(host, client, opts.HoneyPotFlag)
 		}
 	}
 }
 
-func initShodanQuery() {
-	if len(opts.ShodanQuery) < 1 {
+//StartShodanQuery is the init function of the shodan query module
+func (opts *QueryOptions) StartShodanQuery() {
+	if len(opts.Query) < 1 {
 		fmt.Println("[-] You need to specify the target")
 		os.Exit(1)
 	}
 	APIKey := getShodanAPIKey()
 	client := shodan.NewClient(nil, APIKey)
-	getQueryInfo(client, opts.ShodanQuery)
+	getQueryInfo(client, opts.Query)
 }
 
 func getQueryInfo(client *shodan.Client, queryTarget string) {
@@ -68,7 +69,7 @@ func getQueryInfo(client *shodan.Client, queryTarget string) {
 }
 
 func getShodanAPIKey() string {
-	APIKey := getConfigFile().ShodanAPIKey
+	APIKey := utils.GetConfigFile().ShodanAPIKey
 	if APIKey == "" {
 		fmt.Println("[-] Unable to retrive Shodan API Key from config file")
 		os.Exit(1)
@@ -77,9 +78,9 @@ func getShodanAPIKey() string {
 	return APIKey
 }
 
-func getShodanHostInfo(host string, client *shodan.Client) {
+func getShodanHostInfo(host string, client *shodan.Client, honeyPotFlag bool) {
 	fmt.Println("==== REPORT FOR " + host + " ====")
-	report, err := client.GetServicesForHost(host, &shodan.HostServicesOptions{false, false})
+	report, err := client.GetServicesForHost(host, new(shodan.HostServicesOptions))
 	if err != nil {
 		fmt.Println("[-] Unable to get Report")
 		fmt.Println(err)
@@ -100,7 +101,7 @@ func getShodanHostInfo(host string, client *shodan.Client) {
 	fmt.Println("Last Update: " + report.LastUpdate)
 	getShodanServicesData(report.Data)
 
-	if opts.ShodanHoneyPotFlag {
+	if honeyPotFlag {
 		checkHoneyPotProbability(client, host)
 	}
 }

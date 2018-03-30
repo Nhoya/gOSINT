@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -6,10 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"regexp"
-	"strings"
-
-	"github.com/deckarep/golang-set"
 )
 
 //Configuration struct will contain the configuration parameters
@@ -19,7 +15,8 @@ type Configuration struct {
 	GHToken      string `json:"GHToken"`
 }
 
-func retrieveRequestBody(domain string) string {
+//RetrieveRequestBody send a Get Request to a domain and return the body casted to string
+func RetrieveRequestBody(domain string) string {
 	resp, err := http.Get(domain)
 	if err != nil {
 		panic(err)
@@ -29,7 +26,8 @@ func retrieveRequestBody(domain string) string {
 	return string(body)
 }
 
-func findMailInText(body string, mailSet mapset.Set) {
+/*
+func FindMailInText(body string, mailSet mapset.Set) {
 	re := regexp.MustCompile(`(?:![\n|\s])*(?:[\w\d\.\w\d]|(?:[\w\d]+[\-]+[\w\d]+))+[\@]+[\w]+[\.]+[\w]+`)
 	mails := re.FindAllString(body, -1)
 	if len(mails) == 0 {
@@ -41,25 +39,29 @@ func findMailInText(body string, mailSet mapset.Set) {
 		}
 	}
 }
+*/
 
-func readFromSet(mailSet mapset.Set) {
+/*
+func ReadFromSet(mailSet mapset.Set) {
 	mailIterator := mailSet.Iterator()
 	if mailIterator != nil {
 		for addr := range mailIterator.C {
 			fmt.Println(addr)
 		}
 	}
-}
+}*/
 
-func isURL(URL string) {
+/*
+func IsURL(URL string) {
 	validURL, _ := regexp.MatchString(`(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s!()\[\]{};:'".,<>?«»“”‘’]))`, URL)
 	if !validURL {
 		fmt.Println("[-] " + URL + " is not a valid URL")
 		os.Exit(1)
 	}
-}
+}*/
 
-func writeOnFile(filename string, text string) {
+//WriteOnFile open a file with Append and write on it, if the file doesn't exist will create it
+func WriteOnFile(filename string, text string) {
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		fmt.Println("Unabale to open file")
@@ -72,20 +74,24 @@ func writeOnFile(filename string, text string) {
 	}
 }
 
-func fileExists(file string) bool {
+//FileExists return true if the path exists
+func FileExists(file string) bool {
 	if _, err := os.Stat(file); err == nil {
 		return true
 	}
 	return false
 }
-func createDirectory(dirname string) {
-	if !fileExists(dirname) {
+
+//CreateDirectory creates a directory in the path passed as argument
+func CreateDirectory(dirname string) {
+	if !FileExists(dirname) {
 		fmt.Println("[+] Creating directory " + dirname)
 		os.MkdirAll(dirname, os.ModePerm)
 	}
 }
 
-func simpleQuestion(question string) bool {
+//SimpleQuestion prompt a simple Y/N question
+func SimpleQuestion(question string) bool {
 	fmt.Println("[?] " + question + " [Y/N]")
 	var resp string
 	_, err := fmt.Scanln(&resp)
@@ -99,7 +105,8 @@ func simpleQuestion(question string) bool {
 	return false
 }
 
-func getConfigFile() Configuration {
+//GetConfigFile read values from configuration file (json)
+func GetConfigFile() Configuration {
 	file, err := os.OpenFile(ConfigFilePath, os.O_RDONLY|os.O_CREATE, 0600)
 	if err != nil {
 		fmt.Println("[-] Error opening configuration file")

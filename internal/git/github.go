@@ -1,31 +1,34 @@
-package main
+package git
 
 import (
 	"context"
 	"fmt"
-	"golang.org/x/oauth2"
 	"net/http"
 	"os"
 
+	"github.com/Nhoya/gOSINT/internal/utils"
+
 	"github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 )
 
-func checkGHLogin(ctx context.Context) *http.Client {
-	GHToken := getConfigFile().GHToken
+func ghLogin() (*github.Client, context.Context) {
+	var tc *http.Client
+	ctx := context.Background()
+
+	GHToken := utils.GetConfigFile().GHToken
 	if GHToken != "" {
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: GHToken},
 		)
-		tc := oauth2.NewClient(ctx, ts)
-		return tc
+		tc = oauth2.NewClient(ctx, ts)
 	}
-	return nil
+	client := github.NewClient(tc)
+	return client, ctx
 }
 
 func getUsersFromGitHub(user string, repository string) [][]string {
-	ctx := context.Background()
-	client := github.NewClient(checkGHLogin(ctx))
-
+	client, ctx := ghLogin()
 	opt := &github.CommitsListOptions{
 		ListOptions: github.ListOptions{PerPage: 100},
 	}
@@ -55,4 +58,14 @@ func getUsersFromGitHub(user string, repository string) [][]string {
 		opt.Page = resp.NextPage
 	}
 	return extractedValues
+}
+
+func getGHUserRepositories(user string) []*github.Repository {
+	opt := new(github.RepositoryListOptions)
+	client, ctx := ghLogin()
+	repos, _, err := client.Repositories.List(ctx, user, opt)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return repos
 }

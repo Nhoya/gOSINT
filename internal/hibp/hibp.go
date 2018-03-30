@@ -1,35 +1,43 @@
-package main
+package hibp
 
 import (
 	"encoding/json"
-	//	"github.com/deckarep/golang-set"
 	"fmt"
 	"time"
 
 	"github.com/nhoya/goPwned"
 )
 
-type HIBPReport struct {
+//Options contains the options for HIBP module
+type Options struct {
+	Mails    []string
+	JSONFlag bool
+}
+
+//Report contains the report for dumps containing a specific email address
+type report struct {
 	Pwnd []*PwnedEntity
 }
+
+//PwnedEntity is the struct that contains the mail address and the breaches
 type PwnedEntity struct {
 	Email    string   `json:"email"`
 	Breaches []string `json:"breaches"`
 }
 
-func initPwnd() {
-	mailCheck()
-	report := new(HIBPReport)
-	for n, mail := range opts.Mail {
+//StartHIBP is the init function for the HIBP module
+func (opts *Options) StartHIBP() {
+	report := new(report)
+	for n, mail := range opts.Mails {
 		report.getBreachesForMail(mail)
 		if n != 0 {
 			time.Sleep(time.Second * 2)
 		}
 	}
-	report.printHIBPReport()
+	report.printHIBPReport(opts.JSONFlag)
 }
 
-func (report *HIBPReport) getBreachesForMail(mail string) {
+func (report *report) getBreachesForMail(mail string) {
 	fmt.Println("[+] Dump for " + mail)
 	stuff, err := gopwned.GetAllBreachesForAccount(mail, "", "true")
 	if err == nil {
@@ -42,8 +50,8 @@ func (report *HIBPReport) getBreachesForMail(mail string) {
 	}
 }
 
-func (report *HIBPReport) printHIBPReport() {
-	if opts.JSON {
+func (report *report) printHIBPReport(jsonFlag bool) {
+	if jsonFlag {
 		jsonreport, _ := json.MarshalIndent(&report, "", " ")
 		fmt.Println(string(jsonreport))
 	} else {
