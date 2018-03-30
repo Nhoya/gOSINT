@@ -29,4 +29,4 @@ install:
   - go test github.com/Nhoya/gOSINT/internal/pgp 
 
   #build binary
-  - go build cmd/..
+  - go build cmd/...
