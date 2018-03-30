@@ -37,6 +37,14 @@ Check the AppVeyor Build page for builds
 ### On Linux
 Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make`  
 
+### On Windows
+If you have `make` installed you can follow the Linux instructions otherwise be sure to have [dep](https://github.com/golang/dep) installed, clone the directory and run
+
+```
+dep ensure
+go build cmd/gosint.go
+```
+
 ## Usage
 
 ```
@@ -94,7 +102,6 @@ Commands:
 ## Configuration file
 
 The configuration file is in `$HOME/.config/gOSINT.conf`
-
 If some API Keys are missing insert it there
 
 ## PGP module Demo
