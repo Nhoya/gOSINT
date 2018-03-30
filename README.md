@@ -1,9 +1,11 @@
 # gOSINT [![Build Status](https://travis-ci.org/Nhoya/gOSINT.svg?branch=master)](https://travis-ci.org/Nhoya/gOSINT) [![Build status](https://ci.appveyor.com/api/projects/status/9qn2y2f8t5up8ww2?svg=true)](https://ci.appveyor.com/project/Nhoya/gosint) [![GitHub stars](https://img.shields.io/github/stars/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Nhoya/gOSINT.svg)](https://github.com/Nhoya/gOSINT/network) [![Twitter](https://img.shields.io/twitter/url/https/github.com/Nhoya/gOSINT.svg?style=social&style=plastic)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FNhoya%2FgOSINT) [![Go Report Card](https://goreportcard.com/badge/github.com/Nhoya/gOSINT)](https://goreportcard.com/report/github.com/Nhoya/gOSINT) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76673062a30e48bd99d499d32c0c6af0)](https://www.codacy.com/app/Nhoya/gOSINT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nhoya/gOSINT&amp;utm_campaign=Badge_Grade) [![Mentioned in Awesome Pentest](https://awesome.re/mentioned-badge.svg)](https://github.com/enaqx/awesome-pentest)
+
 OSINT Swiss Army Knife in Go
 
 Take a look at the [develop branch](https://github.com/Nhoya/gOSINT/tree/develop) for more updates.
 
 ## Introduction
+
 gOSINT is a multiplatform OSINT Swiss army knife in Golang. If you want, feel free to contribute and/or leave a feedback!
 
 ## Like my project? Please consider donation :)
@@ -26,28 +28,32 @@ A complete features list and roadmap is available under [Projects Tab](https://g
 
 ## Installation
 
-### On Linux
+### Install On Linux
+
 TODO
 
-### On Windows
+### Install On Windows
+
 Check the AppVeyor Build page for builds
 
-## Manual Building 
+## Manual Building
 
-### On Linux
-Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make`  
+### Building On Linux
 
-### On Windows
+Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make`
+
+### Building On Windows
+
 If you have `make` installed you can follow the Linux instructions otherwise be sure to have [dep](https://github.com/golang/dep) installed, clone the directory and run
 
-```
+```bash
 dep ensure
 go build cmd/gosint.go
 ```
 
 ## Usage
 
-```
+```bash
 usage: gOSINT [<flags>] <command> [<args> ...]
 
 An Open Source INTelligence Swiss Army Knife
@@ -105,13 +111,17 @@ The configuration file is in `$HOME/.config/gOSINT.conf`
 If some API Keys are missing insert it there
 
 ## PGP module Demo
+
 [![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)
 
 ## Pwnd module Demo
+
 [![asciicast](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF.png)](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF)
 
 ## Telegram Crawler Demo
+
 [![asciicast](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z.png)](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z)
 
 ## Shodan module Demo
+
 [![asciicast](https://asciinema.org/a/9lfzAZ65n9MJCkrUrxoHZQYwP.png)](https://asciinema.org/a/9lfzAZ65n9MJCkrUrxoHZQYwP)
