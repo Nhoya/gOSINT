@@ -4,8 +4,6 @@ import (
 	"os"
 	"os/exec"
 	"testing"
-
-	"github.com/deckarep/golang-set"
 )
 
 func TestGetDomains(t *testing.T) {
@@ -22,12 +20,7 @@ func TestGetDomains(t *testing.T) {
 func generateReport() *report {
 	r := new(report)
 	r.Domain = "google.com"
-	s := mapset.NewSet()
-	domains := [3]string{"mail.google.com", "secret.google.com", "priv8.google.com"}
-	for _, dom := range domains {
-		s.Add(dom)
-	}
-	r.Subdomains = s
+	r.Subdomains = []string{"mail.google.com", "secret.google.com", "priv8.google.com"}
 	return r
 }
 

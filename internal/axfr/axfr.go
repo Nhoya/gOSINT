@@ -18,8 +18,8 @@ type Options struct {
 
 //AXFRReport defines the report for the subdomains enumeration
 type report struct {
-	Domain     string     `json:"domain"`
-	Subdomains mapset.Set `json:"subdomains"`
+	Domain     string   `json:"domain"`
+	Subdomains []string `json:"subdomains"`
 }
 
 //StartAXFR is the init function of the module
@@ -49,7 +49,9 @@ func (report *report) enumerateSubdomains(domain string, jsonFlag bool) {
 		}
 		subdomains.Add(i[1])
 	}
-	report.Subdomains = subdomains
+
+	report.Subdomains = utils.SetToSlice(subdomains)
+
 }
 
 //get subsomains, their json output is not standard and i'm too lazy to write a parser :)
@@ -65,8 +67,7 @@ func (report *report) printReport(jsonFlag bool) {
 		fmt.Println(string(jsonreport))
 	} else {
 		fmt.Println("==== Report for " + report.Domain + " ====")
-		di := report.Subdomains.Iterator()
-		for dom := range di.C {
+		for _, dom := range report.Subdomains {
 			fmt.Println(dom)
 		}
 	}

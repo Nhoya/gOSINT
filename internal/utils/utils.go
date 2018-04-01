@@ -5,7 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 
+	"github.com/deckarep/golang-set"
 	"github.com/spf13/viper"
 )
 
@@ -95,4 +97,15 @@ func GetConfigValue(key string) string {
 	v := readConfigFile()
 	a := v.GetString(key)
 	return a
+}
+
+//SetToSlice convers a set in a slice of strings and then order them
+func SetToSlice(oldset mapset.Set) []string {
+	var newSlice []string
+	setIt := oldset.Iterator()
+	for elem := range setIt.C {
+		newSlice = append(newSlice, elem.(string))
+	}
+	sort.Strings(newSlice)
+	return newSlice
 }
