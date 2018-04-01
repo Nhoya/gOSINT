@@ -61,7 +61,7 @@ func getDomains(body string) [][]string {
 
 func (report *report) printReport(jsonFlag bool) {
 	if jsonFlag {
-		jsonreport, _ := json.MarshalIndent(&report, "", " ")
+		jsonreport, _ := json.Marshal(&report)
 		fmt.Println(string(jsonreport))
 	} else {
 		fmt.Println("==== Report for " + report.Domain + " ====")
