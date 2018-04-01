@@ -19,7 +19,7 @@ Currently `gOSINT` has different modules:
 - [x] git support for mail retriving (using github API, or plain clone and search)
 - [x] Search for mails, aliases and KeyID in PGP Server
 - [x] [haveibeenpwned.com/](http://haveibeenpwned.com/) search for mail in databreach
-- [x] Retrieve Telegram Public Group Messages
+- [x] Retrieve Telegram Public Group Message History
 - [x] Search for mail address in source
 - [x] [shodan.io](https://shodan.io) search
 - [x] Subdomain enumeration using [crt.sh](https://crt.sh)
@@ -28,7 +28,7 @@ A complete features list and roadmap is available under [Projects Tab](https://g
 
 ## Installation
 
-### Install On Linux
+### Install on a go-dependent way
 
 You can install `gOSINT` using `go get` with a simple `go get github.com/Nhoya/gOSINT/cmd/gosint`
 
@@ -40,7 +40,7 @@ Check the AppVeyor Build page for builds
 
 ### Building On Linux
 
-Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make` and `make install`
+Build gOSINT on linux is really easy, you just need to install [dep](https://github.com/golang/dep), clone the repository and `make` and `make install`
 
 ### Building On Windows
 
@@ -107,7 +107,15 @@ Commands:
 
 ## Configuration file
 
-The configuration file is in `$HOME/.config/gOSINT.conf`
+The default configuration file is in `$HOME/.config/gosint.toml` for linux environment and `./config/toml` for windows env
+
+You can place it in different paths, load prioriy is:
+
+- `.`
+- `./config or $HOME/.config/`
+- `/etc/gosint/gosint.toml`
+
+
 If some API Keys are missing insert it there
 
 ## PGP module Demo
