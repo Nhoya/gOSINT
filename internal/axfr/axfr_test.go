@@ -31,7 +31,7 @@ func generateReport() *report {
 	return r
 }
 
-func Examplereport_printReport() {
+func Example_report_printReport() {
 	r := generateReport()
 	r.printReport(false)
 	//Output:
@@ -41,11 +41,12 @@ func Examplereport_printReport() {
 	//priv8.google.com
 }
 
-func Examplereport_printReport_second() {
+func Example_report_printReport_second() {
 	r := generateReport()
 	r.printReport(true)
 	//Output:
 	//{"domain":"google.com","subdomains":["mail.google.com","secret.google.com","priv8.google.com"]}
+
 }
 
 func TestStartAXFR(t *testing.T) {
