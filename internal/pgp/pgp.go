@@ -41,7 +41,7 @@ func (opts *Options) StartPGP() {
 	for _, mail := range opts.Targets {
 		report.pgpSearch(mail)
 	}
-	report.printPGPReport(opts.JSONFlag)
+	report.printReport(opts.JSONFlag)
 }
 
 //send the request to pgp.mit.edu for each mail passed as argument
@@ -84,9 +84,9 @@ func (identity *entity) newAlias(a *alias) {
 	identity.Aliases = append(identity.Aliases, *a)
 }
 
-func (report *report) printPGPReport(jsonFlag bool) {
+func (report *report) printReport(jsonFlag bool) {
 	if jsonFlag {
-		jsonreport, _ := json.MarshalIndent(&report, "", " ")
+		jsonreport, _ := json.Marshal(&report)
 		fmt.Println(string(jsonreport))
 	} else {
 		fmt.Println("==== PGP SEARCH FOR: " + report.Target + "====")
