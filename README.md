@@ -115,21 +115,20 @@ You can place it in different paths, load prioriy is:
 - `./config or $HOME/.config/`
 - `/etc/gosint/gosint.toml`
 
-
 If some API Keys are missing insert it there
 
-## PGP module Demo
+## PGP module Demo (**OUTDATED**)
 
 [![asciicast](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj.png)](https://asciinema.org/a/21PCpbgFqyHiTbPINexHKEywj)
 
-## Pwnd module Demo
+## Pwnd module Demo (**OUTDATED**)
 
 [![asciicast](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF.png)](https://asciinema.org/a/x9Ap0IRcNNcLfriVujkNUhFSF)
 
-## Telegram Crawler Demo
+## Telegram Crawler Demo (**OUTDATED**)
 
 [![asciicast](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z.png)](https://asciinema.org/a/nbRO9FNpjiYXAKeI87xn29j9z)
 
-## Shodan module Demo
+## Shodan module Demo (**OUTDATED**)
 
 [![asciicast](https://asciinema.org/a/9lfzAZ65n9MJCkrUrxoHZQYwP.png)](https://asciinema.org/a/9lfzAZ65n9MJCkrUrxoHZQYwP)
