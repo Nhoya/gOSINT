@@ -30,7 +30,7 @@ A complete features list and roadmap is available under [Projects Tab](https://g
 
 ### Install On Linux
 
-TODO
+You can install `gOSINT` using `go get` with a simple `go get github.com/Nhoya/gOSINT/cmd/gosint`
 
 ### Install On Windows
 
@@ -40,11 +40,11 @@ Check the AppVeyor Build page for builds
 
 ### Building On Linux
 
-Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make`
+Build gOSINT on linux is really you just need to install [dep](https://github.com/golang/dep), clone the repository and `make` and `make install`
 
 ### Building On Windows
 
-If you have `make` installed you can follow the Linux instructions otherwise be sure to have [dep](https://github.com/golang/dep) installed, clone the directory and run
+If you have `make` installed you can follow the Linux instructions (and skip `make install`) otherwise be sure to have [dep](https://github.com/golang/dep) installed, clone the directory and run
 
 ```bash
 dep ensure

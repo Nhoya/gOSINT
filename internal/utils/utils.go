@@ -1,19 +1,16 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"github.com/spf13/viper"
 )
 
-//Configuration struct will contain the configuration parameters
-//the config file is available in $HOME/.config/gOSINT.conf
-type Configuration struct {
-	ShodanAPIKey string `json:"ShodanAPIKey"`
-	GHToken      string `json:"GHToken"`
-}
+//ConfigFile is the name of the configuration file
+const ConfigFile = "gosint"
 
 //RetrieveRequestBody send a Get Request to a domain and return the body casted to string
 func RetrieveRequestBody(domain string) string {
@@ -25,40 +22,6 @@ func RetrieveRequestBody(domain string) string {
 	body, _ := ioutil.ReadAll(resp.Body)
 	return string(body)
 }
-
-/*
-func FindMailInText(body string, mailSet mapset.Set) {
-	re := regexp.MustCompile(`(?:![\n|\s])*(?:[\w\d\.\w\d]|(?:[\w\d]+[\-]+[\w\d]+))+[\@]+[\w]+[\.]+[\w]+`)
-	mails := re.FindAllString(body, -1)
-	if len(mails) == 0 {
-		return
-	}
-	for _, mail := range mails {
-		if !strings.Contains(mail, "noreply") {
-			mailSet.Add(mail)
-		}
-	}
-}
-*/
-
-/*
-func ReadFromSet(mailSet mapset.Set) {
-	mailIterator := mailSet.Iterator()
-	if mailIterator != nil {
-		for addr := range mailIterator.C {
-			fmt.Println(addr)
-		}
-	}
-}*/
-
-/*
-func IsURL(URL string) {
-	validURL, _ := regexp.MatchString(`(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s!()\[\]{};:'".,<>?«»“”‘’]))`, URL)
-	if !validURL {
-		fmt.Println("[-] " + URL + " is not a valid URL")
-		os.Exit(1)
-	}
-}*/
 
 //WriteOnFile open a file with Append and write on it, if the file doesn't exist will create it
 func WriteOnFile(filename string, text string) {
@@ -105,20 +68,31 @@ func SimpleQuestion(question string) bool {
 	return false
 }
 
-//GetConfigFile read values from configuration file (json)
-func GetConfigFile() Configuration {
-	file, err := os.OpenFile(ConfigFilePath, os.O_RDONLY|os.O_CREATE, 0600)
+func readConfigFile() *viper.Viper {
+	v := viper.New()
+	v.SetConfigName(ConfigFile)
+	v.AddConfigPath(".")
+	v.AddConfigPath("./config")
+	v.AddConfigPath("$HOME/.config")
+	v.AddConfigPath("/etc/gosint")
+
+	err := v.ReadInConfig()
 	if err != nil {
-		fmt.Println("[-] Error opening configuration file")
-		fmt.Println(err)
-		os.Exit(1)
+		panic(err)
 	}
-	decoder := json.NewDecoder(file)
-	config := Configuration{}
-	err = decoder.Decode(&config)
-	if err != nil {
-		//fmt.Println(err)
-		fmt.Println("[!] Unable get Keys from  config file, RTFM to see how the configuration file should be populated")
-	}
-	return config
+	return v
+}
+
+//WriteConfigFile will write default values in the config file specifiend in var_os.go
+func WriteConfigFile(key string, value string) {
+	v := readConfigFile()
+	v.SetDefault(key, value)
+	v.WriteConfigAs(ConfigFilePath + "" + ConfigFile + ".toml")
+}
+
+//GetConfigValue take as input a key value and will return the relative value set in the configuration file
+func GetConfigValue(key string) string {
+	v := readConfigFile()
+	a := v.GetString(key)
+	return a
 }

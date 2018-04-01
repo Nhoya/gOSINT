@@ -24,7 +24,11 @@ type QueryOptions struct {
 
 //StartShodanScan is the init function of the shodan scan module
 func (opts *Options) StartShodanScan() {
-	APIKey := getShodanAPIKey()
+	//init the configuration file
+	utils.WriteConfigFile("shodanApiKey", "")
+	//get the API Key from the configuration file
+	APIKey := utils.GetConfigValue("shodanApiKey")
+
 	client := shodan.NewClient(nil, APIKey)
 
 	if opts.NewScan {
@@ -38,6 +42,10 @@ func (opts *Options) StartShodanScan() {
 
 //StartShodanQuery is the init function of the shodan query module
 func (opts *QueryOptions) StartShodanQuery() {
+	//init the configuration file
+	utils.WriteConfigFile("shodanApiKey", "")
+	//get the API Key from the configuration file
+
 	if len(opts.Query) < 1 {
 		fmt.Println("[-] You need to specify the target")
 		os.Exit(1)
@@ -69,7 +77,7 @@ func getQueryInfo(client *shodan.Client, queryTarget string) {
 }
 
 func getShodanAPIKey() string {
-	APIKey := utils.GetConfigFile().ShodanAPIKey
+	APIKey := utils.GetConfigValue("ShodanApiKey")
 	if APIKey == "" {
 		fmt.Println("[-] Unable to retrive Shodan API Key from config file")
 		os.Exit(1)

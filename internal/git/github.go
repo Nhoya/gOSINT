@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/Nhoya/gOSINT/internal/utils"
-
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
@@ -15,9 +14,10 @@ import (
 func ghLogin() (*github.Client, context.Context) {
 	var tc *http.Client
 	ctx := context.Background()
-
-	GHToken := utils.GetConfigFile().GHToken
+	//load config values
+	GHToken := utils.GetConfigValue("GHToken")
 	if GHToken != "" {
+		fmt.Println("[+] Found GitHub Token")
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: GHToken},
 		)
@@ -28,6 +28,8 @@ func ghLogin() (*github.Client, context.Context) {
 }
 
 func getUsersFromGitHub(user string, repository string) [][]string {
+	//init configuration file
+	utils.WriteConfigFile("GHToken", "")
 	client, ctx := ghLogin()
 	opt := &github.CommitsListOptions{
 		ListOptions: github.ListOptions{PerPage: 100},

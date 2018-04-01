@@ -1,5 +1,6 @@
 # Go parameters
 LDFLAGS="-s -w"
+${HOME}=()
 
 all: deps test gosint_build
 
@@ -10,4 +11,5 @@ test:
 	go test -v ./...
 
 gosint_build:
-	go build -v -ldflags=${LDFLAGS} cmd/gosint.go
+	go build -o gosint -v -ldflags=${LDFLAGS} cmd/gosint/main.go
+

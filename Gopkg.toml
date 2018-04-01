@@ -42,6 +42,10 @@
   name = "github.com/nhoya/goPwned"
 
 [[constraint]]
+  name = "github.com/spf13/viper"
+  version = "1.0.2"
+
+[[constraint]]
   branch = "master"
   name = "golang.org/x/oauth2"
 
