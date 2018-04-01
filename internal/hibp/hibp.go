@@ -16,7 +16,7 @@ type Options struct {
 
 //Report contains the report for dumps containing a specific email address
 type report struct {
-	Pwnd []*PwnedEntity
+	Pwnd []*PwnedEntity `json:"pwnd"`
 }
 
 //PwnedEntity is the struct that contains the mail address and the breaches
@@ -31,6 +31,7 @@ func (opts *Options) StartHIBP() {
 	for n, mail := range opts.Mails {
 		report.getBreachesForMail(mail)
 		if n != 0 {
+			//prevent antiflood block
 			time.Sleep(time.Second * 2)
 		}
 	}
@@ -52,11 +53,12 @@ func (report *report) getBreachesForMail(mail string) {
 
 func (report *report) printHIBPReport(jsonFlag bool) {
 	if jsonFlag {
-		jsonreport, _ := json.MarshalIndent(&report, "", " ")
+		jsonreport, _ := json.Marshal(&report)
 		fmt.Println(string(jsonreport))
 	} else {
 		for _, k := range report.Pwnd {
-			fmt.Println(k)
+			fmt.Println("Mail:", k.Email)
+			fmt.Println("Breaches", k.Breaches)
 		}
 	}
 }
