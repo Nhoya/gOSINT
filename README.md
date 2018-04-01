@@ -112,8 +112,8 @@ The default configuration file is in `$HOME/.config/gosint.toml` for linux envir
 You can place it in different paths, load prioriy is:
 
 - `.`
-- `./config or $HOME/.config/`
-- `/etc/gosint/gosint.toml`
+- `./config/ or $HOME/.config/`
+- `/etc/gosint/`
 
 If some API Keys are missing insert it there
 

@@ -1,5 +1,2 @@
-{
-        "ShodanAPIKey": "",
-        "GHToken": ""
-}
-
+shodanapikey = ""
+ghtoken = ""
