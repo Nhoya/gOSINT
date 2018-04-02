@@ -36,6 +36,7 @@ func WriteOnFile(filename string, text string) {
 	_, err = f.WriteString(text)
 	if err != nil {
 		fmt.Println("Unable to wite on file")
+		os.Exit(1)
 	}
 }
 
@@ -72,10 +73,9 @@ func SimpleQuestion(question string) bool {
 
 func readConfigFile() *viper.Viper {
 	v := viper.New()
-	v.SetConfigName(ConfigFile)
 	v.AddConfigPath(".")
 	v.AddConfigPath("./config")
-	v.AddConfigPath("$HOME/.config")
+	v.SetConfigName(ConfigFile)
 	v.AddConfigPath("/etc/gosint")
 
 	err := v.ReadInConfig()
