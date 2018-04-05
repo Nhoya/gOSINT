@@ -20,7 +20,7 @@ install:
 build_script:
   
   - go test ./..
-  - go build cmd/gosint/main.go
+  - go build -o gosint.exe cmd/gosint/main.go
 
 artifacts:
-  - path: gosint  
+  - path: gosint.exe

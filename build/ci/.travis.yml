@@ -30,4 +30,4 @@ install:
   - dep ensure
 
   #build binary
-  - go build cmd/gosint/main.go
+  - go build -o gosint cmd/gosint/main.go
