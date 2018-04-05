@@ -14,7 +14,7 @@ environment:
 
 install:
   - go get -u -v github.com/golang/dep/cmd/dep
-  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - set PATH=%GOPATH%\bin;C:\go\bin;C:\projects\gosint;%PATH%
   - dep ensure
 
 
