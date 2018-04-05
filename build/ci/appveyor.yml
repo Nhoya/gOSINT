@@ -13,12 +13,14 @@ environment:
   GOVERSION: 1.10
 
 install:
+  - go get -u github.com/golang/dep/...
   - dep ensure
 
 
 build_script:
-  - cd src
-  - go build -o gosint
+  
+  - go test ./..
+  - go build cmd/gosint/main.go
 
 artifacts:
-  - path: gosint
+  - path: gosint  
