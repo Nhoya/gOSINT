@@ -2,6 +2,8 @@
 
 version: '{branch} - {build}'
 
+clone_folder: c:\gopath\src\github.com\Nhoya\gOSINT
+
 branches:
   only:
     - master
