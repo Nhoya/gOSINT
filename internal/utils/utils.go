@@ -77,6 +77,7 @@ func readConfigFile() *viper.Viper {
 	v.AddConfigPath("./config")
 	v.SetConfigName(ConfigFile)
 	v.AddConfigPath("/etc/gosint")
+	v.AddConfigPath(ConfigFilePath)
 
 	err := v.ReadInConfig()
 	if err != nil {

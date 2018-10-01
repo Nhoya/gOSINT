@@ -63,6 +63,7 @@ func main() {
 		opts.Method = *gitMethod
 		opts.Repo = *gitRepo
 		opts.Recursive = *gitRecursive
+		opts.JSONFlag = *jsonFlag
 		opts.StartGit()
 	// gosint pwnd
 	case hibpMod.FullCommand():
