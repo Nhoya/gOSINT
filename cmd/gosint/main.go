@@ -7,6 +7,7 @@ import (
 	"github.com/Nhoya/gOSINT/internal/git"
 	"github.com/Nhoya/gOSINT/internal/hibp"
 	"github.com/Nhoya/gOSINT/internal/pgp"
+	"github.com/Nhoya/gOSINT/internal/pni"
 	"github.com/Nhoya/gOSINT/internal/shodan"
 	"github.com/Nhoya/gOSINT/internal/telegram"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -45,6 +46,10 @@ var (
 	axfrURLs      = axfrMod.Arg("url", "Domain URL").Required().Strings()
 	axfrURLStatus = axfrMod.Flag("verify", "Verify URL Status Code").Bool()
 
+	//PNI module (Retrieve info about a phone number)
+	pniMod    = app.Command("pni", "Retrieve info about a give phone number")
+	pniTarget = pniMod.Arg("number", "Phone Number (with country code)").Required().Strings()
+
 	//telegram.org module
 	telegramMod         = app.Command("telegram", "Telegram public groups and channels scraper")
 	telegramGroup       = telegramMod.Arg("group", "Telegram group or channel name").Required().String()
@@ -78,7 +83,7 @@ func main() {
 		opts.JSONFlag = *jsonFlag
 		opts.Targets = *pgpTargets
 		opts.StartPGP()
-		//gosint shodan
+	//gosint shodan
 	case shodanMod.FullCommand():
 		opts := new(shodan.Options)
 		opts.Hosts = *shodanHosts
@@ -97,7 +102,7 @@ func main() {
 		opts.JSONFlag = *jsonFlag
 		opts.VerifyURLStatus = *axfrURLStatus
 		opts.StartAXFR()
-		//gosint telegram
+	//gosint telegram
 	case telegramMod.FullCommand():
 		opts := new(telegram.Options)
 		opts.Group = *telegramGroup
@@ -106,5 +111,9 @@ func main() {
 		opts.GracePeriod = *telegramGracePeriod
 		opts.DumpFlag = *telegramDumpFlag
 		opts.StartTelegram()
+	case pniMod.FullCommand():
+		opts := new(pni.Options)
+		opts.PhoneNumber = *pniTarget
+		opts.StartPNI()
 	}
 }
