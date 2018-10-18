@@ -18,9 +18,15 @@ func TestGetDomains(t *testing.T) {
 }
 
 func generateReport() *report {
+
 	r := new(report)
 	r.Domain = "google.com"
-	r.Subdomains = []string{"mail.google.com", "secret.google.com", "priv8.google.com"}
+	domains := []string{"mail.google.com", "secret.google.com", "priv8.google.com"}
+	for _, i := range domains {
+		s := new(subdomain)
+		s.URL = i
+		r.Subdomains = append(r.Subdomains, *s)
+	}
 	return r
 }
 
@@ -29,19 +35,17 @@ func Example_report_printReport() {
 	r.printReport(false)
 	//Output:
 	//==== Report for google.com ====
-	//mail.google.com
-	//secret.google.com
-	//priv8.google.com
+	//mail.google.com 0
+	//secret.google.com 0
+	//priv8.google.com 0
 }
 
 func Example_report_printReport_second() {
 	r := generateReport()
 	r.printReport(true)
 	//Output:
-	//{"domain":"google.com","subdomains":["mail.google.com","secret.google.com","priv8.google.com"]}
-
+	//{"domain":"google.com","subdomains":[{"URL":"mail.google.com","statusCode":0},{"URL":"secret.google.com","statusCode":0},{"URL":"priv8.google.com","statusCode":0}]}
 }
-
 func TestStartAXFR(t *testing.T) {
 	opts := new(Options)
 	opts.JSONFlag = (false)

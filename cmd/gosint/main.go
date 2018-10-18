@@ -41,8 +41,9 @@ var (
 	shodanQuery = shodanQMod.Arg("query", "Shodan query").Required().String()
 
 	//crt.sh module (subdomain enumeration)
-	axfrMod  = app.Command("axfr", "Subdomain enumeration using crt.sh")
-	axfrURLs = axfrMod.Arg("url", "Domain URL").Required().Strings()
+	axfrMod       = app.Command("axfr", "Subdomain enumeration using crt.sh")
+	axfrURLs      = axfrMod.Arg("url", "Domain URL").Required().Strings()
+	axfrURLStatus = axfrMod.Flag("verify", "Verify URL Status Code").Bool()
 
 	//telegram.org module
 	telegramMod         = app.Command("telegram", "Telegram public groups and channels scraper")
@@ -94,6 +95,7 @@ func main() {
 		opts := new(axfr.Options)
 		opts.URLs = *axfrURLs
 		opts.JSONFlag = *jsonFlag
+		opts.VerifyURLStatus = *axfrURLStatus
 		opts.StartAXFR()
 		//gosint telegram
 	case telegramMod.FullCommand():
