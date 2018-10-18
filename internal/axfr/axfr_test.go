@@ -32,17 +32,17 @@ func generateReport() *report {
 
 func Example_report_printReport() {
 	r := generateReport()
-	r.printReport(false)
+	r.printReport(false, false)
 	//Output:
 	//==== Report for google.com ====
-	//mail.google.com 0
-	//secret.google.com 0
-	//priv8.google.com 0
+	//mail.google.com
+	//secret.google.com
+	//priv8.google.com
 }
 
 func Example_report_printReport_second() {
 	r := generateReport()
-	r.printReport(true)
+	r.printReport(true, false)
 	//Output:
 	//{"domain":"google.com","subdomains":[{"URL":"mail.google.com","statusCode":0},{"URL":"secret.google.com","statusCode":0},{"URL":"priv8.google.com","statusCode":0}]}
 }
