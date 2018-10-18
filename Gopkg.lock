@@ -143,6 +143,12 @@
   revision = "b8a9be070da40449e501c3c4730a889e42d87a9e"
 
 [[projects]]
+  name = "github.com/otiai10/gosseract"
+  packages = ["."]
+  revision = "b026a6fd291f00736db60738f4e83a79d26359cb"
+  version = "v2.2.0"
+
+[[projects]]
   name = "github.com/pelletier/go-buffruneio"
   packages = ["."]
   revision = "c37440a7cf42ac63b919c752ca73a85067e05992"
@@ -380,6 +386,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7fc877b7ae2ec7cedbaffcd34b5e0bb661dfd61eca7a87383649e0e494e8e20d"
+  inputs-digest = "2c1b471c9cbbe0c8a22ffeb361060d8266b4731c1de38e577b383c1368dfbbc2"
   solver-name = "gps-cdcl"
   solver-version = 1
