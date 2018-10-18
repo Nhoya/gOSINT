@@ -24,6 +24,7 @@ type Options struct {
 	PhoneNumber []string
 }
 
+//¯\_(ツ)_/¯
 //StartPNI is the init function of the module
 func (opts *Options) StartPNI() {
 	//TODO: add check on number lenght
