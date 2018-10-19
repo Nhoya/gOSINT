@@ -32,6 +32,7 @@ A complete features list and roadmap is available under [Projects Tab](https://g
 ### Install on a go-dependent way
 
 You can install `gOSINT` using `go get` with a simple `go get github.com/Nhoya/gOSINT/cmd/gosint`
+You also need to install `tesseract-ocr` on your system
 
 ### Install On Windows
 
