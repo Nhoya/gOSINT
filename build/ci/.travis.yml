@@ -16,7 +16,7 @@ env:
 before_install:
   - sudo apt-get -qq update
   #install tesseract
-  - sudo apt install -y tesseract-ocr libtesseract-dev
+  - sudo apt install -y tesseract-ocr libtesseract-dev libleptonica-dev
   #installing dep
   - curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o $GOPATH/bin/dep
   - chmod +x $GOPATH/bin/dep
