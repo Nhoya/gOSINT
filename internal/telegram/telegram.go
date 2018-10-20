@@ -203,7 +203,7 @@ func checkGroupName(group string) {
 
 func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile string) {
 	if dumpFlag {
-		utils.WriteOnFile(dumpfile, fmt.Sprintf("[%d] %s\n", messageCounter, strings.Replace(msg, "\n", " ⏎ ", -1))
+		utils.WriteOnFile(dumpfile, fmt.Sprintf("[%d] %s\n", messageCounter, strings.Replace(msg, "\n", " ⏎ ", -1)))
 	}
 	fmt.Println(msg)
 }
