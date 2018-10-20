@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-	"strconv"
 
 	"github.com/Nhoya/gOSINT/internal/utils"
 	"gopkg.in/ns3777k/go-shodan.v2/shodan"
@@ -63,13 +62,13 @@ func getQueryInfo(client *shodan.Client, queryTarget string) {
 		fmt.Println(err)
 	}
 	if query.Total != 0 {
-		fmt.Println("==== Query result for \"" + queryTarget + "\" ====")
+		fmt.Printf("==== Query result for \"%s\" ====\n", queryTarget)
 		for _, host := range query.Matches {
 			fmt.Println("Host:", host.IP, host.Hostnames)
 			if host.OS != "" {
 				fmt.Println("\tOS: ", host.OS)
 			}
-			fmt.Println("\tLocation: " + host.Location.Country + ", " + host.Location.City)
+			fmt.Printf("\tLocation: %s, %s\n", host.Location.Country, host.Location.City)
 		}
 	} else {
 		fmt.Println("[-] No results found")
@@ -119,12 +118,12 @@ func getShodanServicesData(services []*shodan.HostData) {
 		if service.Product == "" {
 			service.Product = "Unknown"
 		}
-		fmt.Println("Service on port " + strconv.Itoa(service.Port) + ": " + service.Product + " " + string(service.Version))
+		fmt.Printf("Service on port %d: %s %s\n", service.Port, service.Product, service.Version)
 		if service.Title != "" {
-			fmt.Println("\tTitle: " + service.Title)
+			fmt.Printf("\tTitle: %s\n", service.Title)
 		}
 		if service.OS != "" {
-			fmt.Println("\tOS " + service.OS)
+			fmt.Printf("\tOS %s\n", service.OS)
 		}
 		if service.Data != "" {
 			getServiceFingerprint(service.Data)
