@@ -203,7 +203,7 @@ func checkGroupName(group string) {
 
 func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile string) {
 	if dumpFlag {
-		utils.WriteOnFile(dumpfile, "["+strconv.Itoa(messageCounter)+"] "+strings.Replace(msg, "\n", " ⏎ ", -1)+"\n")
+		utils.WriteOnFile(dumpfile, fmt.Sprintf("[%d] %s\n", messageCounter, strings.Replace(msg, "\n", " ⏎ ", -1))
 	}
 	fmt.Println(msg)
 }
@@ -211,14 +211,14 @@ func writeTelegramLogs(messageCounter int, msg string, dumpFlag bool, dumpfile s
 func createMessage(body string, message string) string {
 	username, nickname := getTelegramUsername(body)
 	date, time := getTelegramMessageDateTime(body)
-	var msgtxt string
+	msgtxt := fmt.Sprintf("[%s %s] ", date, time)
 	//channels don't have username and nickname
-	if username == "" && nickname == "" {
-		msgtxt = "[" + date + " " + time + "] " + message
+	if nickname == "" {
+		msgtxt += message
 	} else if username == "" {
-		msgtxt = "[" + date + " " + time + "] " + nickname + ": " + message
+		msgtxt += fmt.Sprintf("%s: %s", nickname, message)
 	} else {
-		msgtxt = "[" + date + " " + time + "] " + nickname + "(" + username + "): " + message
+		msgtxt += fmt.Sprintf("%s(%s): %s", nickname, username, message)
 	}
 	//html format the message before printing it
 	msg, _ := html2text.FromString(msgtxt)
