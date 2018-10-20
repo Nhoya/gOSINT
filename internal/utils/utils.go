@@ -42,7 +42,7 @@ func WriteOnFile(filename string, text string) {
 
 //FileExists return true if the path exists
 func FileExists(file string) bool {
-	if _, err := os.Stat(file); err == nil {
+	if _, err := os.Stat(file); !os.IsNotExist(err) {
 		return true
 	}
 	return false
@@ -58,7 +58,7 @@ func CreateDirectory(dirname string) {
 
 //SimpleQuestion prompt a simple Y/N question
 func SimpleQuestion(question string) bool {
-	fmt.Println("[?] " + question + " [Y/N]")
+	fmt.Printf("[?] %s [Y/N]\n", question)
 	var resp string
 	_, err := fmt.Scanln(&resp)
 	if err != nil {
