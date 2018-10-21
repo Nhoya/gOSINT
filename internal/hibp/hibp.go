@@ -24,7 +24,7 @@ type report struct {
 type PwnedEntity struct {
 	Email     string   `json:"email"`
 	Breaches  []string `json:"breaches"`
-	Passwords []string `json:"passwords"`
+	Passwords []string `json:"passwords,omitempty"`
 }
 
 //StartHIBP is the init function for the HIBP module

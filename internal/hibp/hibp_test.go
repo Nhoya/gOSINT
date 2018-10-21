@@ -17,7 +17,7 @@ func Example_report_printReport() {
 	r.printHIBPReport(false)
 	//Output:
 	//Mail: mail@domain.tld
-	//Breaches [google.com facebook.com]
+	//Breaches: [google.com facebook.com]
 }
 
 func Example_report_printReport_second() {
