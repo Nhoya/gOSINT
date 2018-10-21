@@ -27,6 +27,7 @@ var (
 	//haveibeenpwned.com module
 	hibpMod   = app.Command("pwd", "Check dumps for Email address using haveibeenpwned.com")
 	hibpMails = hibpMod.Arg("mail", "Mail Address").Required().Strings()
+	hibpPwds  = hibpMod.Flag("get-passwords", "Search passwords for mail").Bool()
 
 	//pgp.mit module
 	pgpMod     = app.Command("pgp", "Get Emails, KeyID and Aliases from PGP Keyring")
@@ -76,6 +77,7 @@ func main() {
 		opts := new(hibp.Options)
 		opts.Mails = *hibpMails
 		opts.JSONFlag = *jsonFlag
+		opts.GetPasswords = *hibpPwds
 		opts.StartHIBP()
 	// gosint pgp
 	case pgpMod.FullCommand():
@@ -111,6 +113,7 @@ func main() {
 		opts.GracePeriod = *telegramGracePeriod
 		opts.DumpFlag = *telegramDumpFlag
 		opts.StartTelegram()
+	//gosint PNI
 	case pniMod.FullCommand():
 		opts := new(pni.Options)
 		opts.PhoneNumber = *pniTarget

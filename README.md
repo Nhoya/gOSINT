@@ -24,6 +24,7 @@ Currently `gOSINT` has different modules:
 - [x] [shodan.io](https://shodan.io) search
 - [x] Subdomain enumeration using [crt.sh](https://crt.sh)
 - [x] Given a phone number, can retrieve the owner name
+- [x] Search for password relatives to email address :P
 
 A complete features list and roadmap is available under [Projects Tab](https://github.com/Nhoya/gOSINT/projects)
 

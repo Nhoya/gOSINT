@@ -36,7 +36,7 @@ func TestStartHIBP(t *testing.T) {
 
 func Test_report_getBreachesForMail(t *testing.T) {
 	r := new(report)
-	r.getBreachesForMail("hiall@gmail.com")
+	r.getBreachesForMail("hiall@gmail.com", false)
 	if r.Pwnd == nil {
 		t.Errorf("The report should contains breaches, it is empty!\n")
 	}
