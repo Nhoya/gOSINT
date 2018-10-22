@@ -77,7 +77,7 @@ func retrievePhoneOwner(target string) {
 	if err != nil {
 		panic(err)
 	}
-	if report == nil {
+	if len(report) == 0 {
 		fmt.Println("Unable to complete the challenge correctly. Please retry, if the error persist open an issue.")
 	} else {
 		//TODO: add report parser and error handler if the number is not in the databse
