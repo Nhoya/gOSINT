@@ -2,6 +2,7 @@ package pni
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -14,6 +15,12 @@ import (
 
 	"github.com/otiai10/gosseract"
 )
+
+type SyncMeAnswer struct {
+	ErrorCode   int    `json:"error_code"`
+	PremiumType int    `json:"premium_type"`
+	Name        string `json:"name"`
+}
 
 const (
 	ua = "Mozilla/5.0 (Linux; Android 8.1.0; LG-D802 Build/OPM6.171019.030.K1) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36"
@@ -31,6 +38,7 @@ func (opts *Options) StartPNI() {
 	for _, num := range opts.PhoneNumber {
 		if !strings.HasPrefix(num, "+") {
 			fmt.Println(num + " is invalid, You must specify the country code with +")
+			os.Exit(1)
 		}
 		retrievePhoneOwner(num[1:])
 	}
@@ -80,8 +88,20 @@ func retrievePhoneOwner(target string) {
 	if len(report) == 0 {
 		fmt.Println("Unable to complete the challenge correctly. Please retry, if the error persist open an issue.")
 	} else {
-		//TODO: add report parser and error handler if the number is not in the databse
-		fmt.Println(string(report))
+		var answer SyncMeAnswer
+		err := json.Unmarshal(report, &answer)
+		if err != nil {
+			panic(err)
+		}
+		if answer.ErrorCode == 8203 {
+			fmt.Println("Unable to find owner")
+		} else if answer.ErrorCode == 0 {
+			fmt.Println(answer.Name)
+		} else {
+			fmt.Println("Unexpected error occured, please open an issue")
+			fmt.Println(string(report))
+			os.Exit(1)
+		}
 	}
 
 }
