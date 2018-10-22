@@ -20,13 +20,13 @@
   branch = "master"
   name = "github.com/badoux/checkmail"
   packages = ["."]
-  revision = "d0a759655d62bcdc95c50a0676f3e9702ed59453"
+  revision = "0755fe2dc241caebab64327c352006712f6a55c4"
 
 [[projects]]
   name = "github.com/deckarep/golang-set"
   packages = ["."]
-  revision = "1d4478f51bed434f1dadf96dcd9b43aabac66795"
-  version = "v1.7"
+  revision = "cbaa98ba5575e67703b32b4b19f73c91f3c4159e"
+  version = "v1.7.1"
 
 [[projects]]
   name = "github.com/emirpasic/gods"
@@ -38,8 +38,8 @@
     "trees/binaryheap",
     "utils"
   ]
-  revision = "f6c17b524822278a87e3b3bd809fec33b51f5b46"
-  version = "v1.9.0"
+  revision = "1615341f118ae12f353cc8a983f35b584342c9b3"
+  version = "v1.12.0"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -50,8 +50,8 @@
 [[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
-  version = "v1.0.0"
+  revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/google/go-github"
@@ -60,13 +60,12 @@
   version = "v15.0.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/google/go-querystring"
   packages = ["query"]
-  revision = "53e6ce116135b80d037921a7fdd5138cf32d7a8a"
+  revision = "44c6ddd0a2342c386950e880b658017258da92fc"
+  version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/hashicorp/hcl"
   packages = [
     ".",
@@ -80,13 +79,14 @@
     "json/scanner",
     "json/token"
   ]
-  revision = "f40e974e75af4e271d97ce0fc917af5898ae7bda"
+  revision = "8cb6e5b959231cc1119e43259c4a608f9c51a241"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
   name = "github.com/jaytaylor/html2text"
   packages = ["."]
-  revision = "64a82a6d140778896f13303121a49d8cb8007034"
+  revision = "57d518f124b0cf46ea2021f25a01396b3522e6fb"
 
 [[projects]]
   branch = "master"
@@ -97,32 +97,32 @@
 [[projects]]
   name = "github.com/kevinburke/ssh_config"
   packages = ["."]
-  revision = "9fc7bb800b555d63157c65a904c86a2cc7b4e795"
-  version = "0.4"
+  revision = "81db2a75821ed34e682567d48be488a1c3121088"
+  version = "0.5"
 
 [[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
-  revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
-  version = "v1.7.6"
+  revision = "c2353362d570a7bfa228149c62842019201cfb71"
+  version = "v1.8.0"
 
 [[projects]]
   name = "github.com/mattn/go-runewidth"
   packages = ["."]
-  revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
-  version = "v0.0.2"
+  revision = "ce7b0b5c7b45a81508558cd1dba6bb1e4ddb51bb"
+  version = "v0.0.3"
 
 [[projects]]
-  branch = "master"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
-  revision = "b8bc1bf767474819792c23f32d8286a45736f1c6"
+  revision = "ae18d6b8b3205b561c79e8e5f69bff09736185f4"
+  version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
+  revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
+  version = "v1.1.2"
 
 [[projects]]
   branch = "master"
@@ -140,7 +140,7 @@
   branch = "master"
   name = "github.com/olekukonko/tablewriter"
   packages = ["."]
-  revision = "b8a9be070da40449e501c3c4730a889e42d87a9e"
+  revision = "be2c049b30ccd4d3fd795d6bf7dce74e42eeedaa"
 
 [[projects]]
   name = "github.com/otiai10/gosseract"
@@ -157,8 +157,8 @@
 [[projects]]
   name = "github.com/pelletier/go-toml"
   packages = ["."]
-  revision = "acdc4509485b587f5e675510c4f2c63e90ff68a8"
-  version = "v1.1.0"
+  revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/sergi/go-diff"
@@ -172,8 +172,8 @@
     ".",
     "mem"
   ]
-  revision = "bb8f1927f2a9d3ab41c9340aa034f6b803f4359c"
-  version = "v1.0.2"
+  revision = "d40851caa0d747393da1ffb28f7f9d8b4eeffebd"
+  version = "v1.1.2"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -182,22 +182,22 @@
   version = "v1.2.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/spf13/jwalterweatherman"
   packages = ["."]
-  revision = "7c0cea34c8ece3fbeb2b27ab9b59511d360fb394"
+  revision = "4a4406e478ca629068e7768fc33f3f044173c0a6"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/spf13/pflag"
   packages = ["."]
-  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
-  version = "v1.0.0"
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
   name = "github.com/spf13/viper"
   packages = ["."]
-  revision = "b5e8006cbee93ec955a89ab31e0e3ce3204f3736"
-  version = "v1.0.2"
+  revision = "2c12c60302a5a0e62ee102ca9bc996277c2f64f5"
+  version = "v1.2.1"
 
 [[projects]]
   name = "github.com/src-d/gcfg"
@@ -217,10 +217,10 @@
   revision = "6386211fdfcf24c0bfbdaceafd02849ed9a8a509"
 
 [[projects]]
-  branch = "master"
   name = "github.com/xanzy/ssh-agent"
   packages = ["."]
-  revision = "ba9c9e33906f58169366275e3450db66139a31a9"
+  revision = "640f0ab560aeb89d523bb6ac322b1244d5c3796c"
+  version = "v0.2.0"
 
 [[projects]]
   branch = "master"
@@ -231,6 +231,7 @@
     "ed25519",
     "ed25519/internal/edwards25519",
     "internal/chacha20",
+    "internal/subtle",
     "openpgp",
     "openpgp/armor",
     "openpgp/elgamal",
@@ -242,7 +243,7 @@
     "ssh/agent",
     "ssh/knownhosts"
   ]
-  revision = "12892e8c234f4fe6f6803f052061de9057903bb2"
+  revision = "0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb"
 
 [[projects]]
   branch = "master"
@@ -253,7 +254,7 @@
     "html",
     "html/atom"
   ]
-  revision = "b68f30494add4df6bd8ef5e82803f308e7f7c59c"
+  revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
 
 [[projects]]
   branch = "master"
@@ -262,7 +263,7 @@
     ".",
     "internal"
   ]
-  revision = "fdc9e635145ae97e6c2cb777c48305600cf515cb"
+  revision = "9dcd33a902f40452422c2367fefcb95b54f9f8f8"
 
 [[projects]]
   branch = "master"
@@ -271,7 +272,7 @@
     "unix",
     "windows"
   ]
-  revision = "378d26f46672a356c46195c28f61bdb4c0a781dd"
+  revision = "8a28ead16f52c8aaeffbf79239b251dfdf6c4f96"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -297,8 +298,8 @@
     "internal/urlfetch",
     "urlfetch"
   ]
-  revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
-  version = "v1.0.0"
+  revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
+  version = "v1.2.0"
 
 [[projects]]
   name = "gopkg.in/alecthomas/kingpin.v2"
@@ -321,8 +322,8 @@
     "osfs",
     "util"
   ]
-  revision = "027dceab1aa836eb310d92c2eb2266e4dc9f4b81"
-  version = "v4.1.0"
+  revision = "982626487c60a5252e7d0b695ca23fb0fa2fd670"
+  version = "v4.3.0"
 
 [[projects]]
   name = "gopkg.in/src-d/go-git.v4"
@@ -357,7 +358,7 @@
     "plumbing/transport/ssh",
     "storage",
     "storage/filesystem",
-    "storage/filesystem/internal/dotgit",
+    "storage/filesystem/dotgit",
     "storage/memory",
     "utils/binary",
     "utils/diff",
@@ -368,8 +369,8 @@
     "utils/merkletrie/internal/frame",
     "utils/merkletrie/noder"
   ]
-  revision = "1d28459504251497e0ce6132a0fadd5eb44ffd22"
-  version = "v4.2.0"
+  revision = "cd64b4d630b6c2d2b3d72e9615e14f9d58bb5787"
+  version = "v4.7.1"
 
 [[projects]]
   name = "gopkg.in/warnings.v0"
