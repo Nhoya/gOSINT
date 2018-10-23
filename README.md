@@ -32,7 +32,7 @@ A complete features list and roadmap is available under [Projects Tab](https://g
 
 ### Dependencies
 
-gOSINT currently depends from [tesseract-ocr](https://github.com/tesseract-ocr/) so you need to install on your sistem `tesseract-ocr`, `libtesseract-dev` and `libleptonica-dev`
+gOSINT currently depends from [tesseract-ocr](https://github.com/tesseract-ocr/) so you need to install on your system `tesseract-ocr`, `libtesseract-dev` and `libleptonica-dev`
 
 ### Install on a go-dependent way (is the easier and faster way)
 
