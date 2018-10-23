@@ -30,10 +30,13 @@ A complete features list and roadmap is available under [Projects Tab](https://g
 
 ## Installation
 
-### Install on a go-dependent way
+### Dependencies
+
+gOSINT currently depends from [tesseract-ocr](https://github.com/tesseract-ocr/) so you need to install on your sistem `tesseract-ocr`, `libtesseract-dev` and `libleptonica-dev`
+
+### Install on a go-dependent way (is the easier and faster way)
 
 You can install `gOSINT` using `go get` with a simple `go get github.com/Nhoya/gOSINT/cmd/gosint`
-You also need to install `tesseract-ocr` on your system
 
 ### Install On Windows
 
@@ -77,9 +80,10 @@ Commands:
     --method=[clone|gh]  Specify the API to use or plain clone
     --recursive          Search for each repository of the user
 
-  pwd <mail>...
+  pwd [<flags>] <mail>...
     Check dumps for Email address using haveibeenpwned.com
 
+    --get-passwords  Search passwords for mail
 
   pgp <mail>...
     Get Emails, KeyID and Aliases from PGP Keyring
