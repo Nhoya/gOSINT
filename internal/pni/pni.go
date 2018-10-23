@@ -16,6 +16,7 @@ import (
 	"github.com/otiai10/gosseract"
 )
 
+//SyncMeAnswer contains a (partial) representation of the SyncMe JSON answer
 type SyncMeAnswer struct {
 	ErrorCode   int    `json:"error_code"`
 	PremiumType int    `json:"premium_type"`
@@ -31,8 +32,7 @@ type Options struct {
 	PhoneNumber []string
 }
 
-//¯\_(ツ)_/¯
-//StartPNI is the init function of the module
+//StartPNI is the init function of the module ¯\_(ツ)_/¯
 func (opts *Options) StartPNI() {
 	//TODO: add check on number lenght
 	for _, num := range opts.PhoneNumber {
@@ -49,7 +49,6 @@ func retrievePhoneOwner(target string) {
 	client := &http.Client{
 		Jar: cj,
 	}
-
 	captchaID, err := sendGETRequest("https://sync.me/search/?number="+target, client)
 	if err != nil {
 		fmt.Println("Unable to get info")
@@ -60,6 +59,8 @@ func retrievePhoneOwner(target string) {
 	re := regexp.MustCompile(`var\scaptchaURL\s=\s'(?:\/\.\.){2}/server/simple-php-captcha/simple-php-captcha\.php\?_CAPTCHA&amp;t=(.*)';`)
 	match := re.FindAllStringSubmatch(string(captchaID), -1)
 
+	fmt.Println("https://sync.me/server/simple-php-captcha/simple-php-captcha.php?_CAPTCHA&amp;t=" + match[0][1])
+	os.Exit(1)
 	//retrieve captcha
 	challenge, err := sendGETRequest("https://sync.me/server/simple-php-captcha/simple-php-captcha.php?_CAPTCHA&amp;t="+match[0][1], client)
 	if err != nil {
