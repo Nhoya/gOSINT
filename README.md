@@ -25,6 +25,7 @@ Currently `gOSINT` has different modules:
 - [x] Subdomain enumeration using [crt.sh](https://crt.sh)
 - [x] Given a phone number, can retrieve the owner name
 - [x] Search for password relatives to email address :P
+- [x] Reverse Whois given Email Address or Name
 
 A complete features list and roadmap is available under [Projects Tab](https://github.com/Nhoya/gOSINT/projects)
 
@@ -115,6 +116,10 @@ Commands:
     --end=END      End message #
     --grace=15     The number of messages that will be considered deleted before the scraper stops
     --dump         Creates and resume messages from dumpfile
+
+  rev-whois <target>
+    Find domains for name or email address
+
 ```
 
 ## Configuration file

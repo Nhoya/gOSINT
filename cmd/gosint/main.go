@@ -8,6 +8,7 @@ import (
 	"github.com/Nhoya/gOSINT/internal/hibp"
 	"github.com/Nhoya/gOSINT/internal/pgp"
 	"github.com/Nhoya/gOSINT/internal/pni"
+	"github.com/Nhoya/gOSINT/internal/reversewhois"
 	"github.com/Nhoya/gOSINT/internal/shodan"
 	"github.com/Nhoya/gOSINT/internal/telegram"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -58,6 +59,10 @@ var (
 	telegramEnd         = telegramMod.Flag("end", "End message #").Int()
 	telegramGracePeriod = telegramMod.Flag("grace", "The number of messages that will be considered deleted before the scraper stops").Default("15").Int()
 	telegramDumpFlag    = telegramMod.Flag("dump", "Creates and resume messages from dumpfile").Bool()
+
+	//reversewhois module
+	revWhoisMod    = app.Command("rev-whois", "Find domains for name or email address")
+	revWhoisTarget = revWhoisMod.Arg("target", "Email address or Name").Required().String()
 )
 
 func main() {
@@ -117,6 +122,13 @@ func main() {
 	case pniMod.FullCommand():
 		opts := new(pni.Options)
 		opts.PhoneNumber = *pniTarget
+		opts.JSONFlag = *jsonFlag
 		opts.StartPNI()
+	//reverse Whois
+	case revWhoisMod.FullCommand():
+		opts := new(reversewhois.Options)
+		opts.Target = *revWhoisTarget
+		opts.JSONFlag = *jsonFlag
+		opts.StartReverseWhois()
 	}
 }

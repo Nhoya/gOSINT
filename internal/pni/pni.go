@@ -30,6 +30,7 @@ const (
 //Options contains the options for the syncme module
 type Options struct {
 	PhoneNumber []string
+	JSONFlag    bool
 }
 
 //StartPNI is the init function of the module ¯\_(ツ)_/¯
@@ -40,11 +41,11 @@ func (opts *Options) StartPNI() {
 			fmt.Println(num + " is invalid, You must specify the country code with +")
 			os.Exit(1)
 		}
-		retrievePhoneOwner(num[1:])
+		retrievePhoneOwner(num[1:], opts.JSONFlag)
 	}
 }
 
-func retrievePhoneOwner(target string) {
+func retrievePhoneOwner(target string, jsonFlag bool) {
 	cj, _ := cookiejar.New(nil)
 	client := &http.Client{
 		Jar: cj,
@@ -86,22 +87,27 @@ func retrievePhoneOwner(target string) {
 	if err != nil {
 		panic(err)
 	}
+	//TODO: move this on an indipended function
 	if len(report) == 0 {
 		fmt.Println("Unable to complete the challenge correctly. Please retry, if the error persist open an issue.")
 	} else {
-		var answer SyncMeAnswer
-		err := json.Unmarshal(report, &answer)
-		if err != nil {
-			panic(err)
-		}
-		if answer.ErrorCode == 8203 {
-			fmt.Println("Unable to find owner")
-		} else if answer.ErrorCode == 0 {
-			fmt.Println(answer.Name)
+		if jsonFlag {
+			fmt.Println(report)
 		} else {
-			fmt.Println("Unexpected error occured, please open an issue")
-			fmt.Println(string(report))
-			os.Exit(1)
+			var answer SyncMeAnswer
+			err := json.Unmarshal(report, &answer)
+			if err != nil {
+				panic(err)
+			}
+			if answer.ErrorCode == 8203 {
+				fmt.Println("Unable to find owner")
+			} else if answer.ErrorCode == 0 {
+				fmt.Println(answer.Name)
+			} else {
+				fmt.Println("Unexpected error occured, please open an issue")
+				fmt.Println(string(report))
+				os.Exit(1)
+			}
 		}
 	}
 
