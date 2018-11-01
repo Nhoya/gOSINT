@@ -14,11 +14,14 @@ import (
 //ConfigFile is the name of the configuration file
 const ConfigFile = "gosint"
 
-//RetrieveRequestBody send a Get Request to a domain and return the body casted to string
+//DEBUG_FLAG if true will trigger debug actions like coredump printing and more detailed errors
+var DebugFlag bool
+
+//RetrieveRequestBody send a GET Request to a domain and return the body casted to string
 func RetrieveRequestBody(domain string) string {
 	resp, err := http.Get(domain)
 	if err != nil {
-		panic(err)
+		Panic(err, "Unable to send request")
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -29,14 +32,11 @@ func RetrieveRequestBody(domain string) string {
 func WriteOnFile(filename string, text string) {
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
-		fmt.Println("Unabale to open file")
-		fmt.Println(err)
-		os.Exit(1)
+		Panic(err, "Unable to Open file")
 	}
 	_, err = f.WriteString(text)
 	if err != nil {
-		fmt.Println("Unable to wite on file")
-		os.Exit(1)
+		Panic(err, "Unable to Write file")
 	}
 }
 
@@ -62,8 +62,7 @@ func SimpleQuestion(question string) bool {
 	var resp string
 	_, err := fmt.Scanln(&resp)
 	if err != nil {
-		fmt.Println("[-] Unable to read answer")
-		os.Exit(1)
+		Panic(err, "Unable to read answer")
 	}
 	if resp == "y" || resp == "Y" {
 		return true
@@ -73,15 +72,15 @@ func SimpleQuestion(question string) bool {
 
 func readConfigFile() *viper.Viper {
 	v := viper.New()
+	v.SetConfigName(ConfigFile)
 	v.AddConfigPath(".")
 	v.AddConfigPath("./config")
-	v.SetConfigName(ConfigFile)
 	v.AddConfigPath("/etc/gosint")
-	v.AddConfigPath(ConfigFilePath)
+	v.AddConfigPath(os.Getenv("HOME") + "/.config/")
 
 	err := v.ReadInConfig()
 	if err != nil {
-		panic(err)
+		Panic(err, "Unable to open read config file")
 	}
 	return v
 }
@@ -109,4 +108,37 @@ func SetToSlice(oldset mapset.Set) []string {
 	}
 	sort.Strings(newSlice)
 	return newSlice
+}
+
+//AddToSMap put a string in a map if is not already present
+func AddToSMap(elem string, m map[string]bool) map[string]bool {
+	if _, present := m[elem]; !present {
+		m[elem] = true
+	}
+	return m
+}
+
+//MapSDifference takes two matps [string]bool as agument and return a third map containing m1 - m2
+func MapSDifference(m1 map[string]bool, m2 map[string]bool) map[string]bool {
+	diffMap := make(map[string]bool)
+	for key := range m1 {
+		if _, present := m2[key]; !present {
+			diffMap[key] = true
+		} else {
+			delete(m2, key)
+		}
+	}
+	return diffMap
+}
+
+//Panic is a wrapper function on top of builtin panic,
+//if DEBUG_FLAG is true it will print the core dump,
+//otherwise it will print a message and exit with exitcode 1
+func Panic(err error, msg string) {
+	fmt.Println(msg)
+	if DebugFlag {
+		panic(err)
+	} else {
+		os.Exit(1)
+	}
 }

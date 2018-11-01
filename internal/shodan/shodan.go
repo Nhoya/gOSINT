@@ -59,7 +59,7 @@ func getQueryInfo(client *shodan.Client, queryTarget string) {
 	options.Query = queryTarget
 	query, err := client.GetHostsForQuery(&options)
 	if err != nil {
-		fmt.Println(err)
+		utils.Panic(err, "Unable to get hosts for query")
 	}
 	if query.Total != 0 {
 		fmt.Printf("==== Query result for \"%s\" ====\n", queryTarget)
@@ -89,9 +89,7 @@ func getShodanHostInfo(host string, client *shodan.Client, honeyPotFlag bool) {
 	fmt.Println("==== REPORT FOR " + host + " ====")
 	report, err := client.GetServicesForHost(host, new(shodan.HostServicesOptions))
 	if err != nil {
-		fmt.Println("[-] Unable to get Report")
-		fmt.Println(err)
-		os.Exit(1)
+		utils.Panic(err, "Unable to get report")
 	}
 	fmt.Println("ISP: " + report.ISP)
 	fmt.Println("Organization: " + report.Organization)
@@ -141,8 +139,7 @@ func newShodanScan(client *shodan.Client, hosts []string) {
 	fmt.Println("[+] Requesting new scan")
 	scan, err := client.Scan(hosts)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		utils.Panic(err, "Unable to schedule scan")
 	}
 	fmt.Printf("[+] Scan request ID: %s (1 credit will be deducted)\n", scan.ID)
 	for {
@@ -157,8 +154,7 @@ func newShodanScan(client *shodan.Client, hosts []string) {
 func checkHoneyPotProbability(client *shodan.Client, host string) {
 	honeyscore, err := client.CalcHoneyScore(host)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		utils.Panic(err, "Unable to get Honeypot Score")
 	}
 	fmt.Println("Honeypot Score (0-1):", honeyscore)
 }

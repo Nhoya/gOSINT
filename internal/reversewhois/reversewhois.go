@@ -3,13 +3,14 @@ package reversewhois
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"net/url"
 	"os"
 	"regexp"
+
+	"github.com/Nhoya/gOSINT/internal/utils"
 )
 
+//Options contains the options for reversewhois module
 type Options struct {
 	Target   string
 	JSONFlag bool
@@ -20,12 +21,14 @@ type report struct {
 	Domains []*Domain `json:"domains"`
 }
 
+//Domain contains the filed relative to a domain
 type Domain struct {
 	DomainName   string `json:"domainName"`
 	CreationDate string `json:"creationDate"`
 	Registrar    string `json:"registrar"`
 }
 
+//StartReverseWhois will start the ReverseWhois module
 func (opts *Options) StartReverseWhois() {
 	if opts.Target == "" {
 		fmt.Println("You must inster a valid target")
@@ -43,15 +46,7 @@ func (opts *Options) StartReverseWhois() {
 }
 
 func getDomains(target string) []*Domain {
-	resp, err := http.Get("https://viewdns.info/reversewhois/?q=" + url.QueryEscape(target))
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
+	body := utils.RetrieveRequestBody("https://viewdns.info/reversewhois/?q=" + url.QueryEscape(target))
 	var domains []*Domain
 	for _, i := range extractValues(body) {
 		dom := new(Domain)
@@ -63,9 +58,9 @@ func getDomains(target string) []*Domain {
 	return domains
 }
 
-func extractValues(body []byte) [][]string {
+func extractValues(body string) [][]string {
 	re := regexp.MustCompile(`(?mU)<\/tr><tr><td>([^\s]+)<\/td><td>(\d{4}-\d{2}-\d{2})<\/td><td>(.*)<\/td>`)
-	match := re.FindAllStringSubmatch(string(body), -1)
+	match := re.FindAllStringSubmatch(body, -1)
 	return match
 }
 

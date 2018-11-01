@@ -27,7 +27,7 @@ func getPasswords(mail string) ([]string, error) {
 	}
 
 	var pwds []string
-	re := regexp.MustCompile(mail + ":(.*)")
+	re := regexp.MustCompile(mail + ".*:(.*)")
 	match := re.FindAllStringSubmatch(string(body), -1)
 	for _, i := range match {
 		pwds = append(pwds, i[1])

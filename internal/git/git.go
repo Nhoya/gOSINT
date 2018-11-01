@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Nhoya/gOSINT/internal/utils"
 	"github.com/deckarep/golang-set"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
@@ -84,8 +85,7 @@ func cloneAndSearchCommit(URL string) [][]string {
 	//create temporary file
 	tmpdir, err := ioutil.TempDir(".", ".gOSINT")
 	if err != nil {
-		fmt.Println("Unable create temporary directory")
-		os.Exit(1)
+		utils.Panic(err, "Unable create temporary directory")
 	}
 	defer os.RemoveAll(tmpdir)
 
@@ -99,8 +99,7 @@ func cloneAndSearchCommit(URL string) [][]string {
 
 	ref, err := r.Head()
 	if err != nil {
-		fmt.Println("Unable to clone Repository")
-		os.Exit(1)
+		utils.Panic(err, "Unable to clone Repository")
 	}
 	cIter, err := r.Log(&git.LogOptions{From: ref.Hash()})
 	var extractedValues [][]string

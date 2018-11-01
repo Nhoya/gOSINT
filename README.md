@@ -68,7 +68,12 @@ An Open Source INTelligence Swiss Army Knife
 Flags:
   --help     Show context-sensitive help (also try --help-long and --help-man).
   --json     Enable JSON Output
+  --debug    Enable Debug Output
   --version  Show application version.
+  --verify   Verify URL Status Code
+
+Args:
+  <url>  Domain URL
 
 Commands:
   help [<command>...]

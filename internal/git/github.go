@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/Nhoya/gOSINT/internal/utils"
 	"github.com/google/go-github/github"
@@ -39,9 +38,7 @@ func getUsersFromGitHub(user string, repository string) [][]string {
 	for {
 		commits, resp, err := client.Repositories.ListCommits(ctx, user, repository, opt)
 		if err != nil {
-			fmt.Println("Unable to reach the repository")
-			fmt.Println(err)
-			os.Exit(1)
+			utils.Panic(err, "Unable to reach the repository")
 		}
 
 		//Extract Author Name and Email
@@ -67,7 +64,7 @@ func getGHUserRepositories(user string) []*github.Repository {
 	client, ctx := ghLogin()
 	repos, _, err := client.Repositories.List(ctx, user, opt)
 	if err != nil {
-		fmt.Println(err)
+		utils.Panic(err, "Unable to get repositories")
 	}
 	return repos
 }

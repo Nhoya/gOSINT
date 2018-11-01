@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/Nhoya/gOSINT/internal/axfr"
@@ -11,13 +12,15 @@ import (
 	"github.com/Nhoya/gOSINT/internal/reversewhois"
 	"github.com/Nhoya/gOSINT/internal/shodan"
 	"github.com/Nhoya/gOSINT/internal/telegram"
+	"github.com/Nhoya/gOSINT/internal/utils"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
 	//gOSINT generic options
-	app      = kingpin.New("gOSINT", "An Open Source INTelligence Swiss Army Knife")
-	jsonFlag = app.Flag("json", "Enable JSON Output").Bool()
+	app       = kingpin.New("gOSINT", "An Open Source INTelligence Swiss Army Knife")
+	jsonFlag  = app.Flag("json", "Enable JSON Output").Bool()
+	debugFlag = app.Flag("debug", "Enable Debug Output").Bool()
 
 	//git module
 	gitMod       = app.Command("git", "Get Emails and Usernames from repositories")
@@ -68,7 +71,13 @@ var (
 func main() {
 	app.UsageTemplate(kingpin.SeparateOptionalFlagsUsageTemplate)
 	app.Version("0.5dev")
-	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
+	commands, err := app.Parse(os.Args[1:])
+	// Set Debug flag
+	if *debugFlag {
+		fmt.Println("[+] Debug Activated")
+		utils.DebugFlag = *debugFlag
+	}
+	switch kingpin.MustParse(commands, err) {
 	// gosint git
 	case gitMod.FullCommand():
 		opts := new(git.Options)

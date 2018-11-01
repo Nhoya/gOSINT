@@ -13,6 +13,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Nhoya/gOSINT/internal/utils"
 	"github.com/otiai10/gosseract"
 )
 
@@ -27,7 +28,7 @@ const (
 	ua = "Mozilla/5.0 (Linux; Android 8.1.0; LG-D802 Build/OPM6.171019.030.K1) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36"
 )
 
-//Options contains the options for the syncme module
+//Options contains the options for the PNI module
 type Options struct {
 	PhoneNumber []string
 	JSONFlag    bool
@@ -52,8 +53,7 @@ func retrievePhoneOwner(target string, jsonFlag bool) {
 	}
 	captchaID, err := sendGETRequest("https://sync.me/search/?number="+target, client)
 	if err != nil {
-		fmt.Println("Unable to get info")
-		os.Exit(1)
+		utils.Panic(err, "Unable to send GET captchaID")
 	}
 
 	//extract captcha ID
@@ -65,7 +65,7 @@ func retrievePhoneOwner(target string, jsonFlag bool) {
 	//retrieve captcha
 	challenge, err := sendGETRequest("https://sync.me/server/simple-php-captcha/simple-php-captcha.php?_CAPTCHA&amp;t="+match[0][1], client)
 	if err != nil {
-		panic(err)
+		utils.Panic(err, "Unable to get captcha")
 	}
 	//solve it
 	solution := solveCaptcha(challenge)
@@ -78,14 +78,14 @@ func retrievePhoneOwner(target string, jsonFlag bool) {
 
 	_, err = sendPOSTRequest("https://sync.me/server/main.php", data, client, target)
 	if err != nil {
-		panic(err)
+		utils.Panic(err, "Unable to read response")
 	}
 	data = url.Values{}
 	data.Set("action", "search")
 	data.Add("number", target)
 	report, err := sendPOSTRequest("https://sync.me/server/main.php", data, client, target)
 	if err != nil {
-		panic(err)
+		utils.Panic(err, "Unable to read response")
 	}
 	//TODO: move this on an indipended function
 	if len(report) == 0 {
@@ -97,16 +97,14 @@ func retrievePhoneOwner(target string, jsonFlag bool) {
 			var answer SyncMeAnswer
 			err := json.Unmarshal(report, &answer)
 			if err != nil {
-				panic(err)
+				utils.Panic(err, "Unable to read JSON output")
 			}
 			if answer.ErrorCode == 8203 {
 				fmt.Println("Unable to find owner")
 			} else if answer.ErrorCode == 0 {
 				fmt.Println(answer.Name)
 			} else {
-				fmt.Println("Unexpected error occured, please open an issue")
-				fmt.Println(string(report))
-				os.Exit(1)
+				utils.Panic(err, "Unexpected error occured, please retry using --debug flag and send the output as issue")
 			}
 		}
 	}
