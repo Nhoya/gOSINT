@@ -60,8 +60,6 @@ func retrievePhoneOwner(target string, jsonFlag bool) {
 	re := regexp.MustCompile(`var\scaptchaURL\s=\s'(?:\/\.\.){2}/server/simple-php-captcha/simple-php-captcha\.php\?_CAPTCHA&amp;t=(.*)';`)
 	match := re.FindAllStringSubmatch(string(captchaID), -1)
 
-	fmt.Println("https://sync.me/server/simple-php-captcha/simple-php-captcha.php?_CAPTCHA&amp;t=" + match[0][1])
-	os.Exit(1)
 	//retrieve captcha
 	challenge, err := sendGETRequest("https://sync.me/server/simple-php-captcha/simple-php-captcha.php?_CAPTCHA&amp;t="+match[0][1], client)
 	if err != nil {
