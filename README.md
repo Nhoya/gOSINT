@@ -37,7 +37,9 @@ gOSINT currently depends from [tesseract-ocr](https://github.com/tesseract-ocr/)
 
 ### Install on a go-dependent way (is the easier and faster way)
 
-You can install `gOSINT` using `go get` with a simple `go get github.com/Nhoya/gOSINT/cmd/gosint`
+You can install `gOSINT` using `go get` with a simple 
+
+`go get github.com/Nhoya/gOSINT/cmd/gosint`
 
 ### Install On Windows
 
@@ -56,6 +58,18 @@ If you have `make` installed you can follow the Linux instructions (and skip `ma
 ```bash
 dep ensure
 go build cmd/gosint.go
+```
+
+### Running on Docker
+
+gOSINT currently supports container only for the rolling release, after the 1.0.0 release we will start working on a versioned Dockerfile.
+If you want to try it out:
+
+```
+mkdir gOSINT
+wget https://raw.githubusercontent.com/Nhoya/gOSINT/develop/build/package/Dockerfile
+docker build gosint .
+docker run gosint bash
 ```
 
 ## Usage
