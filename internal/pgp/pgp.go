@@ -47,7 +47,7 @@ func (opts *Options) StartPGP() {
 //send the request to pgp.mit.edu for each mail passed as argument
 func (report *report) pgpSearch(mail string) {
 	domain := "https://pgp.mit.edu/pks/lookup?search=" + mail
-	body := utils.RetrieveRequestBody(domain)
+	body := string(utils.RetrieveRequestBody(domain))
 	//create a new Report for each search term
 	report.Target = mail
 	report.extractPGPIdentities(body)

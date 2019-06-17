@@ -63,7 +63,7 @@ func getTelegramGroupHistory(group string, grace int, dumpFlag bool, startMessag
 	//we don't know how many first how many messages the group has
 	for {
 		messageid := strconv.Itoa(messageCounter)
-		body := utils.RetrieveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1")
+		body := string(utils.RetrieveRequestBody("https://t.me/" + group + "/" + messageid + "?embed=1"))
 		message := getTelegramMessage(body)
 
 		if message != "" && dmCounter > 0 {

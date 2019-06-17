@@ -18,14 +18,14 @@ const ConfigFile = "gosint"
 var DebugFlag bool
 
 //RetrieveRequestBody send a GET Request to a domain and return the body casted to string
-func RetrieveRequestBody(domain string) string {
+func RetrieveRequestBody(domain string) []byte {
 	resp, err := http.Get(domain)
 	if err != nil {
 		Panic(err, "Unable to send request")
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
-	return string(body)
+	return body
 }
 
 //WriteOnFile open a file with Append and write on it, if the file doesn't exist will create it
@@ -80,7 +80,15 @@ func readConfigFile() *viper.Viper {
 
 	err := v.ReadInConfig()
 	if err != nil {
-		Panic(err, "Unable to open read config file")
+		fmt.Println("[-] Unable to find config file")
+		fmt.Println("[+] Creating config file in "+ConfigFilePath + "" + ConfigFile + ".toml")
+		
+		f,err := os.Create(ConfigFilePath + "" + ConfigFile + ".toml")
+		if err != nil {
+			fmt.Println("Unable to generate config file")
+		}
+		defer f.Close()
+		v.ReadInConfig()	
 	}
 	return v
 }

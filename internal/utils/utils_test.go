@@ -11,7 +11,7 @@ import (
 )
 
 func TestRetrieveRequestBody(t *testing.T) {
-	body := RetrieveRequestBody("https://pastebin.com/raw/hbT8ATxJ")
+	body := string(RetrieveRequestBody("https://pastebin.com/raw/hbT8ATxJ"))
 	bodyTest := "Working"
 	if body != bodyTest {
 		t.Errorf("Incorrect request body. Is %s, should be %s", body, bodyTest)

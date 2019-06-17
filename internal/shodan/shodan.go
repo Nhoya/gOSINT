@@ -26,7 +26,7 @@ func (opts *Options) StartShodanScan() {
 	//init the configuration file
 	utils.WriteConfigFile("shodanApiKey", "")
 	//get the API Key from the configuration file
-	APIKey := utils.GetConfigValue("shodanApiKey")
+	APIKey := getShodanAPIKey()
 
 	client := shodan.NewClient(nil, APIKey)
 
@@ -76,9 +76,9 @@ func getQueryInfo(client *shodan.Client, queryTarget string) {
 }
 
 func getShodanAPIKey() string {
-	APIKey := utils.GetConfigValue("ShodanApiKey")
+	APIKey := utils.GetConfigValue("shodanapikey")
 	if APIKey == "" {
-		fmt.Println("[-] Unable to retrive Shodan API Key from config file")
+		fmt.Println("[-] API KEY Can't be empty")
 		os.Exit(1)
 	}
 	fmt.Println("[+] APIKey Found")

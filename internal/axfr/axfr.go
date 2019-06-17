@@ -49,7 +49,7 @@ func (report *report) enumerateSubdomains(domain string, jsonFlag bool, verifyUR
 	querystring := "https://crt.sh/?q=%." + report.Domain + "&output=json"
 	body := utils.RetrieveRequestBody(querystring)
 
-	match := getDomains(body)
+	match := getDomains(string(body))
 	doms := make(map[string]bool)
 	for _, i := range match {
 		if _, ok := doms[i[1]]; !ok {

@@ -46,7 +46,7 @@ func (opts *Options) StartReverseWhois() {
 }
 
 func getDomains(target string) []*Domain {
-	body := utils.RetrieveRequestBody("https://viewdns.info/reversewhois/?q=" + url.QueryEscape(target))
+	body := string(utils.RetrieveRequestBody("https://viewdns.info/reversewhois/?q=" + url.QueryEscape(target)))
 	var domains []*Domain
 	for _, i := range extractValues(body) {
 		dom := new(Domain)
