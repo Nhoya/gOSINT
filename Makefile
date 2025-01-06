@@ -1,15 +1,12 @@
 # Go parameters
 LDFLAGS="-s -w"
-${HOME}=()
 
-all: deps test gosint_build
+all: test build
 
-deps:
-	dep ensure
+build:
+	go build -ldflags $(LDFLAGS) ./...
 
 test:
 	go test -v ./...
 
-gosint_build:
-	go build -o gosint -v -ldflags=${LDFLAGS} cmd/gosint/main.go
-
+.PHONY: all build test
