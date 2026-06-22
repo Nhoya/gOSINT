@@ -102,7 +102,7 @@ func retrievePhoneOwner(target string, jsonFlag bool) {
 			} else if answer.ErrorCode == 0 {
 				fmt.Println(answer.Name)
 			} else {
-				utils.Panic(err, "Unexpected error occured, please retry using --debug flag and send the output as issue")
+				utils.Panic(err, "Unexpected error occurred, please retry using --debug flag and send the output as issue")
 			}
 		}
 	}
